@@ -5,10 +5,10 @@ import javax.persistence.*
 import javax.validation.constraints.Min
 
 @Entity
-class StaffMember(
+class StaffMemberEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val staffMemberId: String,
+    val staffMemberId: Long? = null,
 
     @Column(unique = true, length = 32)
     val email: String,
@@ -30,9 +30,12 @@ class StaffMember(
     @OneToMany(mappedBy = "supervisor")
     val subjects: Set<SubjectEntity>,
 
+    @Column(name = "faculty_id")
+    val facultyId: Long,
+
     @ManyToOne
-    @JoinColumn(name = "faculty_id")
-    val faculty: FacultyEntity,
+    @JoinColumn(name = "faculty_id", insertable = false, updatable = false)
+    val faculty: FacultyEntity? = null,
 
     @OneToMany(mappedBy = "verifier")
     val verifiers: Set<VerifierEntity>

@@ -6,7 +6,7 @@ import javax.persistence.*
 class StudentEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val studentId: Long,
+    val studentId: Long? = null,
 
     @Column(unique = true, length = 16)
     val index: String,
@@ -23,20 +23,23 @@ class StudentEntity(
     @OneToMany(mappedBy = "initiator")
     val subjectProposals: Set<SubjectEntity>,
 
+    @Column(name = "subject_id")
+    val subjectId: Long? = null,
+
     @ManyToOne
-    @JoinColumn(name = "subject_id")
+    @JoinColumn(name = "subject_id", insertable = false, updatable = false)
     val subject: SubjectEntity? = null,
 
     @OneToMany(mappedBy = "student")
     val propositionAcceptances: Set<PropositionAcceptanceEntity>,
 
     @OneToMany(mappedBy = "student")
-    val candidatures: Set<Candidature>,
+    val candidatures: Set<CandidatureEntity>,
 
     @OneToMany(mappedBy = "student")
-    val candidatureAcceptances: Set<CandidatureAcceptance>,
+    val candidatureAcceptances: Set<CandidatureAcceptanceEntity>,
 
     @ManyToMany
-    val graduationProcesses: Set<GraduationProcess>
+    val graduationProcesses: Set<GraduationProcessEntity>
 )
 

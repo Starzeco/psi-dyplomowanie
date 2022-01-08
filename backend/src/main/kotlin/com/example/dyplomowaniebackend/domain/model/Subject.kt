@@ -3,7 +3,7 @@ package com.example.dyplomowaniebackend.domain.model
 import java.time.Instant
 
 data class Subject(
-    val subjectId: Long,
+    val subjectId: Long? = null,
     val topic: String,
     val topicInEnglish: String,
     val objective: String,
@@ -20,6 +20,19 @@ data class Subject(
     val supervisor: StaffMember,
     val verifications: Set<Verification>,
     val graduationProcess: GraduationProcess,
+)
+
+data class SubjectCreation (
+    val topic: String,
+    val topicInEnglish: String,
+    val objective: String,
+    val objectiveInEnglish: String,
+    val realizationLanguage: RealizationLanguage,
+    val realiseresNumber: Int,
+    val initiatorId: Long?,
+    val proposedRealiserIds: Set<Long>,
+    val supervisorId: Long,
+    val graduationProcessId: Long,
 )
 
 enum class RealizationLanguage {

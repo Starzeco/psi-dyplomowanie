@@ -4,7 +4,7 @@ import java.time.Instant
 import javax.persistence.*
 
 data class Verification(
-    val verificationId: Long,
+    val verificationId: Long?,
     val verified: Boolean? = null,
     val justification: String? = null,
     val updateDate: Instant? = null,

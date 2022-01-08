@@ -4,40 +4,52 @@ import java.time.Instant
 import javax.persistence.*
 
 @Entity
-class Candidature(
+class CandidatureEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val candidatureId: Long,
+    val candidatureId: Long? = null,
 
     val accepted: Boolean? = null,
 
     val creationDate: Instant = Instant.now(),
 
+    @Column(name = "student_id")
+    val studentId: Long,
+
     @ManyToOne
-    @JoinColumn(name = "student_id")
-    val student: StudentEntity,
+    @JoinColumn(name = "student_id", insertable = false, updatable = false)
+    val student: StudentEntity? = null,
 
     @OneToMany(mappedBy = "candidature")
-    val candidatureAcceptances: Set<CandidatureAcceptance>,
+    val candidatureAcceptances: Set<CandidatureAcceptanceEntity>,
+
+    @Column(name = "subject_id")
+    val subjectId: Long,
 
     @ManyToOne
-    @JoinColumn(name = "subject_id")
-    val subject: SubjectEntity
+    @JoinColumn(name = "subject_id", insertable = false, updatable = false)
+    val subject: SubjectEntity? = null
 )
 
 @Entity
-class CandidatureAcceptance(
+class CandidatureAcceptanceEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val candidatureAcceptanceId: Long,
+    val candidatureAcceptanceId: Long? = null,
 
     val accepted: Boolean? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    val student: StudentEntity,
+    @Column(name = "student_id")
+    val studentId: Long,
 
     @ManyToOne
-    @JoinColumn(name = "candidature_id")
-    val candidature: Candidature
+    @JoinColumn(name = "student_id", insertable = false, updatable = false)
+    val student: StudentEntity? = null,
+
+    @Column(name = "candidature_id")
+    val candidatureId: Long,
+
+    @ManyToOne
+    @JoinColumn(name = "candidature_id", insertable = false, updatable = false)
+    val candidature: CandidatureEntity? = null
 )

@@ -1,7 +1,7 @@
 package com.example.dyplomowaniebackend.domain.model
 
 data class Faculty(
-    val facultyId: Long,
+    val facultyId: Long?,
     val name: String,
     val shortName: String,
     val active: Boolean = true,

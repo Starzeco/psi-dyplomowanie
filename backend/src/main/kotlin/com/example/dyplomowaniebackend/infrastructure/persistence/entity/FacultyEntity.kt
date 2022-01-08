@@ -6,7 +6,7 @@ import javax.persistence.*
 class FacultyEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val facultyId: Long,
+    val facultyId: Long? = null,
 
     @Column(unique = true, length = 128)
     val name: String,
@@ -17,7 +17,7 @@ class FacultyEntity(
     val active: Boolean = true,
 
     @OneToMany(mappedBy = "faculty")
-    val staffMembers: Set<StaffMember>,
+    val staffMembers: Set<StaffMemberEntity>,
 
     @OneToMany(mappedBy = "faculty")
     val degreeCourses: Set<DegreeCourseEntity>

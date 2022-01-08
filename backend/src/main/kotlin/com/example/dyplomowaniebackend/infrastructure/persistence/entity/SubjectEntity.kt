@@ -10,7 +10,7 @@ import javax.validation.constraints.Min
 class SubjectEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val subjectId: Long,
+    val subjectId: Long? = null,
 
     @Column(unique = true)
     val topic: String,
@@ -35,8 +35,11 @@ class SubjectEntity(
 
     val creationDate: Instant = Instant.now(),
 
+    @Column(name = "student_id")
+    val studentId: Long?,
+
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "student_id", insertable = false, updatable = false)
     val initiator: StudentEntity? = null,
 
     @OneToMany(mappedBy = "subject")
@@ -46,16 +49,22 @@ class SubjectEntity(
     val propositionAcceptances: Set<PropositionAcceptanceEntity>,
 
     @OneToMany(mappedBy = "subject")
-    val candidatures: Set<Candidature>,
+    val candidatures: Set<CandidatureEntity>,
+
+    @Column(name = "staff_member_id")
+    val staffMemberId: Long,
 
     @ManyToOne
-    @JoinColumn(name = "staff_member_id")
-    val supervisor: StaffMember,
+    @JoinColumn(name = "staff_member_id", insertable = false, updatable = false)
+    val supervisor: StaffMemberEntity? = null,
 
     @OneToMany(mappedBy = "subject")
     val verifications: Set<VerificationEntity>,
 
+    @Column(name = "graduation_process_id")
+    val graduationProcessId: Long,
+
     @ManyToOne
-    @JoinColumn(name = "graduation_process_id")
-    val graduationProcess: GraduationProcess,
+    @JoinColumn(name = "graduation_process_id", insertable = false, updatable = false)
+    val graduationProcess: GraduationProcessEntity? = null,
 )

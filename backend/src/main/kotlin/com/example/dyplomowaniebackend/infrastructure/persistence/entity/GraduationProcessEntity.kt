@@ -6,10 +6,10 @@ import javax.persistence.*
 import javax.validation.constraints.Min
 
 @Entity
-class GraduationProcess(
+class GraduationProcessEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val graduationProcessId: String,
+    val graduationProcessId: Long? = null,
 
     //candidatures submitting deadline
     val cSDeadline: Instant,
@@ -44,9 +44,12 @@ class GraduationProcess(
     @OneToMany(mappedBy = "graduationProcess")
     val subjects: Set<SubjectEntity>,
 
+    @Column(name = "degree_course_id")
+    val degreeCourseId: Long,
+
     @ManyToOne
-    @JoinColumn(name = "degree_course_id")
-    val degreeCourse: DegreeCourseEntity,
+    @JoinColumn(name = "degree_course_id", insertable = false, updatable = false)
+    val degreeCourse: DegreeCourseEntity? = null,
 
     @OneToMany(mappedBy = "graduationProcess")
     val verifiers: Set<VerifierEntity>,
