@@ -5,7 +5,7 @@ import javax.persistence.*
 import javax.validation.constraints.Min
 
 @Entity
-class StaffMember(
+class StaffMemberEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val staffMemberId: String,
@@ -27,13 +27,13 @@ class StaffMember(
     @Min(0)
     val absoluteWorkload: Int,
 
-    @OneToMany(mappedBy = "supervisor")
-    val subjects: Set<SubjectEntity>,
+//    @OneToMany(mappedBy = "supervisor")
+//    val subjects: Set<SubjectEntity>,
 
     @ManyToOne
     @JoinColumn(name = "faculty_id")
     val faculty: FacultyEntity,
 
-    @OneToMany(mappedBy = "verifier")
-    val verifiers: Set<VerifierEntity>
+//    @OneToMany(mappedBy = "verifier")
+//    val verifiers: Set<VerifierEntity>
 )

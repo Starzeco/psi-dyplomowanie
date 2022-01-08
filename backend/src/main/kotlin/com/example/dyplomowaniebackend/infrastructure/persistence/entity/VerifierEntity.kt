@@ -15,12 +15,12 @@ class VerifierEntity(
 
     @ManyToOne
     @JoinColumn(name = "staff_member_id")
-    val verifier: StaffMember,
+    val verifier: StaffMemberEntity,
 
     @ManyToOne
     @JoinColumn(name = "graduation_process_id")
-    val graduationProcess: GraduationProcess,
+    val graduationProcess: GraduationProcessEntity,
 
-    @OneToMany(mappedBy = "verifier")
-    val verifications: Set<VerificationEntity>
+//    @OneToMany(mappedBy = "verifier")
+//    val verifications: Set<VerificationEntity>
 )

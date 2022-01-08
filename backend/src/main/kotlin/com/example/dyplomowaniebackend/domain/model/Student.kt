@@ -6,11 +6,11 @@ data class Student(
     val email: String,
     val name: String,
     val surname: String,
-    val subjectProposals: Set<Subject>,
+//    val subjectProposals: Set<Subject>,
     val subject: Subject? = null,
-    val propositionAcceptances: Set<PropositionAcceptance>,
-    val candidatures: Set<Candidature>,
-    val candidatureAcceptances: Set<CandidatureAcceptance>,
+//    val propositionAcceptances: Set<PropositionAcceptance>,
+//    val candidatures: Set<Candidature>,
+//    val candidatureAcceptances: Set<CandidatureAcceptance>,
     val graduationProcesses: Set<GraduationProcess>
 )
 

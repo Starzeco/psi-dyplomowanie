@@ -5,6 +5,6 @@ data class Faculty(
     val name: String,
     val shortName: String,
     val active: Boolean = true,
-    val staffMembers: Set<StaffMember>,
-    val degreeCourses: Set<DegreeCourse>
+//    val staffMembers: Set<StaffMember>,
+//    val degreeCourses: Set<DegreeCourse>
 )

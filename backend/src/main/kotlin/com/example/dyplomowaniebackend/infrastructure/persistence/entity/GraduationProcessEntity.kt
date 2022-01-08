@@ -6,7 +6,7 @@ import javax.persistence.*
 import javax.validation.constraints.Min
 
 @Entity
-class GraduationProcess(
+class GraduationProcessEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val graduationProcessId: String,
@@ -41,13 +41,13 @@ class GraduationProcess(
     )
     val students: Set<StudentEntity>,
 
-    @OneToMany(mappedBy = "graduationProcess")
-    val subjects: Set<SubjectEntity>,
+//    @OneToMany(mappedBy = "graduationProcess")
+//    val subjects: Set<SubjectEntity>,
 
     @ManyToOne
     @JoinColumn(name = "degree_course_id")
     val degreeCourse: DegreeCourseEntity,
 
-    @OneToMany(mappedBy = "graduationProcess")
-    val verifiers: Set<VerifierEntity>,
+//    @OneToMany(mappedBy = "graduationProcess")
+//    val verifiers: Set<VerifierEntity>,
 )

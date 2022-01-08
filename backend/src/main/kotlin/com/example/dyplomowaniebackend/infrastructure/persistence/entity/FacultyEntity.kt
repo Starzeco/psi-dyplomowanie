@@ -16,9 +16,9 @@ class FacultyEntity(
 
     val active: Boolean = true,
 
-    @OneToMany(mappedBy = "faculty")
-    val staffMembers: Set<StaffMember>,
-
-    @OneToMany(mappedBy = "faculty")
-    val degreeCourses: Set<DegreeCourseEntity>
+//    @OneToMany(mappedBy = "faculty")
+//    val staffMembers: Set<StaffMemberEntity>,
+//
+//    @OneToMany(mappedBy = "faculty")
+//    val degreeCourses: Set<DegreeCourseEntity>
 )

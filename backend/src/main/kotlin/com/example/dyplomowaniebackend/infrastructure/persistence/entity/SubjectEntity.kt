@@ -39,23 +39,23 @@ class SubjectEntity(
     @JoinColumn(name = "student_id")
     val initiator: StudentEntity? = null,
 
-    @OneToMany(mappedBy = "subject")
-    val realiser: Set<StudentEntity>,
+//    @OneToMany(mappedBy = "subject")
+//    val realiser: Set<StudentEntity>,
 
-    @OneToMany(mappedBy = "subject")
-    val propositionAcceptances: Set<PropositionAcceptanceEntity>,
+//    @OneToMany(mappedBy = "subject")
+//    val propositionAcceptances: Set<PropositionAcceptanceEntity>,
 
-    @OneToMany(mappedBy = "subject")
-    val candidatures: Set<Candidature>,
+//    @OneToMany(mappedBy = "subject")
+//    val candidatures: Set<Candidature>,
 
     @ManyToOne
     @JoinColumn(name = "staff_member_id")
-    val supervisor: StaffMember,
+    val supervisor: StaffMemberEntity,
 
-    @OneToMany(mappedBy = "subject")
-    val verifications: Set<VerificationEntity>,
+//    @OneToMany(mappedBy = "subject")
+//    val verifications: Set<VerificationEntity>,
 
     @ManyToOne
     @JoinColumn(name = "graduation_process_id")
-    val graduationProcess: GraduationProcess,
+    val graduationProcess: GraduationProcessEntity,
 )
