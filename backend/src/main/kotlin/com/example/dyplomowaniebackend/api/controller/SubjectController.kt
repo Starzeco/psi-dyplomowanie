@@ -6,7 +6,7 @@ import com.example.dyplomowaniebackend.domain.model.SubjectCreation
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("\${api.prefix}/subject")
+@RequestMapping("/subject")
 class SubjectController(val subjectCreationPort: SubjectCreationPort) {
 
     @PostMapping

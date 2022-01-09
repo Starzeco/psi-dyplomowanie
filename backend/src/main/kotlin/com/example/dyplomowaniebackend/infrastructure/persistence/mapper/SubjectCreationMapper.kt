@@ -3,7 +3,7 @@ package com.example.dyplomowaniebackend.infrastructure.persistence.mapper
 import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.infrastructure.persistence.entity.*
 
-fun StudentEntity.mapCreation(): Student {
+fun StudentEntity.mapToDomain(): Student {
     return Student(
         studentId = this.studentId!!,
         index = this.index,
@@ -19,7 +19,7 @@ fun StudentEntity.mapCreation(): Student {
     )
 }
 
-fun StaffMemberEntity.mapCreation(): StaffMember {
+fun StaffMemberEntity.mapToDomain(): StaffMember {
     return StaffMember(
         staffMemberId = this.staffMemberId!!,
         email = this.email,
@@ -29,12 +29,12 @@ fun StaffMemberEntity.mapCreation(): StaffMember {
         currentWorkload = this.currentWorkload,
         absoluteWorkload = this.absoluteWorkload,
         subjects = setOf(),
-        faculty = this.faculty!!.mapCreation(),
+        faculty = this.faculty!!.mapToDomain(),
         verifiers = setOf()
     )
 }
 
-fun FacultyEntity.mapCreation(): Faculty {
+fun FacultyEntity.mapToDomain(): Faculty {
     return Faculty(
         facultyId = this.facultyId!!,
         name = this.name,
@@ -45,7 +45,7 @@ fun FacultyEntity.mapCreation(): Faculty {
     )
 }
 
-fun GraduationProcessEntity.mapCreation(): GraduationProcess {
+fun GraduationProcessEntity.mapToDomain(): GraduationProcess {
     return GraduationProcess(
         graduationProcessId = this.graduationProcessId!!,
         cSDeadline = this.cSDeadline,
@@ -58,38 +58,38 @@ fun GraduationProcessEntity.mapCreation(): GraduationProcess {
         hCPerSubject = this.hCPerSubject,
         students = setOf(),
         subjects = setOf(),
-        degreeCourse = this.degreeCourse!!.mapCreation(),
+        degreeCourse = this.degreeCourse!!.mapToDomain(),
         verifiers = setOf()
     )
 }
 
-fun DegreeCourseEntity.mapCreation(): DegreeCourse {
+fun DegreeCourseEntity.mapToDomain(): DegreeCourse {
     return DegreeCourse(
         degreeCourseId = this.degreeCourseId!!,
         name = this.name,
         active = this.active,
-        faculty = this.faculty!!.mapCreation(),
+        faculty = this.faculty!!.mapToDomain(),
         graduationProcesses = setOf()
     )
 }
 
-fun PropositionAcceptance.mapCreationEntity(): PropositionAcceptanceEntity {
+fun PropositionAcceptance.mapToCreationEntity(): PropositionAcceptanceEntity {
     return PropositionAcceptanceEntity(
         studentId = this.student.studentId!!,
         subjectId = this.subject.subjectId!!,
     )
 }
 
-fun PropositionAcceptanceEntity.mapCreation(): PropositionAcceptance {
+fun PropositionAcceptanceEntity.mapToDomain(): PropositionAcceptance {
     return PropositionAcceptance(
         propositionAcceptanceId = this.propositionAcceptanceId!!,
         accepted = this.accepted,
-        student = this.student!!.mapCreation(),
-        subject = this.subject!!.mapCreation(),
+        student = this.student!!.mapToDomain(),
+        subject = this.subject!!.mapToDomain(),
     )
 }
 
-fun SubjectEntity.mapCreation(): Subject {
+fun SubjectEntity.mapToDomain(): Subject {
     return Subject(
         subjectId = this.subjectId!!,
         topic = this.topic,
@@ -101,17 +101,17 @@ fun SubjectEntity.mapCreation(): Subject {
         accepted = this.accepted,
         status = this.status,
         creationDate = this.creationDate,
-        initiator = this.initiator?.mapCreation(),
+        initiator = this.initiator?.mapToDomain(),
         realiser = setOf(),
         propositionAcceptances = setOf(),
         candidatures = setOf(),
-        supervisor = this.supervisor!!.mapCreation(),
+        supervisor = this.supervisor!!.mapToDomain(),
         verifications = setOf(),
-        graduationProcess = this.graduationProcess!!.mapCreation()
+        graduationProcess = this.graduationProcess!!.mapToDomain()
     )
 }
 
-fun Subject.mapCreationEntity(): SubjectEntity {
+fun Subject.mapToCreationEntity(): SubjectEntity {
     return SubjectEntity(
         topic = this.topic,
         topicInEnglish = this.topicInEnglish,

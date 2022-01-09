@@ -1,7 +1,7 @@
 package com.example.dyplomowaniebackend.domain.model
 
 data class StaffMember(
-    val staffMemberId: Long?,
+    val staffMemberId: Long? = null,
     val email: String,
     val name: String,
     val surname: String,

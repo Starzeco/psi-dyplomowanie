@@ -1,11 +1,9 @@
 package com.example.dyplomowaniebackend.domain.graduationProcess.adapter
 
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.SubjectMutationPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.*
 import com.example.dyplomowaniebackend.domain.model.*
-import com.example.dyplomowaniebackend.domain.model.exception.GraduationProcessNotFoundException
-import com.example.dyplomowaniebackend.domain.model.exception.StaffMemberNotFoundException
-import com.example.dyplomowaniebackend.domain.model.exception.StudentNotFoundException
 import com.example.dyplomowaniebackend.domain.model.exception.SubjectConstraintViolationException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,12 +20,10 @@ class SubjectCreationAdapter(
     override fun createSubject(subjectCreation: SubjectCreation): Subject {
         if (subjectCreation.initiatorId == null && subjectCreation.proposedRealiserIds.isNotEmpty())
             throw SubjectConstraintViolationException("If there is not initiator then proposed realisers should be empty")
-        val initiator: Student? = studentSearchPort.getStudentById(subjectCreation.initiatorId)
+        val initiator: Student? = subjectCreation.initiatorId?.let { studentSearchPort.findStudentById(it) }
         val supervisor: StaffMember = staffSearchPort.getStudentById(subjectCreation.supervisorId)
-            ?: throw StaffMemberNotFoundException("Supervisor not found")
         val graduationProcess: GraduationProcess =
             graduationProcessSearchPort.getGraduationProcessById(subjectCreation.graduationProcessId)
-                ?: throw GraduationProcessNotFoundException("Graduation process does not exists")
         val subject = Subject(
             topic = subjectCreation.topic,
             topicInEnglish = subjectCreation.topicInEnglish,
@@ -56,10 +52,7 @@ class SubjectCreationAdapter(
         return propositionAcceptanceMutationPort.savePropositionAcceptances(
             proposedRealiserIds.map { studentId ->
                 PropositionAcceptance(
-                    propositionAcceptanceId = null,
-                    accepted = null,
-                    student = studentSearchPort.getStudentById(studentId)
-                        ?: throw StudentNotFoundException("Student $studentId does not exists, so he can not be added to realisers"),
+                    student = studentSearchPort.getStudentById(studentId),
                     subject = subject
                 )
             }.toSet()

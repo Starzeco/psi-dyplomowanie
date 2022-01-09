@@ -3,7 +3,7 @@ package com.example.dyplomowaniebackend.domain.model
 import java.time.Instant
 
 data class GraduationProcess(
-    val graduationProcessId: Long?,
+    val graduationProcessId: Long? = null,
     val cSDeadline: Instant, //candidatures submitting deadline
     val vFDeadline: Instant, //verification forwarding
     val cADeadline: Instant, //candidatures approving deadline

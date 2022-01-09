@@ -1,7 +1,7 @@
 package com.example.dyplomowaniebackend.domain.model
 
 data class Student(
-    val studentId: Long?,
+    val studentId: Long? = null,
     val index: String,
     val email: String,
     val name: String,
