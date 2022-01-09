@@ -20,6 +20,6 @@ class DegreeCourseEntity(
     @JoinColumn(name = "faculty_id", insertable = false, updatable = false)
     val faculty: FacultyEntity? = null,
 
-    @OneToMany(mappedBy = "degreeCourse")
-    val graduationProcesses: Set<GraduationProcessEntity>
+//    @OneToMany(mappedBy = "degreeCourse")
+//    val graduationProcesses: Set<GraduationProcessEntity>
 )

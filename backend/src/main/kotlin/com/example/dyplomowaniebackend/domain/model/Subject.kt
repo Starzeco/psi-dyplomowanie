@@ -14,11 +14,11 @@ data class Subject(
     val status: SubjectStatus,
     val creationDate: Instant = Instant.now(),
     val initiator: Student? = null,
-    val realiser: Set<Student>,
-    val propositionAcceptances: Set<PropositionAcceptance>,
-    val candidatures: Set<Candidature>,
+//    val realiser: Set<Student>,
+//    val propositionAcceptances: Set<PropositionAcceptance>,
+//    val candidatures: Set<Candidature>,
     val supervisor: StaffMember,
-    val verifications: Set<Verification>,
+//    val verifications: Set<Verification>,
     val graduationProcess: GraduationProcess,
 )
 

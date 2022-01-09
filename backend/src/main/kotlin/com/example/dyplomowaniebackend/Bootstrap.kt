@@ -24,10 +24,6 @@ class Bootstrap(
             email = "242422@student.pwr.edu.pl",
             name = "Marcel",
             surname = "Krakowiak",
-            subjectProposals = setOf(),
-            propositionAcceptances = setOf(),
-            candidatures = setOf(),
-            candidatureAcceptances = setOf(),
             graduationProcesses = setOf(),
         )
         val student1 = StudentEntity(
@@ -35,10 +31,6 @@ class Bootstrap(
             email = "242421@student.pwr.edu.pl",
             name = "Kacper",
             surname = "Kowalski",
-            subjectProposals = setOf(),
-            propositionAcceptances = setOf(),
-            candidatures = setOf(),
-            candidatureAcceptances = setOf(),
             graduationProcesses = setOf(),
         )
         val student2 = StudentEntity(
@@ -46,19 +38,13 @@ class Bootstrap(
             email = "242420@student.pwr.edu.pl",
             name = "Stasiek",
             surname = "Kolorowy",
-            subjectProposals = setOf(),
-            propositionAcceptances = setOf(),
-            candidatures = setOf(),
-            candidatureAcceptances = setOf(),
             graduationProcesses = setOf(),
         )
         studentRepository.saveAll(setOf(student0, student1, student2))
 
         val faculty = FacultyEntity(
             name = "Wydział infy i zarządznia",
-            shortName = "WIZ",
-            staffMembers = setOf(),
-            degreeCourses = setOf()
+            shortName = "WIZ"
         )
 
         val facultySaved = facultyRepository.save(faculty)
@@ -70,16 +56,13 @@ class Bootstrap(
             title = Title.DOCTOR,
             currentWorkload = 24,
             absoluteWorkload = 180,
-            subjects = setOf(),
             facultyId = facultySaved.facultyId!!,
-            verifiers = setOf()
         )
         staffMemberRepository.save(supervisor)
 
         val degreeCourse = DegreeCourseEntity(
             name = "Infa",
             facultyId = facultySaved.facultyId,
-            graduationProcesses = setOf(),
         )
 
         val savedDegreeCourse = degreeCourseRepository.save(degreeCourse)
@@ -94,9 +77,7 @@ class Bootstrap(
             degree = Degree.BATCHELOR,
             hCPerSubject = 10,
             students = setOf(),
-            subjects = setOf(),
             degreeCourseId = savedDegreeCourse.degreeCourseId!!,
-            verifiers = setOf()
         )
 
         graduationProcessRepository.save(graduationProcess)

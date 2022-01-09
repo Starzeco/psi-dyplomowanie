@@ -27,8 +27,8 @@ class StaffMemberEntity(
     @Min(0)
     val absoluteWorkload: Int,
 
-    @OneToMany(mappedBy = "supervisor")
-    val subjects: Set<SubjectEntity>,
+//    @OneToMany(mappedBy = "supervisor")
+//    val subjects: Set<SubjectEntity>,
 
     @Column(name = "faculty_id")
     val facultyId: Long,
@@ -37,6 +37,6 @@ class StaffMemberEntity(
     @JoinColumn(name = "faculty_id", insertable = false, updatable = false)
     val faculty: FacultyEntity? = null,
 
-    @OneToMany(mappedBy = "verifier")
-    val verifiers: Set<VerifierEntity>
+//    @OneToMany(mappedBy = "verifier")
+//    val verifiers: Set<VerifierEntity>
 )

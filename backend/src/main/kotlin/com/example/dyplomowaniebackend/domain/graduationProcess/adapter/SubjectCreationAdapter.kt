@@ -33,11 +33,7 @@ class SubjectCreationAdapter(
             realiseresNumber = subjectCreation.realiseresNumber,
             status = SubjectStatus.DRAFT,
             initiator = initiator,
-            realiser = setOf(),
-            propositionAcceptances = setOf(),
-            candidatures = setOf(),
             supervisor = supervisor,
-            verifications = setOf(),
             graduationProcess = graduationProcess
         )
         val savedSubject: Subject = subjectMutationPort.saveSubject(subject)

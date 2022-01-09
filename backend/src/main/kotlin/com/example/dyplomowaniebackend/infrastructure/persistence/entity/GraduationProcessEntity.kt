@@ -41,8 +41,8 @@ class GraduationProcessEntity(
     )
     val students: Set<StudentEntity>,
 
-    @OneToMany(mappedBy = "graduationProcess")
-    val subjects: Set<SubjectEntity>,
+//    @OneToMany(mappedBy = "graduationProcess")
+//    val subjects: Set<SubjectEntity>,
 
     @Column(name = "degree_course_id")
     val degreeCourseId: Long,
@@ -51,6 +51,6 @@ class GraduationProcessEntity(
     @JoinColumn(name = "degree_course_id", insertable = false, updatable = false)
     val degreeCourse: DegreeCourseEntity? = null,
 
-    @OneToMany(mappedBy = "graduationProcess")
-    val verifiers: Set<VerifierEntity>,
+//    @OneToMany(mappedBy = "graduationProcess")
+//    val verifiers: Set<VerifierEntity>,
 )

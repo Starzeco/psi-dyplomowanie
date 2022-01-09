@@ -8,14 +8,16 @@ data class StaffMember(
     val title: Title,
     val currentWorkload: Int,
     val absoluteWorkload: Int,
-    val subjects: Set<Subject>,
+//    val subjects: Set<Subject>,
     val faculty: Faculty,
-    val verifiers: Set<Verifier>
-)
+//    val verifiers: Set<Verifier>
+) {
+    val fullName = "${title.shorthand} $name $surname"
+}
 
-enum class Title {
-    PROFESSOR,
-    DOCTOR,
-    MASTER,
-    BATCHELOR
+enum class Title(val shorthand: String) {
+    PROFESSOR("prof."),
+    DOCTOR("dr"),
+    MASTER("mgr"),
+    BATCHELOR("inż")
 }

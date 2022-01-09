@@ -27,6 +27,6 @@ class VerifierEntity(
     @JoinColumn(name = "graduation_process_id", insertable = false, updatable = false)
     val graduationProcess: GraduationProcessEntity? = null,
 
-    @OneToMany(mappedBy = "verifier")
-    val verifications: Set<VerificationEntity>
+//    @OneToMany(mappedBy = "verifier")
+//    val verifications: Set<VerificationEntity>
 )

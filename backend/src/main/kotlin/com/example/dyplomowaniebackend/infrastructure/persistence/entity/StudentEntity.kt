@@ -20,8 +20,8 @@ class StudentEntity(
     @Column(length = 64)
     val surname: String,
 
-    @OneToMany(mappedBy = "initiator")
-    val subjectProposals: Set<SubjectEntity>,
+//    @OneToMany(mappedBy = "initiator")
+//    val subjectProposals: Set<SubjectEntity>,
 
     @Column(name = "subject_id")
     val subjectId: Long? = null,
@@ -30,14 +30,14 @@ class StudentEntity(
     @JoinColumn(name = "subject_id", insertable = false, updatable = false)
     val subject: SubjectEntity? = null,
 
-    @OneToMany(mappedBy = "student")
-    val propositionAcceptances: Set<PropositionAcceptanceEntity>,
+//    @OneToMany(mappedBy = "student")
+//    val propositionAcceptances: Set<PropositionAcceptanceEntity>,
 
-    @OneToMany(mappedBy = "student")
-    val candidatures: Set<CandidatureEntity>,
+//    @OneToMany(mappedBy = "student")
+//    val candidatures: Set<CandidatureEntity>,
 
-    @OneToMany(mappedBy = "student")
-    val candidatureAcceptances: Set<CandidatureAcceptanceEntity>,
+//    @OneToMany(mappedBy = "student")
+//    val candidatureAcceptances: Set<CandidatureAcceptanceEntity>,
 
     @ManyToMany
     val graduationProcesses: Set<GraduationProcessEntity>

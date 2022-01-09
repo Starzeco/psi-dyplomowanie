@@ -13,9 +13,9 @@ data class GraduationProcess(
     val degree: Degree,
     val hCPerSubject: Int, //hours counted per subject
     val students: Set<Student>,
-    val subjects: Set<Subject>,
+//    val subjects: Set<Subject>,
     val degreeCourse: DegreeCourse,
-    val verifiers: Set<Verifier>,
+//    val verifiers: Set<Verifier>,
 )
 
 enum class Degree {

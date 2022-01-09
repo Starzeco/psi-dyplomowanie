@@ -5,5 +5,5 @@ data class DegreeCourse(
     val name: String,
     val active: Boolean = true,
     val faculty: Faculty,
-    val graduationProcesses: Set<GraduationProcess>
+//    val graduationProcesses: Set<GraduationProcess>
 )

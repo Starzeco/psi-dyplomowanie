@@ -42,14 +42,14 @@ class SubjectEntity(
     @JoinColumn(name = "student_id", insertable = false, updatable = false)
     val initiator: StudentEntity? = null,
 
-    @OneToMany(mappedBy = "subject")
-    val realiser: Set<StudentEntity>,
+//    @OneToMany(mappedBy = "subject")
+//    val realiser: Set<StudentEntity>,
 
-    @OneToMany(mappedBy = "subject")
-    val propositionAcceptances: Set<PropositionAcceptanceEntity>,
+//    @OneToMany(mappedBy = "subject")
+//    val propositionAcceptances: Set<PropositionAcceptanceEntity>,
 
-    @OneToMany(mappedBy = "subject")
-    val candidatures: Set<CandidatureEntity>,
+//    @OneToMany(mappedBy = "subject")
+//    val candidatures: Set<CandidatureEntity>,
 
     @Column(name = "staff_member_id")
     val staffMemberId: Long,
@@ -58,8 +58,8 @@ class SubjectEntity(
     @JoinColumn(name = "staff_member_id", insertable = false, updatable = false)
     val supervisor: StaffMemberEntity? = null,
 
-    @OneToMany(mappedBy = "subject")
-    val verifications: Set<VerificationEntity>,
+//    @OneToMany(mappedBy = "subject")
+//    val verifications: Set<VerificationEntity>,
 
     @Column(name = "graduation_process_id")
     val graduationProcessId: Long,
