@@ -2,6 +2,7 @@ package com.example.dyplomowaniebackend.api.advice
 
 import com.example.dyplomowaniebackend.domain.model.exception.EntityNotFoundException
 import com.example.dyplomowaniebackend.domain.model.exception.SubjectConstraintViolationException
+import com.example.dyplomowaniebackend.domain.model.exception.SubjectStatusChangeException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -22,7 +23,8 @@ class RestControllerExceptionHandler : ResponseEntityExceptionHandler() {
     }
 
     @ExceptionHandler(
-        SubjectConstraintViolationException::class
+        SubjectConstraintViolationException::class,
+        SubjectStatusChangeException::class
     )
     fun handleConstraintViolationException(error: RuntimeException): ResponseEntity<ErrorResponse?>? {
         return ResponseEntity(ErrorResponse(error.message!!, listOf()), HttpStatus.BAD_REQUEST)

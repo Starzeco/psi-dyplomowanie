@@ -4,4 +4,5 @@ import com.example.dyplomowaniebackend.domain.model.PropositionAcceptance
 
 interface PropositionAcceptanceSearchPort {
     fun getAllByStudentId(studentId: Long): Set<PropositionAcceptance>
+    fun getAllBySubjectId(subjectId: Long): Set<PropositionAcceptance>
 }

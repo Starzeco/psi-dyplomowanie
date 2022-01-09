@@ -35,6 +35,11 @@ data class SubjectCreation (
     val graduationProcessId: Long,
 )
 
+data class SubjectStatusUpdate(
+    val subjectId: Long,
+    val status: SubjectStatus
+)
+
 enum class RealizationLanguage {
     POLISH,
     ENGLISH

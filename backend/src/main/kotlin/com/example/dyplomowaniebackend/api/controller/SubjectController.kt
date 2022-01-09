@@ -4,6 +4,7 @@ import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.Subject
 import com.example.dyplomowaniebackend.domain.model.Subject
 import com.example.dyplomowaniebackend.domain.model.SubjectCreation
 import com.example.dyplomowaniebackend.api.dto.PropositionAcceptancePartialInfoResponse
+import com.example.dyplomowaniebackend.domain.model.SubjectStatusUpdate
 import com.example.dyplomowaniebackend.domain.submission.port.api.PropositionAcceptanceServicePort
 import org.springframework.web.bind.annotation.*
 
@@ -17,6 +18,25 @@ class SubjectController(
     @PostMapping
     fun createSubject(@RequestBody subjectCreation: SubjectCreation): Subject =
         subjectCreationPort.createSubject(subjectCreation)
+
+    @PutMapping("status/reject/{subject_id}")
+    fun rejectSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
+        subjectCreationPort.rejectSubject(subjectId)
+
+    // TODO only supervisor can trigger
+    @PutMapping("status/accept-supervisor/{subject_id}")
+    fun acceptSupervisorSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
+        subjectCreationPort.acceptSupervisorSubject(subjectId)
+
+    // TODO only initiator/student can trigger
+    @PutMapping("status/accept-initiator/{subject_id}")
+    fun acceptInitiatorSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
+        subjectCreationPort.acceptInitiatorSubject(subjectId)
+
+    // TODO only supervisor can trigger
+    @PutMapping("status/send-verification/{subject_id}")
+    fun sendToVerificationSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
+        subjectCreationPort.sendToVerificationSubject(subjectId)
 
     @GetMapping("propositions/{student_id}")
     fun getAllPropositionAcceptancesByStudentId(
