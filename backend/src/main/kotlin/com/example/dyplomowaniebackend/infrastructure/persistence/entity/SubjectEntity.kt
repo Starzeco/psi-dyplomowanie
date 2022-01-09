@@ -12,10 +12,8 @@ class SubjectEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val subjectId: Long? = null,
 
-    @Column(unique = true)
     val topic: String,
 
-    @Column(unique = true)
     val topicInEnglish: String,
 
     @Lob
