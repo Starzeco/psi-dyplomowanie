@@ -10,6 +10,6 @@ import org.springframework.stereotype.Service
 class StudentSearchAdapter(val studentRepository: StudentRepository) : StudentSearchPort {
     override fun getStudentById(studentId: Long?): Student? {
         if(studentId == null) return null
-        return studentRepository.findById(studentId).map { student -> student.mapCreation() }.get()
+        return studentRepository.findById(studentId).map { student -> student.mapCreation() }.orElse(null)
     }
 }

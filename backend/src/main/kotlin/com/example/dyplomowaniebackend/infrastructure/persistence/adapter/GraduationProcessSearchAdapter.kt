@@ -10,6 +10,6 @@ import org.springframework.stereotype.Service
 class GraduationProcessSearchAdapter(val graduationProcessRepository: GraduationProcessRepository) : GraduationProcessSearchPort {
     override fun getGraduationProcessById(graduationProcessId: Long?): GraduationProcess? {
         if(graduationProcessId == null) return null
-        return graduationProcessRepository.findById(graduationProcessId).map { gp -> gp.mapCreation() }.get()
+        return graduationProcessRepository.findById(graduationProcessId).map { gp -> gp.mapCreation() }.orElse(null)
     }
 }
