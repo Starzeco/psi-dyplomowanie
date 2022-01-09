@@ -7,7 +7,7 @@ import javax.persistence.*
 class VerificationEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val verificationId: Long,
+    val verificationId: Long? = null,
 
     val verified: Boolean? = null,
 
@@ -16,13 +16,19 @@ class VerificationEntity(
 
     val updateDate: Instant? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "subject_id")
-    val subject: SubjectEntity,
+    @Column(name = "subject_id")
+    val subjectId: Long,
 
     @ManyToOne
-    @JoinColumn(name = "verifier_id")
-    val verifier: VerifierEntity
+    @JoinColumn(name = "subject_id", insertable = false, updatable = false)
+    val subject: SubjectEntity? = null,
+
+    @Column(name = "verifier_id")
+    val verifierId: Long,
+
+    @ManyToOne
+    @JoinColumn(name = "verifier_id", insertable = false, updatable = false)
+    val verifier: VerifierEntity? = null
 
     //TODO: cyclic dependency
 )

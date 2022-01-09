@@ -7,20 +7,26 @@ import javax.persistence.*
 class VerifierEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val verifierId: Long,
+    val verifierId: Long? = null,
 
     val name: String,
 
     val verificationsDeadline: Instant,
 
-    @ManyToOne
-    @JoinColumn(name = "staff_member_id")
-    val verifier: StaffMember,
+    @Column(name = "staff_member_id")
+    val staffMemberId: Long,
 
     @ManyToOne
-    @JoinColumn(name = "graduation_process_id")
-    val graduationProcess: GraduationProcess,
+    @JoinColumn(name = "staff_member_id", insertable = false, updatable = false)
+    val verifier: StaffMemberEntity? = null,
 
-    @OneToMany(mappedBy = "verifier")
-    val verifications: Set<VerificationEntity>
+    @Column(name = "graduation_process_id")
+    val graduationProcessId: Long,
+
+    @ManyToOne
+    @JoinColumn(name = "graduation_process_id", insertable = false, updatable = false)
+    val graduationProcess: GraduationProcessEntity? = null,
+
+//    @OneToMany(mappedBy = "verifier")
+//    val verifications: Set<VerificationEntity>
 )
