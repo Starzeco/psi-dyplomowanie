@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class StaffSearchAdapter(val staffMemberRepository: StaffMemberRepository) : StaffSearchPort {
-    override fun getStudentById(staffMemberId: Long): StaffMember =
+    override fun getStaffMemberById(staffMemberId: Long): StaffMember =
         staffMemberRepository.findById(staffMemberId)
             .map { staff -> staff.mapToDomain() }
             .orElseThrow{ throw EntityNotFoundException(StaffMember::class, staffMemberId) }

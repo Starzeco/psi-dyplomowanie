@@ -12,7 +12,7 @@ data class Subject(
     val realiseresNumber: Int,
     val accepted: Boolean? = null,
     val status: SubjectStatus,
-    val creationDate: Instant = Instant.now(),
+    val creationDate: Instant,
     val initiator: Student? = null,
 //    val realiser: Set<Student>,
 //    val propositionAcceptances: Set<PropositionAcceptance>,

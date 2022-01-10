@@ -9,6 +9,8 @@ import com.example.dyplomowaniebackend.domain.model.exception.SubjectStatusChang
 import com.example.dyplomowaniebackend.domain.submission.port.persistence.PropositionAcceptanceSearchPort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Clock
+import java.time.Instant
 
 @Service
 @Transactional
@@ -20,13 +22,14 @@ class SubjectCreationAdapter(
     val propositionAcceptanceMutationPort: PropositionAcceptanceMutationPort,
     val propositionAcceptanceSearchPort: PropositionAcceptanceSearchPort,
     val subjectMutationPort: SubjectMutationPort,
-    val subjectSearchPort: SubjectSearchPort
+    val subjectSearchPort: SubjectSearchPort,
+    val clock: Clock
 ) : SubjectCreationPort {
     override fun createSubject(subjectCreation: SubjectCreation): Subject {
         if (subjectCreation.initiatorId == null && subjectCreation.proposedRealiserIds.isNotEmpty())
             throw SubjectConstraintViolationException("If there is not initiator then proposed realisers should be empty")
         val initiator: Student? = subjectCreation.initiatorId?.let { studentSearchPort.findStudentById(it) }
-        val supervisor: StaffMember = staffSearchPort.getStudentById(subjectCreation.supervisorId)
+        val supervisor: StaffMember = staffSearchPort.getStaffMemberById(subjectCreation.supervisorId)
         val graduationProcess: GraduationProcess =
             graduationProcessSearchPort.getGraduationProcessById(subjectCreation.graduationProcessId)
         val subject = Subject(
@@ -39,7 +42,8 @@ class SubjectCreationAdapter(
             status = SubjectStatus.DRAFT,
             initiator = initiator,
             supervisor = supervisor,
-            graduationProcess = graduationProcess
+            graduationProcess = graduationProcess,
+            creationDate = Instant.now(clock)
         )
         val savedSubject: Subject = subjectMutationPort.saveSubject(subject)
         createPropositionAcceptances(savedSubject, subjectCreation.proposedRealiserIds)
@@ -115,12 +119,11 @@ class SubjectCreationAdapter(
     }
 
     // Subject is made by student, and initiator has not subject, and all the members have not subject
-    private fun canSubjectBeAcceptedByInitiator(subject: Subject, realisers: Set<Student>): Boolean {
-        return subject.initiator != null
+    private fun canSubjectBeAcceptedByInitiator(subject: Subject, realisers: Set<Student>): Boolean =
+        subject.initiator != null
                 && subject.status == SubjectStatus.ACCEPTED_BY_SUPERVISOR
                 && subject.initiator.subject == null
                 && (realisers.isEmpty() || realisers.all { it.subject == null })
-    }
 
     override fun sendToVerificationSubject(subjectId: Long): SubjectStatusUpdate {
         val subject: Subject = subjectSearchPort.getSubjectById(subjectId)
@@ -133,10 +136,9 @@ class SubjectCreationAdapter(
         else throw SubjectStatusChangeException("Subject can not be sent to verification")
     }
 
-    private fun canSubjectBeSentToVerification(subject: Subject): Boolean {
-        return subject.status == SubjectStatus.ACCEPTED_BY_INITIATOR
+    private fun canSubjectBeSentToVerification(subject: Subject): Boolean =
+        subject.status == SubjectStatus.ACCEPTED_BY_INITIATOR
                 || (subject.status == SubjectStatus.DRAFT && subject.initiator == null)
-    }
 
     private fun updateStatus(subjectStatusUpdate: SubjectStatusUpdate): SubjectStatusUpdate =
         subjectMutationPort.updateStatus(subjectStatusUpdate)
