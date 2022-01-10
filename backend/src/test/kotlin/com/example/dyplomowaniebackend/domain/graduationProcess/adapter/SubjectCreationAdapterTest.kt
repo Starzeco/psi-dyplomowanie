@@ -2,6 +2,7 @@ package com.example.dyplomowaniebackend.domain.graduationProcess.adapter
 
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.*
 import com.example.dyplomowaniebackend.domain.model.*
+import com.example.dyplomowaniebackend.domain.model.exception.SubjectConstraintViolationException
 import com.example.dyplomowaniebackend.domain.submission.port.persistence.PropositionAcceptanceSearchPort
 import io.mockk.every
 import io.mockk.mockk
@@ -38,6 +39,7 @@ internal class SubjectCreationAdapterTest {
     )
 
     private lateinit var initiator: Student
+    private lateinit var realisers: Set<Student>
     private lateinit var supervisor: StaffMember
     private lateinit var graduationProcess: GraduationProcess
 
@@ -59,6 +61,24 @@ internal class SubjectCreationAdapterTest {
             name = "Marcel",
             surname = "Krakowiak",
             graduationProcesses = setOf(),
+        )
+        realisers = setOf(
+            Student(
+                studentId = 2,
+                index = "242421",
+                email = "242421@student.pwr.edu.pl",
+                name = "Kacper",
+                surname = "Kowalski",
+                graduationProcesses = setOf(),
+            ),
+            Student(
+                studentId = 3,
+                index = "242420",
+                email = "242420@student.pwr.edu.pl",
+                name = "Stasiek",
+                surname = "Kolorowy",
+                graduationProcesses = setOf(),
+            )
         )
         supervisor = StaffMember(
             staffMemberId = 1,
@@ -126,7 +146,7 @@ internal class SubjectCreationAdapterTest {
                 proposedRealiserIds = setOf(),
                 supervisorId = 1,
                 graduationProcessId = 1
-                )
+            )
         )
 
         // then
@@ -135,7 +155,202 @@ internal class SubjectCreationAdapterTest {
         verify(exactly = 1) { staffSearchPort.getStaffMemberById(any()) }
         verify(exactly = 1) { graduationProcessSearchPort.getGraduationProcessById(any()) }
         verify(exactly = 1) { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) }
+        verify(exactly = 0) { studentSearchPort.getStudentById(any()) }
         assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `should return subject for group and initiator`() {
+        // given
+        val now = Instant.now()
+        val expectedResult = Subject(
+            subjectId = 1,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 2,
+            initiator = initiator,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.DRAFT,
+            creationDate = now
+        )
+        every { studentSearchPort.findStudentById(any()) } returns initiator
+        every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
+        every { graduationProcessSearchPort.getGraduationProcessById(any()) } returns graduationProcess
+        every { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) } returns setOf()
+        every { studentSearchPort.getStudentById(any()) } returnsMany realisers.toList()
+        every { clock.instant() } returns now
+        every { subjectMutationPort.saveSubject(any()) } answers { i ->
+            val subject = i.invocation.args[0] as Subject
+            val subjectWithId = subject.copy(subjectId = 1)
+            subjectWithId
+        }
+
+        // when
+        val result: Subject = subjectCreationAdapter.createSubject(
+            SubjectCreation(
+                topic = "Przyklad temat",
+                topicInEnglish = "Przyklad temat english",
+                objective = "Cel pracy",
+                objectiveInEnglish = "Cel pracy english",
+                realizationLanguage = RealizationLanguage.POLISH,
+                realiseresNumber = 2,
+                initiatorId = 1,
+                proposedRealiserIds = realisers.map { it.studentId!! }.toSet(),
+                supervisorId = 1,
+                graduationProcessId = 1
+            )
+        )
+
+        // then
+        verify(exactly = 1) { subjectMutationPort.saveSubject(any()) }
+        verify(exactly = 1) { studentSearchPort.findStudentById(any()) }
+        verify(exactly = 1) { staffSearchPort.getStaffMemberById(any()) }
+        verify(exactly = 1) { graduationProcessSearchPort.getGraduationProcessById(any()) }
+        verify(exactly = 1) { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) }
+        verify(exactly = 2) { studentSearchPort.getStudentById(any()) }
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `should return subject for individual and supervisor`() {
+        // given
+        val now = Instant.now()
+        val expectedResult = Subject(
+            subjectId = 1,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 0,
+            initiator = null,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.DRAFT,
+            creationDate = now
+        )
+        every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
+        every { graduationProcessSearchPort.getGraduationProcessById(any()) } returns graduationProcess
+        every { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) } returns setOf()
+        every { clock.instant() } returns now
+        every { subjectMutationPort.saveSubject(any()) } answers { i ->
+            val subject = i.invocation.args[0] as Subject
+            val subjectWithId = subject.copy(subjectId = 1)
+            subjectWithId
+        }
+
+        // when
+        val result: Subject = subjectCreationAdapter.createSubject(
+            SubjectCreation(
+                topic = "Przyklad temat",
+                topicInEnglish = "Przyklad temat english",
+                objective = "Cel pracy",
+                objectiveInEnglish = "Cel pracy english",
+                realizationLanguage = RealizationLanguage.POLISH,
+                realiseresNumber = 0,
+                initiatorId = null,
+                proposedRealiserIds = setOf(),
+                supervisorId = 1,
+                graduationProcessId = 1
+            )
+        )
+
+        // then
+        verify(exactly = 1) { subjectMutationPort.saveSubject(any()) }
+        verify(exactly = 0) { studentSearchPort.findStudentById(any()) }
+        verify(exactly = 1) { staffSearchPort.getStaffMemberById(any()) }
+        verify(exactly = 1) { graduationProcessSearchPort.getGraduationProcessById(any()) }
+        verify(exactly = 1) { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) }
+        verify(exactly = 0) { studentSearchPort.getStudentById(any()) }
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `should return subject for group and supervisor`() {
+        // given
+        val now = Instant.now()
+        val expectedResult = Subject(
+            subjectId = 1,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 2,
+            initiator = null,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.DRAFT,
+            creationDate = now
+        )
+        every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
+        every { graduationProcessSearchPort.getGraduationProcessById(any()) } returns graduationProcess
+        every { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) } returns setOf()
+        every { clock.instant() } returns now
+        every { subjectMutationPort.saveSubject(any()) } answers { i ->
+            val subject = i.invocation.args[0] as Subject
+            val subjectWithId = subject.copy(subjectId = 1)
+            subjectWithId
+        }
+
+        // when
+        val result: Subject = subjectCreationAdapter.createSubject(
+            SubjectCreation(
+                topic = "Przyklad temat",
+                topicInEnglish = "Przyklad temat english",
+                objective = "Cel pracy",
+                objectiveInEnglish = "Cel pracy english",
+                realizationLanguage = RealizationLanguage.POLISH,
+                realiseresNumber = 2,
+                initiatorId = null,
+                proposedRealiserIds = setOf(),
+                supervisorId = 1,
+                graduationProcessId = 1
+            )
+        )
+
+        // then
+        verify(exactly = 1) { subjectMutationPort.saveSubject(any()) }
+        verify(exactly = 0) { studentSearchPort.findStudentById(any()) }
+        verify(exactly = 1) { staffSearchPort.getStaffMemberById(any()) }
+        verify(exactly = 1) { graduationProcessSearchPort.getGraduationProcessById(any()) }
+        verify(exactly = 1) { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) }
+        verify(exactly = 0) { studentSearchPort.getStudentById(any()) }
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `should throw subject constraint violation exception`() {
+        // given
+        // when
+        assertThrows(SubjectConstraintViolationException::class.java) {
+            subjectCreationAdapter.createSubject(
+                SubjectCreation(
+                    topic = "Przyklad temat",
+                    topicInEnglish = "Przyklad temat english",
+                    objective = "Cel pracy",
+                    objectiveInEnglish = "Cel pracy english",
+                    realizationLanguage = RealizationLanguage.POLISH,
+                    realiseresNumber = 2,
+                    initiatorId = null,
+                    proposedRealiserIds = realisers.map { it.studentId!! }.toSet(),
+                    supervisorId = 1,
+                    graduationProcessId = 1
+                )
+            )
+        }
+
+        // then
+        verify(exactly = 0) { subjectMutationPort.saveSubject(any()) }
+        verify(exactly = 0) { studentSearchPort.findStudentById(any()) }
+        verify(exactly = 0) { staffSearchPort.getStaffMemberById(any()) }
+        verify(exactly = 0) { graduationProcessSearchPort.getGraduationProcessById(any()) }
+        verify(exactly = 0) { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) }
+        verify(exactly = 0) { studentSearchPort.getStudentById(any()) }
     }
 
     @Test

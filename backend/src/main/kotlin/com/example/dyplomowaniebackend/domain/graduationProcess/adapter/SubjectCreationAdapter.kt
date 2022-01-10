@@ -38,7 +38,7 @@ class SubjectCreationAdapter(
             objective = subjectCreation.objective,
             objectiveInEnglish = subjectCreation.objectiveInEnglish,
             realizationLanguage = subjectCreation.realizationLanguage,
-            realiseresNumber = subjectCreation.realiseresNumber,
+            realiseresNumber = if (subjectCreation.initiatorId == null) subjectCreation.realiseresNumber else subjectCreation.proposedRealiserIds.size,
             status = SubjectStatus.DRAFT,
             initiator = initiator,
             supervisor = supervisor,
@@ -100,7 +100,7 @@ class SubjectCreationAdapter(
             propositionAcceptanceSearchPort.getAllBySubjectId(subject.subjectId!!)
                 .map { it.student }
                 .toSet()
-        return if(canSubjectBeAcceptedByInitiator(subject, realisers)) {
+        return if (canSubjectBeAcceptedByInitiator(subject, realisers)) {
             val students: Set<Student> = realisers.plus(subject.initiator!!) // Initiator exists, checked in if
             assignSubject(students, subject)
             updateStatus(
