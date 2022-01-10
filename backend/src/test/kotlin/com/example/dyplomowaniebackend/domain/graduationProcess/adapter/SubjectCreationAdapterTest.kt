@@ -3,6 +3,7 @@ package com.example.dyplomowaniebackend.domain.graduationProcess.adapter
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.*
 import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.domain.model.exception.SubjectConstraintViolationException
+import com.example.dyplomowaniebackend.domain.model.exception.SubjectStatusChangeException
 import com.example.dyplomowaniebackend.domain.submission.port.persistence.PropositionAcceptanceSearchPort
 import io.mockk.every
 import io.mockk.mockk
@@ -354,11 +355,290 @@ internal class SubjectCreationAdapterTest {
     }
 
     @Test
-    fun rejectSubject() {
+    fun `should return reject status and subjectId - created by supervisor`() {
+        // given
+        val subjectId: Long = 1
+        val expected = SubjectStatusUpdate(subjectId, SubjectStatus.REJECTED)
+        val subjectToUpdate = Subject(
+            subjectId = subjectId,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 2,
+            initiator = null,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.DRAFT,
+            creationDate = Instant.now()
+        )
+        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+        every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
+
+        // when
+        val result: SubjectStatusUpdate = subjectCreationAdapter.rejectSubject(1)
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
+        assertEquals(expected, result)
     }
 
     @Test
-    fun acceptSupervisorSubject() {
+    fun `should return reject status and subjectId - created by initiator draft`() {
+        // given
+        val subjectId: Long = 1
+        val expected = SubjectStatusUpdate(subjectId, SubjectStatus.REJECTED)
+        val subjectToUpdate = Subject(
+            subjectId = subjectId,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 0,
+            initiator = initiator,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.DRAFT,
+            creationDate = Instant.now()
+        )
+        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+        every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
+
+        // when
+        val result: SubjectStatusUpdate = subjectCreationAdapter.rejectSubject(1)
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should return reject status and subjectId - created by initiator accepted_by_supervisor`() {
+        // given
+        val subjectId: Long = 1
+        val expected = SubjectStatusUpdate(subjectId, SubjectStatus.REJECTED)
+        val subjectToUpdate = Subject(
+            subjectId = subjectId,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 0,
+            initiator = initiator,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
+            creationDate = Instant.now()
+        )
+        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+        every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
+
+        // when
+        val result: SubjectStatusUpdate = subjectCreationAdapter.rejectSubject(1)
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should throw cannot reject`() {
+        // given
+        val subjectId: Long = 1
+        val subjectToUpdate = Subject(
+            subjectId = subjectId,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 0,
+            initiator = initiator,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.ACCEPTED_BY_INITIATOR,
+            creationDate = Instant.now()
+        )
+        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+
+        // when
+        assertThrows(SubjectStatusChangeException::class.java) {
+            subjectCreationAdapter.rejectSubject(1)
+        }
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 0) { subjectMutationPort.updateStatus(any()) }
+    }
+
+    @Test
+    fun `should return accepted_by_supervisor status and subjectId - individual`() {
+        // given
+        val subjectId: Long = 1
+        val expected = SubjectStatusUpdate(subjectId, SubjectStatus.ACCEPTED_BY_SUPERVISOR)
+        val subjectToUpdate = Subject(
+            subjectId = subjectId,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 0,
+            initiator = initiator,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.DRAFT,
+            creationDate = Instant.now()
+        )
+        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+        every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns setOf()
+        every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
+
+        // when
+        val result: SubjectStatusUpdate = subjectCreationAdapter.acceptSupervisorSubject(1)
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should return accepted_by_supervisor status and subjectId - group`() {
+        // given
+        val subjectId: Long = 1
+        val expected = SubjectStatusUpdate(subjectId, SubjectStatus.ACCEPTED_BY_SUPERVISOR)
+        val subjectToUpdate = Subject(
+            subjectId = subjectId,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 0,
+            initiator = initiator,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.DRAFT,
+            creationDate = Instant.now()
+        )
+        val propositionsAcceptances: Set<PropositionAcceptance> = setOf(
+            PropositionAcceptance(
+                propositionAcceptanceId = 1,
+                student = realisers.elementAt(0),
+                subject = subjectToUpdate,
+                accepted = true
+            ),
+            PropositionAcceptance(
+                propositionAcceptanceId = 2,
+                student = realisers.elementAt(1),
+                subject =subjectToUpdate,
+                accepted = true
+            )
+        )
+        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+        every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns propositionsAcceptances
+        every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
+
+        // when
+        val result: SubjectStatusUpdate = subjectCreationAdapter.acceptSupervisorSubject(1)
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `should throw cannot accept by supervisor - not accepted acceptance`() {
+        // given
+        val subjectId: Long = 1
+        val subjectToUpdate = Subject(
+            subjectId = subjectId,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 0,
+            initiator = initiator,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.DRAFT,
+            creationDate = Instant.now()
+        )
+        val propositionsAcceptances: Set<PropositionAcceptance> = setOf(
+            PropositionAcceptance(
+                propositionAcceptanceId = 1,
+                student = realisers.elementAt(0),
+                subject = subjectToUpdate,
+                accepted = false
+            ),
+            PropositionAcceptance(
+                propositionAcceptanceId = 2,
+                student = realisers.elementAt(1),
+                subject =subjectToUpdate,
+                accepted = null
+            )
+        )
+        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+        every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns propositionsAcceptances
+
+        // when
+        assertThrows(SubjectStatusChangeException::class.java) { subjectCreationAdapter.acceptSupervisorSubject(1) }
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 0) { subjectMutationPort.updateStatus(any()) }
+    }
+
+    @Test
+    fun `should throw cannot accept by supervisor - wrong status`() {
+        // given
+        val subjectId: Long = 1
+        val subjectToUpdate = Subject(
+            subjectId = subjectId,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 0,
+            initiator = initiator,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.RESERVED,
+            creationDate = Instant.now()
+        )
+        val propositionsAcceptances: Set<PropositionAcceptance> = setOf(
+            PropositionAcceptance(
+                propositionAcceptanceId = 1,
+                student = realisers.elementAt(0),
+                subject = subjectToUpdate,
+                accepted = true
+            ),
+            PropositionAcceptance(
+                propositionAcceptanceId = 2,
+                student = realisers.elementAt(1),
+                subject =subjectToUpdate,
+                accepted = true
+            )
+        )
+        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+        every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns propositionsAcceptances
+
+        // when
+        assertThrows(SubjectStatusChangeException::class.java) { subjectCreationAdapter.acceptSupervisorSubject(1) }
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 0) { subjectMutationPort.updateStatus(any()) }
     }
 
     @Test
