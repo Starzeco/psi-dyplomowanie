@@ -1,7 +1,7 @@
 package com.example.dyplomowaniebackend.api.controller
 
 import com.example.dyplomowaniebackend.api.dto.PropositionAcceptancePartialInfoResponse
-import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureCreationPort
+import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureServicePort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
 import com.example.dyplomowaniebackend.domain.model.CandidatureCreation
 import com.example.dyplomowaniebackend.domain.model.SubjectCreation
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 class SubjectController(
     private val propositionAcceptanceService: PropositionAcceptanceServicePort,
     private val subjectCreationPort: SubjectCreationPort,
-    private val candidatureCreationPort: CandidatureCreationPort
+    private val candidatureServicePort: CandidatureServicePort
 ) {
 
     @PostMapping
@@ -32,13 +32,20 @@ class SubjectController(
     @PutMapping("propositions/{proposition_acceptance_id}")
     fun updatePropositionAcceptanceAcceptedFieldById(
         @PathVariable(name = "proposition_acceptance_id") propositionAcceptanceId: Long,
-        @RequestParam(name = "accepted", required = true) accepted: Boolean,
+        @RequestBody accepted: Boolean,
     ): Long =
         propositionAcceptanceService
             .updatePropositionAcceptanceAcceptedFieldById(propositionAcceptanceId, accepted)
 
     @PostMapping("candidature")
     fun createCandidature(@RequestBody candidatureCreation: CandidatureCreation): Long =
-        candidatureCreationPort.createCandidature(candidatureCreation)
+        candidatureServicePort.createCandidature(candidatureCreation)
+
+    @PutMapping("candidature_acceptance/{candidature_acceptance_id}")
+    fun decideAboutCandidatureAcceptance(
+        @PathVariable(name = "candidature_acceptance_id") candidatureAcceptanceId: Long,
+        @RequestBody accepted: Boolean,
+    ): Long =
+        candidatureServicePort.decideAboutCandidatureAcceptance(candidatureAcceptanceId, accepted)
 
 }

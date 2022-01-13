@@ -6,4 +6,8 @@ import com.example.dyplomowaniebackend.domain.model.CandidatureAcceptance
 interface CandidatureMutationPort {
     fun insert(candidature: Candidature): Long
     fun insertAcceptances(candidatureAcceptances: Set<CandidatureAcceptance>): Set<Long>
+    fun updateAcceptanceAcceptedById(
+        candidatureAcceptanceId: Long,
+        accepted: Boolean
+    ): Long
 }

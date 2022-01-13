@@ -14,9 +14,26 @@ fun Candidature.mapToEntity(): CandidatureEntity =
         creationDate = this.creationDate
     )
 
+fun CandidatureEntity.mapToDomain(): Candidature =
+    Candidature(
+        candidatureId = this.candidatureId,
+        accepted = this.accepted,
+        student = this.student!!.mapToDomain(),
+        subject = this.subject!!.mapToDomain(),
+        creationDate = this.creationDate,
+    )
+
 fun CandidatureAcceptance.mapToEntity(): CandidatureAcceptanceEntity =
     CandidatureAcceptanceEntity(
         accepted = this.accepted,
         studentId = this.student.studentId!!,
         candidatureId = this.candidature.candidatureId!!,
+    )
+
+fun CandidatureAcceptanceEntity.mapToDomain(): CandidatureAcceptance =
+    CandidatureAcceptance(
+        candidatureAcceptanceId = this.candidatureAcceptanceId,
+        accepted = this.accepted,
+        student = this.student!!.mapToDomain(),
+        candidature = this.candidature!!.mapToDomain(),
     )

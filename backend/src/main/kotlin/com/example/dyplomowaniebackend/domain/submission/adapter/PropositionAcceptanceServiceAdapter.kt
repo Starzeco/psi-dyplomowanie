@@ -18,7 +18,4 @@ class PropositionAcceptanceServiceAdapter(
     override fun updatePropositionAcceptanceAcceptedFieldById(propositionAcceptanceId: Long, accepted: Boolean): Long =
         propositionAcceptanceMutationPort.updateAcceptedFieldById(propositionAcceptanceId, accepted)
 
-    override fun insertPropositionAcceptance(propositionAcceptance: PropositionAcceptance): Long =
-        propositionAcceptanceMutationPort.insert(propositionAcceptance)
-
 }

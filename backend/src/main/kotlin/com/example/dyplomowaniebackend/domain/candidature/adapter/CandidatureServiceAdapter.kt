@@ -1,32 +1,34 @@
 package com.example.dyplomowaniebackend.domain.candidature.adapter
 
-import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureCreationPort
+import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureServicePort
 import com.example.dyplomowaniebackend.domain.candidature.port.persistance.CandidatureMutationPort
+import com.example.dyplomowaniebackend.domain.candidature.port.persistance.CandidatureSearchPort
 import com.example.dyplomowaniebackend.domain.candidature.port.persistance.SubjectSearchPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.StudentSearchPort
 import com.example.dyplomowaniebackend.domain.model.Candidature
 import com.example.dyplomowaniebackend.domain.model.CandidatureAcceptance
 import com.example.dyplomowaniebackend.domain.model.CandidatureCreation
+import com.example.dyplomowaniebackend.domain.model.exception.CandidatureAcceptanceConstraintViolationException
 import com.example.dyplomowaniebackend.domain.model.exception.CandidatureConstraintViolationException
 import org.springframework.stereotype.Service
 
 @Service
-class CandidatureCreationAdapter(
+class CandidatureServiceAdapter(
     private val studentSearchPort: StudentSearchPort,
     private val subjectSearchPort: SubjectSearchPort,
+    private val candidatureSearchPort: CandidatureSearchPort,
     private val candidatureMutationPort: CandidatureMutationPort,
-) : CandidatureCreationPort {
+) : CandidatureServicePort {
     override fun createCandidature(candidatureCreation: CandidatureCreation): Long {
         val studentIds = candidatureCreation.coauthors.plus(candidatureCreation.studentId)
-        val studentsWhoRealizesAnySubject = studentSearchPort.findStudentsWhoRealizesAnySubject(studentIds)
-        if (studentsWhoRealizesAnySubject.isNotEmpty())
-            throw CandidatureConstraintViolationException(
-                "Can not create a candidature when one of its students realize a subject: [${
-                    studentsWhoRealizesAnySubject.map { it.studentId }.joinToString(
-                        " | "
-                    )
-                }]"
-            )
+        val studentsWhoRealizesAnySubject = studentSearchPort.findStudentsByStudentIdInAndSubjectIdNotNull(studentIds)
+        if (studentsWhoRealizesAnySubject.isNotEmpty()) throw CandidatureConstraintViolationException(
+            "Can not create a candidature when one of its students realize a subject: [${
+                studentsWhoRealizesAnySubject.map { it.studentId }.joinToString(
+                    " | "
+                )
+            }]"
+        )
 
         val candidature = Candidature(
             student = studentSearchPort.getStudentById(candidatureCreation.studentId),
@@ -41,6 +43,18 @@ class CandidatureCreationAdapter(
         }.toSet()
         candidatureMutationPort.insertAcceptances(candidatureAcceptances)
         return candidatureId
+    }
+
+    override fun decideAboutCandidatureAcceptance(candidatureAcceptanceId: Long, accepted: Boolean): Long {
+        //TODO: studentId could be passed from auth context - it can be stored within TOKEN
+        val candidatureAcceptance = candidatureSearchPort.getCandidatureAcceptanceById(candidatureAcceptanceId)
+        val studentId = candidatureAcceptance.student.studentId!!
+        val doesStudentRealizeSubject = studentSearchPort.existsStudentByStudentIdAndSubjectIdNotNull(studentId)
+        if (doesStudentRealizeSubject) throw CandidatureAcceptanceConstraintViolationException(
+            "Can not decide about candidature acceptance with id $candidatureAcceptanceId because a student $studentId realizes a subject"
+        )
+        candidatureMutationPort.updateAcceptanceAcceptedById(candidatureAcceptanceId, accepted)
+        return candidatureAcceptanceId
     }
 
 }

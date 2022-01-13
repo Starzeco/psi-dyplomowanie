@@ -8,10 +8,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface StudentRepository : JpaRepository<StudentEntity, Long> {
-    @Query(
-        "SELECT SE FROM StudentEntity SE " +
-                "WHERE SE.subjectId IS NOT NULL " +
-                "AND SE.studentId IN :studentIds"
-    )
-    fun findStudentsWhoRealizesAnySubject(@Param("studentIds") studentIds: Set<Long>): Set<StudentEntity>
+    fun existsStudentEntityByStudentIdAndSubjectIdNotNull(studentId: Long): Boolean
+    fun findStudentEntitiesByStudentIdIsInAndStudentIdIsNotNull(studentIds: Set<Long>): Set<StudentEntity>
 }

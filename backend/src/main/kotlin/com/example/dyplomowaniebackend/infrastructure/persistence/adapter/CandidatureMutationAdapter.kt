@@ -38,5 +38,10 @@ class CandidatureMutationAdapter(
             .map { it.candidatureAcceptanceId!! }.toSet()
     }
 
+    override fun updateAcceptanceAcceptedById(candidatureAcceptanceId: Long, accepted: Boolean): Long {
+        candidatureAcceptanceRepository.updateAcceptedById(candidatureAcceptanceId, accepted)
+        return candidatureAcceptanceId
+    }
+
 
 }

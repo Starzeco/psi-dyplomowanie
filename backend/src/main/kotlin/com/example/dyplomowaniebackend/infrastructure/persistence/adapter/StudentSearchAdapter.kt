@@ -19,8 +19,11 @@ class StudentSearchAdapter(val studentRepository: StudentRepository) : StudentSe
             .map { staff -> staff.mapToDomain() }
             .orElseThrow { throw EntityNotFoundException(Student::class, studentId) }
 
-    override fun findStudentsWhoRealizesAnySubject(studentIds: Set<Long>): Set<Student> =
-        studentRepository.findStudentsWhoRealizesAnySubject(studentIds)
+    override fun findStudentsByStudentIdInAndSubjectIdNotNull(studentIds: Set<Long>): Set<Student> =
+        studentRepository.findStudentEntitiesByStudentIdIsInAndStudentIdIsNotNull(studentIds)
             .map { it.mapToDomain() }
             .toSet()
+
+    override fun existsStudentByStudentIdAndSubjectIdNotNull(studentId: Long): Boolean =
+        studentRepository.existsStudentEntityByStudentIdAndSubjectIdNotNull(studentId)
 }
