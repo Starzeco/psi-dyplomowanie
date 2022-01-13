@@ -19,7 +19,7 @@ class CandidatureServiceAdapter(
     private val candidatureSearchPort: CandidatureSearchPort,
     private val candidatureMutationPort: CandidatureMutationPort,
 ) : CandidatureServicePort {
-    override fun createCandidature(candidatureCreation: CandidatureCreation): Long {
+    override fun createCandidature(candidatureCreation: CandidatureCreation): Candidature {
         val studentIds = candidatureCreation.coauthors.plus(candidatureCreation.studentId)
         val studentsWhoRealizesAnySubject = studentSearchPort.findStudentsByStudentIdInAndSubjectIdNotNull(studentIds)
         if (studentsWhoRealizesAnySubject.isNotEmpty()) throw CandidatureConstraintViolationException(
@@ -34,15 +34,15 @@ class CandidatureServiceAdapter(
             student = studentSearchPort.getStudentById(candidatureCreation.studentId),
             subject = subjectSearchPort.getSubjectById(candidatureCreation.subjectId)
         )
-        val candidatureId = candidatureMutationPort.insert(candidature)
+        val insertedCandidature = candidatureMutationPort.insert(candidature)
         val candidatureAcceptances = candidatureCreation.coauthors.map {
             CandidatureAcceptance(
                 student = studentSearchPort.getStudentById(it),
-                candidature = candidature.copy(candidatureId = candidatureId)
+                candidature = insertedCandidature
             )
         }.toSet()
         candidatureMutationPort.insertAcceptances(candidatureAcceptances)
-        return candidatureId
+        return insertedCandidature
     }
 
     override fun decideAboutCandidatureAcceptance(candidatureAcceptanceId: Long, accepted: Boolean): Long {

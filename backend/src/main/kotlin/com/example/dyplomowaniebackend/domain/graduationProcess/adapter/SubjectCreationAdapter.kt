@@ -24,7 +24,7 @@ class SubjectCreationAdapter(
     private val subjectSearchPort: SubjectSearchPort,
     private val clock: Clock
 ) : SubjectCreationPort {
-    override fun createSubject(subjectCreation: SubjectCreation): Long {
+    override fun createSubject(subjectCreation: SubjectCreation): Subject {
         if (subjectCreation.initiatorId == null && subjectCreation.proposedRealiserIds.isNotEmpty())
             throw SubjectConstraintViolationException("If there is not initiator then proposed realisers should be empty")
         val initiator: Student? = subjectCreation.initiatorId?.let { studentSearchPort.findStudentById(it) }
@@ -45,9 +45,9 @@ class SubjectCreationAdapter(
             graduationProcess = graduationProcess,
             creationDate = Instant.now(clock)
         )
-        val savedSubject: Subject = subjectMutationPort.saveSubject(subject)
-        createPropositionAcceptances(savedSubject, subjectCreation.proposedRealiserIds)
-        return savedSubject.subjectId!!
+        val insertedSubject: Subject = subjectMutationPort.insert(subject)
+        createPropositionAcceptances(insertedSubject, subjectCreation.proposedRealiserIds)
+        return insertedSubject
     }
 
     private fun createPropositionAcceptances(

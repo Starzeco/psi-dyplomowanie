@@ -4,16 +4,16 @@ import com.example.dyplomowaniebackend.domain.model.PropositionAcceptance
 import com.example.dyplomowaniebackend.domain.model.exception.PropositionAcceptanceConstraintViolationException
 import com.example.dyplomowaniebackend.domain.submission.port.persistence.PropositionAcceptanceMutationPort
 import com.example.dyplomowaniebackend.infrastructure.persistence.mapper.mapToEntity
-import com.example.dyplomowaniebackend.infrastructure.persistence.repository.PropositionAcceptancesRepository
+import com.example.dyplomowaniebackend.infrastructure.persistence.repository.PropositionAcceptanceRepository
 import org.springframework.stereotype.Service
 
 @Service
 class PropositionAcceptancesMutationAdapter(
-    private val propositionAcceptancesRepository: PropositionAcceptancesRepository
+    private val propositionAcceptanceRepository: PropositionAcceptanceRepository
 ) : PropositionAcceptanceMutationPort {
 
     override fun updateAcceptedFieldById(propositionAcceptanceId: Long, accepted: Boolean): Long {
-        propositionAcceptancesRepository.updateAcceptedById(propositionAcceptanceId, accepted)
+        propositionAcceptanceRepository.updateAcceptedById(propositionAcceptanceId, accepted)
         return propositionAcceptanceId
     }
 
@@ -22,6 +22,6 @@ class PropositionAcceptancesMutationAdapter(
         if (hasPropositionAcceptanceId) throw PropositionAcceptanceConstraintViolationException(
             "Can not insert a proposition acceptance with id: ${propositionAcceptance.propositionAcceptanceId}"
         )
-        return propositionAcceptancesRepository.save(propositionAcceptance.mapToEntity()).propositionAcceptanceId!!
+        return propositionAcceptanceRepository.save(propositionAcceptance.mapToEntity()).propositionAcceptanceId!!
     }
 }

@@ -3,10 +3,7 @@ package com.example.dyplomowaniebackend.api.controller
 import com.example.dyplomowaniebackend.api.dto.PropositionAcceptancePartialInfoResponse
 import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureServicePort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
-import com.example.dyplomowaniebackend.domain.model.CandidatureCreation
-import com.example.dyplomowaniebackend.domain.model.SubjectCreation
-import com.example.dyplomowaniebackend.api.dto.PropositionAcceptancePartialInfoResponse
-import com.example.dyplomowaniebackend.domain.model.SubjectStatusUpdate
+import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.domain.submission.port.api.PropositionAcceptanceServicePort
 import org.springframework.web.bind.annotation.*
 
@@ -19,7 +16,7 @@ class SubjectController(
 ) {
 
     @PostMapping
-    fun createSubject(@RequestBody subjectCreation: SubjectCreation): Long =
+    fun createSubject(@RequestBody subjectCreation: SubjectCreation): Subject =
         subjectCreationPort.createSubject(subjectCreation)
 
     @PutMapping("status/reject/{subject_id}")
@@ -59,7 +56,7 @@ class SubjectController(
             .updatePropositionAcceptanceAcceptedFieldById(propositionAcceptanceId, accepted)
 
     @PostMapping("candidature")
-    fun createCandidature(@RequestBody candidatureCreation: CandidatureCreation): Long =
+    fun createCandidature(@RequestBody candidatureCreation: CandidatureCreation): Candidature =
         candidatureServicePort.createCandidature(candidatureCreation)
 
     @PutMapping("candidature_acceptance/{candidature_acceptance_id}")
