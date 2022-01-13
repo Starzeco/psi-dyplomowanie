@@ -32,13 +32,14 @@ class SubjectCreationAdapter(
         val supervisor: StaffMember = staffSearchPort.getStaffMemberById(subjectCreation.supervisorId)
         val graduationProcess: GraduationProcess =
             graduationProcessSearchPort.getGraduationProcessById(subjectCreation.graduationProcessId)
+        val realisersNumber = if (subjectCreation.initiatorId == null) subjectCreation.realiseresNumber else subjectCreation.proposedRealiserIds.size + 1
         val subject = Subject(
             topic = subjectCreation.topic,
             topicInEnglish = subjectCreation.topicInEnglish,
             objective = subjectCreation.objective,
             objectiveInEnglish = subjectCreation.objectiveInEnglish,
             realizationLanguage = subjectCreation.realizationLanguage,
-            realiseresNumber = if (subjectCreation.initiatorId == null) subjectCreation.realiseresNumber else subjectCreation.proposedRealiserIds.size,
+            realiseresNumber = realisersNumber,
             status = SubjectStatus.DRAFT,
             initiator = initiator,
             supervisor = supervisor,
