@@ -1,5 +1,6 @@
 package com.example.dyplomowaniebackend.infrastructure.persistence.adapter
 
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.SubjectSearchPort
 import com.example.dyplomowaniebackend.domain.candidature.port.persistance.SubjectSearchPort
 import com.example.dyplomowaniebackend.domain.model.Subject
 import com.example.dyplomowaniebackend.domain.model.exception.EntityNotFoundException

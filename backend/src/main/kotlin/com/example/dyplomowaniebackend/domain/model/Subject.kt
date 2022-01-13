@@ -12,7 +12,7 @@ data class Subject(
     val realiseresNumber: Int,
     val accepted: Boolean? = null,
     val status: SubjectStatus,
-    val creationDate: Instant = Instant.now(),
+    val creationDate: Instant,
     val initiator: Student? = null,
 //    val realiser: Set<Student>,
 //    val propositionAcceptances: Set<PropositionAcceptance>,
@@ -33,6 +33,11 @@ data class SubjectCreation (
     val proposedRealiserIds: Set<Long>,
     val supervisorId: Long,
     val graduationProcessId: Long,
+)
+
+data class SubjectStatusUpdate(
+    val subjectId: Long,
+    val status: SubjectStatus
 )
 
 enum class RealizationLanguage {

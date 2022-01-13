@@ -3,17 +3,21 @@ package com.example.dyplomowaniebackend.infrastructure.persistence.adapter
 import com.example.dyplomowaniebackend.domain.model.PropositionAcceptance
 import com.example.dyplomowaniebackend.domain.submission.port.persistence.PropositionAcceptanceSearchPort
 import com.example.dyplomowaniebackend.infrastructure.persistence.mapper.mapToDomain
-import com.example.dyplomowaniebackend.infrastructure.persistence.repository.PropositionAcceptancesRepository
-import org.springframework.stereotype.Component
+import com.example.dyplomowaniebackend.infrastructure.persistence.repository.PropositionAcceptanceRepository
+import org.springframework.stereotype.Service
 
-@Component
+@Service
 class PropositionAcceptanceSearchAdapter(
-    private val propositionAcceptancesRepository: PropositionAcceptancesRepository
+    private val propositionAcceptanceRepository: PropositionAcceptanceRepository
 ) : PropositionAcceptanceSearchPort {
 
     override fun getAllByStudentId(studentId: Long): Set<PropositionAcceptance> =
-        propositionAcceptancesRepository.findByStudentStudentId(studentId)
+        propositionAcceptanceRepository.findByStudentStudentId(studentId)
             .map { it.mapToDomain() }
             .toSet()
 
+    override fun getAllBySubjectId(subjectId: Long): Set<PropositionAcceptance> =
+        propositionAcceptanceRepository.findBySubjectSubjectId(subjectId)
+            .map { it.mapToDomain() }
+            .toSet()
 }
