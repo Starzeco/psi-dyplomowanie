@@ -29,6 +29,7 @@ class SubjectEntity(
 
     val accepted: Boolean? = null,
 
+    @Enumerated(EnumType.STRING)
     val status: SubjectStatus,
 
     val creationDate: Instant = Instant.now(),
