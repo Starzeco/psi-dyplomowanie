@@ -7,4 +7,5 @@ interface StudentSearchPort {
     fun findStudentById(studentId: Long): Student?
     @Throws(EntityNotFoundException::class)
     fun getStudentById(studentId: Long): Student
+    fun findStudentsWhoRealizesAnySubject(studentIds: Set<Long>): Set<Student>
 }

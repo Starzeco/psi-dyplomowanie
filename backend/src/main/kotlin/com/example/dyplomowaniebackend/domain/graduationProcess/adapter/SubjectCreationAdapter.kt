@@ -1,7 +1,6 @@
 package com.example.dyplomowaniebackend.domain.graduationProcess.adapter
 
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
-import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.SubjectMutationPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.*
 import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.domain.model.exception.SubjectConstraintViolationException
@@ -11,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class SubjectCreationAdapter(
-    val studentSearchPort: StudentSearchPort,
-    val staffSearchPort: StaffSearchPort,
-    val graduationProcessSearchPort: GraduationProcessSearchPort,
-    val propositionAcceptanceMutationPort: PropositionAcceptanceMutationPort,
-    val subjectMutationPort: SubjectMutationPort
+    private val studentSearchPort: StudentSearchPort,
+    private val staffSearchPort: StaffSearchPort,
+    private val graduationProcessSearchPort: GraduationProcessSearchPort,
+    private val propositionAcceptanceMutationPort: PropositionAcceptanceMutationPort,
+    private val subjectMutationPort: SubjectMutationPort
 ) : SubjectCreationPort {
-    override fun createSubject(subjectCreation: SubjectCreation): Subject {
+    override fun createSubject(subjectCreation: SubjectCreation): Long {
         if (subjectCreation.initiatorId == null && subjectCreation.proposedRealiserIds.isNotEmpty())
             throw SubjectConstraintViolationException("If there is not initiator then proposed realisers should be empty")
         val initiator: Student? = subjectCreation.initiatorId?.let { studentSearchPort.findStudentById(it) }
@@ -38,7 +37,7 @@ class SubjectCreationAdapter(
         )
         val savedSubject: Subject = subjectMutationPort.saveSubject(subject)
         createPropositionAcceptances(savedSubject, subjectCreation.proposedRealiserIds)
-        return savedSubject
+        return savedSubject.subjectId!!
     }
 
     private fun createPropositionAcceptances(

@@ -1,6 +1,7 @@
 package com.example.dyplomowaniebackend.infrastructure.persistence.adapter
 
 import com.example.dyplomowaniebackend.domain.model.PropositionAcceptance
+import com.example.dyplomowaniebackend.domain.model.exception.PropositionAcceptanceConstraintViolationException
 import com.example.dyplomowaniebackend.domain.submission.port.persistence.PropositionAcceptanceMutationPort
 import com.example.dyplomowaniebackend.infrastructure.persistence.mapper.mapToEntity
 import com.example.dyplomowaniebackend.infrastructure.persistence.repository.PropositionAcceptancesRepository
@@ -17,13 +18,10 @@ class PropositionAcceptancesMutationAdapter(
     }
 
     override fun insert(propositionAcceptance: PropositionAcceptance): Long {
-        val exists =
-            propositionAcceptance.propositionAcceptanceId?.let { propositionAcceptancesRepository.existsById(it) }
-                ?: false
-        return if (!exists)
-            propositionAcceptancesRepository
-                .save(propositionAcceptance.mapToEntity())
-                .propositionAcceptanceId!!
-        else propositionAcceptance.propositionAcceptanceId!!
+        val hasPropositionAcceptanceId = propositionAcceptance.propositionAcceptanceId != null
+        if (hasPropositionAcceptanceId) throw PropositionAcceptanceConstraintViolationException(
+            "Can not insert a proposition acceptance with id: ${propositionAcceptance.propositionAcceptanceId}"
+        )
+        return propositionAcceptancesRepository.save(propositionAcceptance.mapToEntity()).propositionAcceptanceId!!
     }
 }

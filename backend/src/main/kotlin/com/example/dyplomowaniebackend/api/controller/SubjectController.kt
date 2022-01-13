@@ -1,9 +1,10 @@
 package com.example.dyplomowaniebackend.api.controller
 
-import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
-import com.example.dyplomowaniebackend.domain.model.Subject
-import com.example.dyplomowaniebackend.domain.model.SubjectCreation
 import com.example.dyplomowaniebackend.api.dto.PropositionAcceptancePartialInfoResponse
+import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureCreationPort
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
+import com.example.dyplomowaniebackend.domain.model.CandidatureCreation
+import com.example.dyplomowaniebackend.domain.model.SubjectCreation
 import com.example.dyplomowaniebackend.domain.submission.port.api.PropositionAcceptanceServicePort
 import org.springframework.web.bind.annotation.*
 
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/subject")
 class SubjectController(
     private val propositionAcceptanceService: PropositionAcceptanceServicePort,
-    private val subjectCreationPort: SubjectCreationPort
+    private val subjectCreationPort: SubjectCreationPort,
+    private val candidatureCreationPort: CandidatureCreationPort
 ) {
 
     @PostMapping
-    fun createSubject(@RequestBody subjectCreation: SubjectCreation): Subject =
+    fun createSubject(@RequestBody subjectCreation: SubjectCreation): Long =
         subjectCreationPort.createSubject(subjectCreation)
 
     @GetMapping("propositions/{student_id}")
@@ -34,4 +36,9 @@ class SubjectController(
     ): Long =
         propositionAcceptanceService
             .updatePropositionAcceptanceAcceptedFieldById(propositionAcceptanceId, accepted)
+
+    @PostMapping("candidature")
+    fun createCandidature(@RequestBody candidatureCreation: CandidatureCreation): Long =
+        candidatureCreationPort.createCandidature(candidatureCreation)
+
 }
