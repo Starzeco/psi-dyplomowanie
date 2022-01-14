@@ -12,8 +12,8 @@ class PropositionAcceptanceServiceAdapter(
     private val propositionAcceptanceMutationPort: PropositionAcceptanceMutationPort
 ) : PropositionAcceptanceServicePort {
 
-    override fun getAllPropositionAcceptancesByStudentId(studentId: Long): Set<PropositionAcceptance> =
-        propositionAcceptanceSearchPort.getAllByStudentId(studentId)
+    override fun getAllPropositionAcceptancesByStudentIdAndGraduationProcessId(studentId: Long, graduationProcessId: Long): Set<PropositionAcceptance> =
+        propositionAcceptanceSearchPort.getAllByStudentIdAndGraduationProcessId(studentId, graduationProcessId)
 
     override fun updatePropositionAcceptanceAcceptedFieldById(propositionAcceptanceId: Long, accepted: Boolean): Long =
         propositionAcceptanceMutationPort.updateAcceptedFieldById(propositionAcceptanceId, accepted)

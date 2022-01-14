@@ -38,12 +38,13 @@ class SubjectController(
     fun sendToVerificationSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
         subjectCreationPort.sendToVerificationSubject(subjectId)
 
-    @GetMapping("propositions/{student_id}")
-    fun getAllPropositionAcceptancesByStudentId(
+    @GetMapping("propositions/{student_id}/{graduation_process_id}")
+    fun getAllPropositionAcceptancesByStudentIdAndGraduationProcessId(
         @PathVariable(name = "student_id") studentId: Long,
+        @PathVariable(name = "graduation_process_id") graduationProcessId: Long,
     ): Set<PropositionAcceptancePartialInfoResponse> =
         propositionAcceptanceService
-            .getAllPropositionAcceptancesByStudentId(studentId)
+            .getAllPropositionAcceptancesByStudentIdAndGraduationProcessId(studentId, graduationProcessId)
             .map { PropositionAcceptancePartialInfoResponse.fromDomain(it) }
             .toSet()
 
@@ -54,6 +55,9 @@ class SubjectController(
     ): Long =
         propositionAcceptanceService
             .updatePropositionAcceptanceAcceptedFieldById(propositionAcceptanceId, accepted)
+
+    @GetMapping("candidature")
+
 
     @PostMapping("candidature")
     fun createCandidature(@RequestBody candidatureCreation: CandidatureCreation): Candidature =

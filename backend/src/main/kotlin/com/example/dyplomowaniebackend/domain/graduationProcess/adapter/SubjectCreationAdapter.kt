@@ -54,7 +54,7 @@ class SubjectCreationAdapter(
         subject: Subject,
         proposedRealiserIds: Set<Long>
     ): Set<PropositionAcceptance> {
-        return propositionAcceptanceMutationPort.savePropositionAcceptances(
+        return propositionAcceptanceMutationPort.insertAll(
             proposedRealiserIds.map { studentId ->
                 PropositionAcceptance(
                     student = studentSearchPort.getStudentById(studentId),
