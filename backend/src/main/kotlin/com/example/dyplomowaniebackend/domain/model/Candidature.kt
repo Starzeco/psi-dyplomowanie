@@ -8,8 +8,8 @@ data class Candidature(
     val student: Student,
 //    val candidatureAcceptances: Set<CandidatureAcceptance>,
     val subject: Subject,
-    val creationDate: Instant = Instant.now(),
-    )
+    val creationDate: Instant,
+)
 
 data class CandidatureAcceptance(
     val candidatureAcceptanceId: Long? = null,
@@ -18,7 +18,7 @@ data class CandidatureAcceptance(
     val candidature: Candidature
 )
 
-data class CandidatureCreation (
+data class CandidatureCreation(
     val studentId: Long,
     val subjectId: Long,
     val coauthors: Set<Long>

@@ -11,6 +11,8 @@ import com.example.dyplomowaniebackend.domain.model.CandidatureCreation
 import com.example.dyplomowaniebackend.domain.model.exception.CandidatureAcceptanceConstraintViolationException
 import com.example.dyplomowaniebackend.domain.model.exception.CandidatureConstraintViolationException
 import org.springframework.stereotype.Service
+import java.time.Clock
+import java.time.Instant
 
 @Service
 class CandidatureServiceAdapter(
@@ -18,6 +20,7 @@ class CandidatureServiceAdapter(
     private val subjectSearchPort: SubjectSearchPort,
     private val candidatureSearchPort: CandidatureSearchPort,
     private val candidatureMutationPort: CandidatureMutationPort,
+    private val clock: Clock
 ) : CandidatureServicePort {
     override fun createCandidature(candidatureCreation: CandidatureCreation): Candidature {
         val studentIds = candidatureCreation.coauthors.plus(candidatureCreation.studentId)
@@ -32,7 +35,8 @@ class CandidatureServiceAdapter(
 
         val candidature = Candidature(
             student = studentSearchPort.getStudentById(candidatureCreation.studentId),
-            subject = subjectSearchPort.getSubjectById(candidatureCreation.subjectId)
+            subject = subjectSearchPort.getSubjectById(candidatureCreation.subjectId),
+            creationDate = Instant.now(clock)
         )
         val insertedCandidature = candidatureMutationPort.insert(candidature)
         val candidatureAcceptances = candidatureCreation.coauthors.map {
@@ -53,7 +57,11 @@ class CandidatureServiceAdapter(
         if (doesStudentRealizeSubject) throw CandidatureAcceptanceConstraintViolationException(
             "Can not decide about candidature acceptance with id $candidatureAcceptanceId because a student $studentId realizes a subject"
         )
-        candidatureMutationPort.updateAcceptanceAcceptedById(candidatureAcceptanceId, accepted)
+        val candidatureAcceptanceUpdated =
+            candidatureMutationPort.updateAcceptanceAcceptedById(candidatureAcceptanceId, accepted) == 1L
+        if (!candidatureAcceptanceUpdated) throw CandidatureAcceptanceConstraintViolationException(
+            "Can not decide about candidature acceptance with id $candidatureAcceptanceId because it have not been updated"
+        )
         return candidatureAcceptanceId
     }
 
