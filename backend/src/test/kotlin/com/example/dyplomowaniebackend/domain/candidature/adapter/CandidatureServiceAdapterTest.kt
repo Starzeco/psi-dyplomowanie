@@ -112,7 +112,7 @@ internal class CandidatureServiceAdapterTest {
 
 
     @Test
-    fun `create simple candidature without coauthors`() {
+    fun `should create simple candidature without coauthors`() {
         // given
         val candidatureCreation = CandidatureCreation(
             studentId = candidatureOwner.studentId!!,
@@ -155,7 +155,7 @@ internal class CandidatureServiceAdapterTest {
     }
 
     @Test
-    fun `create simple candidature with a coauthor`() {
+    fun `should create simple candidature with a coauthor`() {
         // given
         val candidatureCreation = CandidatureCreation(
             studentId = candidatureOwner.studentId!!,
@@ -204,7 +204,7 @@ internal class CandidatureServiceAdapterTest {
     }
 
     @Test
-    fun `try to create simple candidature with coauthor that is attached to subject`() {
+    fun `should try to create simple candidature with coauthor that is attached to subject and throw error`() {
         // given
         val candidatureCreation = CandidatureCreation(
             studentId = candidatureOwner.studentId!!,
@@ -232,7 +232,7 @@ internal class CandidatureServiceAdapterTest {
     }
 
     @Test
-    fun `decide about candidature acceptance`() {
+    fun `should decide about candidature acceptance`() {
         // given
         val accepted = true
 
@@ -267,7 +267,7 @@ internal class CandidatureServiceAdapterTest {
     }
 
     @Test
-    fun `try to decide about candidature acceptance when it does not exists`() {
+    fun `should try to decide about candidature acceptance when it does not exists and throw error`() {
         // given
         val accepted = true
 
@@ -306,7 +306,7 @@ internal class CandidatureServiceAdapterTest {
     }
 
     @Test
-    fun `try to decide about candidature acceptance when a subject is assigned to the student`() {
+    fun `should try to decide about candidature acceptance when a subject is assigned to the student and throw error`() {
         // given
         val accepted = true
 
