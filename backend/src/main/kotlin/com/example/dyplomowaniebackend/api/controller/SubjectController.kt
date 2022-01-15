@@ -1,19 +1,15 @@
 package com.example.dyplomowaniebackend.api.controller
 
+import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureServicePort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
-import com.example.dyplomowaniebackend.domain.model.Subject
-import com.example.dyplomowaniebackend.domain.model.SubjectCreation
-import com.example.dyplomowaniebackend.api.dto.PropositionAcceptancePartialInfoResponse
-import com.example.dyplomowaniebackend.domain.model.SubjectStatusUpdate
-import com.example.dyplomowaniebackend.domain.model.SubjectUpdate
-import com.example.dyplomowaniebackend.domain.submission.port.api.PropositionAcceptanceServicePort
+import com.example.dyplomowaniebackend.domain.model.*
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/subject")
 class SubjectController(
-    private val propositionAcceptanceService: PropositionAcceptanceServicePort,
-    private val subjectCreationPort: SubjectCreationPort
+    private val subjectCreationPort: SubjectCreationPort,
+    private val candidatureServicePort: CandidatureServicePort
 ) {
 
     @PostMapping
@@ -43,20 +39,22 @@ class SubjectController(
     fun sendToVerificationSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
         subjectCreationPort.sendToVerificationSubject(subjectId)
 
-    @GetMapping("propositions/{student_id}")
-    fun getAllPropositionAcceptancesByStudentId(
-        @PathVariable(name = "student_id") studentId: Long,
-    ): Set<PropositionAcceptancePartialInfoResponse> =
-        propositionAcceptanceService
-            .getAllPropositionAcceptancesByStudentId(studentId)
-            .map { PropositionAcceptancePartialInfoResponse.fromDomain(it) }
-            .toSet()
+    @PostMapping("candidature")
+    fun createCandidature(@RequestBody candidatureCreation: CandidatureCreation): Candidature =
+        candidatureServicePort.createCandidature(candidatureCreation)
 
-    @PutMapping("propositions/{proposition_acceptance_id}")
-    fun updatePropositionAcceptanceAcceptedFieldById(
-        @PathVariable(name = "proposition_acceptance_id") propositionAcceptanceId: Long,
-        @RequestParam(name = "accepted", required = true) accepted: Boolean,
+    @PutMapping("candidature/{candidature_id}")
+    fun decideAboutCandidature(
+        @PathVariable(name = "candidature_id") candidatureId: Long,
+        @RequestBody accepted: Boolean,
     ): Long =
-        propositionAcceptanceService
-            .updatePropositionAcceptanceAcceptedFieldById(propositionAcceptanceId, accepted)
+        candidatureServicePort.decideAboutCandidature(candidatureId, accepted)
+
+    @PutMapping("candidature_acceptance/{candidature_acceptance_id}")
+    fun decideAboutCandidatureAcceptance(
+        @PathVariable(name = "candidature_acceptance_id") candidatureAcceptanceId: Long,
+        @RequestBody accepted: Boolean,
+    ): Long =
+        candidatureServicePort.decideAboutCandidatureAcceptance(candidatureAcceptanceId, accepted)
+
 }

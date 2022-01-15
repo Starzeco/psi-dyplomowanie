@@ -28,8 +28,12 @@ class VerificationMutationAdapter(val verificationMutationPort: VerificationMuta
 
     private fun updateSubjectIfNeeded(subject: Subject): SubjectStatusUpdate? {
         val subjectVerifications: List<Verification> = verificationSearchPort.findSubjectVerifications(subject.subjectId!!)
-        return if(subjectVerifications.all { it.verified != null && it.verified })
-            updateStatus(SubjectStatusUpdate(subject.subjectId, SubjectStatus.VERIFIED))
+        return if(subjectVerifications.all { it.verified != null && it.verified }) {
+            if(subject.initiator != null)
+                updateStatus(SubjectStatusUpdate(subject.subjectId, SubjectStatus.RESERVED))
+            else
+                updateStatus(SubjectStatusUpdate(subject.subjectId, SubjectStatus.VERIFIED))
+        }
         else if(subjectVerifications.any { it.verified != null && !it.verified })
             updateStatus(SubjectStatusUpdate(subject.subjectId, SubjectStatus.IN_CORRECTION))
         else

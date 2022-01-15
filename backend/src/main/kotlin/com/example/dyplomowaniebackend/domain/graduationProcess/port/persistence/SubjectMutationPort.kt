@@ -5,7 +5,7 @@ import com.example.dyplomowaniebackend.domain.model.SubjectStatusUpdate
 import com.example.dyplomowaniebackend.domain.model.SubjectUpdate
 
 interface SubjectMutationPort {
-    fun saveSubject(subject: Subject): Subject
+    fun insert(subject: Subject): Subject
     fun updateStatus(subjectStatusUpdate: SubjectStatusUpdate): SubjectStatusUpdate
     fun updateSubject(updateSubject: SubjectUpdate): SubjectUpdate
 }
