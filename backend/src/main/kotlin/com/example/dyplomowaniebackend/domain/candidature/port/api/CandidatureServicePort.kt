@@ -4,6 +4,7 @@ import com.example.dyplomowaniebackend.domain.model.*
 
 interface CandidatureServicePort {
     fun createCandidature(candidatureCreation: CandidatureCreation): Candidature
+    fun decideAboutCandidature(candidatureId: Long, accepted: Boolean): Long
     fun decideAboutCandidatureAcceptance(candidatureAcceptanceId: Long, accepted: Boolean): Long
     fun getAllCandidatureAsSupervisor(
         supervisorId: Long,

@@ -47,8 +47,24 @@ class CandidatureServiceAdapter(
         return insertedCandidature
     }
 
+    //TODO: we should check if a user (supervisor) owns candidature
+    // I would like to pass smt like context
+    override fun decideAboutCandidature(candidatureId: Long, accepted: Boolean): Long {
+        val existsNotAcceptedCandidatureAcceptance =
+            candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(candidatureId)
+        if (existsNotAcceptedCandidatureAcceptance)
+            throw CandidatureConstraintViolationException("Could not decide about a candidature with id $candidatureId because some not accepted candidatures acceptances exist")
+        val candidatureUpdated =
+            candidatureMutationPort.updateAcceptedById(candidatureId, accepted) == 1L
+        if (!candidatureUpdated) throw CandidatureAcceptanceConstraintViolationException(
+            "Can not decide about candidature with id $candidatureId because it have not been updated"
+        )
+        return candidatureId
+    }
+
+    //TODO: studentId should be passed from auth context
+    // We should check if a student owns a candidature acceptance
     override fun decideAboutCandidatureAcceptance(candidatureAcceptanceId: Long, accepted: Boolean): Long {
-        //TODO: studentId could be passed from auth context - it can be stored within TOKEN
         val candidatureAcceptance = candidatureSearchPort.getCandidatureAcceptanceById(candidatureAcceptanceId)
         val studentId = candidatureAcceptance.student.studentId!!
         val doesStudentRealizeSubject = studentSearchPort.existsStudentByStudentIdAndSubjectIdNotNull(studentId)
@@ -63,6 +79,7 @@ class CandidatureServiceAdapter(
         return candidatureAcceptanceId
     }
 
+    //TODO: studentId should be passed from auth context
     override fun getAllCandidatureAsSupervisor(
         supervisorId: Long,
         graduationProcessId: Long,

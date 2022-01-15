@@ -24,6 +24,10 @@ class CandidatureMutationAdapter(
         return candidatureRepository.save(candidature.mapToEntity()).mapToDomain()
     }
 
+    override fun updateAcceptedById(candidatureId: Long, accepted: Boolean): Long =
+        candidatureRepository.updateAcceptedById(candidatureId, accepted).toLong()
+
+
     override fun insertAcceptances(candidatureAcceptances: Set<CandidatureAcceptance>): Set<CandidatureAcceptance> {
         val acceptancesIds =
             candidatureAcceptances.filter { it.candidatureAcceptanceId != null }.map { it.candidatureAcceptanceId!! }
@@ -40,10 +44,7 @@ class CandidatureMutationAdapter(
             .toSet()
     }
 
-    override fun updateAcceptanceAcceptedById(candidatureAcceptanceId: Long, accepted: Boolean): Long {
-        candidatureAcceptanceRepository.updateAcceptedById(candidatureAcceptanceId, accepted)
-        return candidatureAcceptanceId
-    }
-
+    override fun updateAcceptanceAcceptedById(candidatureAcceptanceId: Long, accepted: Boolean): Long =
+        candidatureAcceptanceRepository.updateAcceptedById(candidatureAcceptanceId, accepted).toLong()
 
 }

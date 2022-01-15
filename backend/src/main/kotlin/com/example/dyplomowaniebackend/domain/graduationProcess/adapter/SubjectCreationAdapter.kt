@@ -67,7 +67,7 @@ class SubjectCreationAdapter(
     override fun rejectSubject(subjectId: Long): SubjectStatusUpdate {
         val subject: Subject = subjectSearchPort.getSubjectById(subjectId)
         return if (canSubjectBeRejected(subject)) updateStatus(SubjectStatusUpdate(subjectId, SubjectStatus.REJECTED))
-        else throw SubjectStatusChangeException("Subject can not be rejected")
+        else throw SubjectStatusChangeException("Subject with id $subjectId can not be rejected")
     }
 
     // Subject is in DRAFT status (rejected by supervisor) or subject was made by student and supervisor accepted it (rejected by student)
@@ -82,7 +82,7 @@ class SubjectCreationAdapter(
                 SubjectStatus.ACCEPTED_BY_SUPERVISOR
             )
         )
-        else throw SubjectStatusChangeException("Subject can not be accepted by supervisor")
+        else throw SubjectStatusChangeException("Subject with id $subjectId can not be accepted by supervisor")
     }
 
     // Subject is made by student, and it is individual subject or all members accepted proposition
@@ -110,7 +110,7 @@ class SubjectCreationAdapter(
                 )
             )
         } else
-            throw SubjectStatusChangeException("Subject can not be accepted by initiator")
+            throw SubjectStatusChangeException("Subject with id $subjectId can not be accepted by initiator")
     }
 
     private fun assignSubject(students: Set<Student>, subject: Subject): Set<Long> {
@@ -133,7 +133,7 @@ class SubjectCreationAdapter(
                 SubjectStatus.IN_VERIFICATION
             )
         )
-        else throw SubjectStatusChangeException("Subject can not be sent to verification")
+        else throw SubjectStatusChangeException("Subject with id $subjectId can not be sent to verification")
     }
 
     private fun canSubjectBeSentToVerification(subject: Subject): Boolean =

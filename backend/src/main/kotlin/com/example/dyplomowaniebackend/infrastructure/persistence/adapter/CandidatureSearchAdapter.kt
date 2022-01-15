@@ -16,6 +16,9 @@ class CandidatureSearchAdapter(
     private val candidatureRepository: CandidatureRepository,
     private val candidatureAcceptanceRepository: CandidatureAcceptanceRepository
 ) : CandidatureSearchPort {
+    override fun existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(candidatureId: Long): Boolean =
+        candidatureAcceptanceRepository.existsByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(candidatureId)
+
     override fun getCandidatureAcceptanceById(candidatureAcceptanceId: Long): CandidatureAcceptance =
         candidatureAcceptanceRepository.findById(candidatureAcceptanceId)
             .map { it.mapToDomain() }

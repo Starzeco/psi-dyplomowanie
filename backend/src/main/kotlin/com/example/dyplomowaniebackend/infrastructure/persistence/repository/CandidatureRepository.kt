@@ -18,7 +18,19 @@ import javax.persistence.criteria.*
 
 
 @Repository
-interface CandidatureRepository : JpaRepository<CandidatureEntity, Long>, CandidatureRepositoryCustom
+interface CandidatureRepository : JpaRepository<CandidatureEntity, Long>, CandidatureRepositoryCustom {
+
+    @Query(
+        "UPDATE CandidatureEntity CE " +
+                "SET CE.accepted = :accepted " +
+                "WHERE CE.candidatureId = :candidatureId"
+    )
+    @Modifying
+    @Transactional
+    fun updateAcceptedById(
+        @Param("candidatureId") candidatureId: Long, @Param("accepted") accepted: Boolean
+    ): Int
+}
 
 interface CandidatureRepositoryCustom {
     fun getAllCandidaturesBySupervisorIdAndGraduationProcessIdAndAcceptedCandidaturesAcceptances(
@@ -232,6 +244,8 @@ interface CandidatureAcceptanceRepository : JpaRepository<CandidatureAcceptanceE
     ): Int
 
     fun findAllByCandidatureId(candidatureId: Long): Set<CandidatureAcceptanceEntity>
+
+    fun existsByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(candidatureId: Long): Boolean
 }
 
 

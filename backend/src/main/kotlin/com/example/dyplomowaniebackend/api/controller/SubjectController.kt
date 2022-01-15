@@ -39,6 +39,13 @@ class SubjectController(
     fun createCandidature(@RequestBody candidatureCreation: CandidatureCreation): Candidature =
         candidatureServicePort.createCandidature(candidatureCreation)
 
+    @PutMapping("candidature/{candidature_id}")
+    fun decideAboutCandidature(
+        @PathVariable(name = "candidature_id") candidatureId: Long,
+        @RequestBody accepted: Boolean,
+    ): Long =
+        candidatureServicePort.decideAboutCandidature(candidatureId, accepted)
+
     @PutMapping("candidature_acceptance/{candidature_acceptance_id}")
     fun decideAboutCandidatureAcceptance(
         @PathVariable(name = "candidature_acceptance_id") candidatureAcceptanceId: Long,
