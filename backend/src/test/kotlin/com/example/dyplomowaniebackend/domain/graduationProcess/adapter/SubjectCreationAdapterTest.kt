@@ -26,6 +26,8 @@ internal class SubjectCreationAdapterTest {
     private val subjectMutationPort: SubjectMutationPort = mockk()
     private val subjectSearchPort: SubjectSearchPort = mockk()
     private val clock: Clock = mockk()
+    private val verifierSearchPort: VerifierSearchPort = mockk()
+    private val verificationMutationPort: VerificationMutationPort = mockk()
 
     private val subjectCreationAdapter = SubjectCreationAdapter(
         studentSearchPort,
@@ -36,13 +38,16 @@ internal class SubjectCreationAdapterTest {
         propositionAcceptanceSearchPort,
         subjectMutationPort,
         subjectSearchPort,
-        clock
+        clock,
+        verifierSearchPort,
+        verificationMutationPort,
     )
 
     private lateinit var initiator: Student
     private lateinit var realisers: Set<Student>
     private lateinit var supervisor: StaffMember
     private lateinit var graduationProcess: GraduationProcess
+    private lateinit var verifiers: List<Verifier>
 
     @BeforeEach
     internal fun setUp() {
@@ -92,6 +97,7 @@ internal class SubjectCreationAdapterTest {
             faculty = faculty
         )
         graduationProcess = GraduationProcess(
+            graduationProcessId = 1,
             cSDeadline = Instant.now(),
             vFDeadline = Instant.now(),
             cADeadline = Instant.now(),
@@ -103,6 +109,60 @@ internal class SubjectCreationAdapterTest {
             students = setOf(),
             degreeCourse = degreeCourse,
         )
+        val verifierStaffMember0 = StaffMember(
+            staffMemberId = 1,
+            email = "super.weryfikator0@pwr.edu.pl",
+            name = "Super",
+            surname = "Weryfikator0",
+            title = Title.DOCTOR,
+            currentWorkload = 24,
+            absoluteWorkload = 180,
+            faculty = faculty
+        )
+        val verifierStaffMember1 = StaffMember(
+            staffMemberId = 2,
+            email = "super.weryfikator1@pwr.edu.pl",
+            name = "Super",
+            surname = "Weryfikator1",
+            title = Title.DOCTOR,
+            currentWorkload = 24,
+            absoluteWorkload = 180,
+            faculty = faculty
+        )
+        val verifierStaffMember2 = StaffMember(
+            staffMemberId = 3,
+            email = "super.weryfikator2@pwr.edu.pl",
+            name = "Super",
+            surname = "Weryfikator2",
+            title = Title.DOCTOR,
+            currentWorkload = 24,
+            absoluteWorkload = 180,
+            faculty = faculty
+        )
+        val verifier0 = Verifier(
+            verifierId = 1,
+            name = "Weryfikator poziomu 0",
+            verificationsDeadline = Instant.now(),
+            verifier = verifierStaffMember0,
+            graduationProcess = graduationProcess
+        )
+
+        val verifier1 = Verifier(
+            verifierId = 2,
+            name = "Weryfikator poziomu 1",
+            verificationsDeadline = Instant.now(),
+            verifier = verifierStaffMember1,
+            graduationProcess = graduationProcess
+        )
+
+        val verifier2 = Verifier(
+            verifierId = 3,
+            name = "Weryfikator poziomu 2",
+            verificationsDeadline = Instant.now(),
+            verifier = verifierStaffMember2,
+            graduationProcess = graduationProcess
+        )
+        verifiers = listOf(verifier0, verifier1, verifier2)
     }
 
     @Test
@@ -876,15 +936,22 @@ internal class SubjectCreationAdapterTest {
             status = SubjectStatus.DRAFT,
             creationDate = Instant.now()
         )
-        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getSubjectById(any(), true) } returns subjectToUpdate
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
+        every { verifierSearchPort.findVerifiersByGraduationProcessId(any()) } returns verifiers
+        every { verificationMutationPort.insertAll(any()) } answers {
+            val verifications = it.invocation.args[0] as List<Verification>
+            verifications.mapIndexed { i, verification -> verification.copy(verificationId = i.toLong()) }
+        }
 
         // when
         val result: SubjectStatusUpdate = subjectCreationAdapter.sendToVerificationSubject(1)
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any(), true) }
         verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
+        verify(exactly = 1) { verificationMutationPort.insertAll(any()) }
+        verify(exactly = 1) { verificationMutationPort.insertAll(any()) }
         assertEquals(expected, result)
     }
 
@@ -907,15 +974,22 @@ internal class SubjectCreationAdapterTest {
             status = SubjectStatus.ACCEPTED_BY_INITIATOR,
             creationDate = Instant.now()
         )
-        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getSubjectById(any(), true) } returns subjectToUpdate
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
+        every { verifierSearchPort.findVerifiersByGraduationProcessId(any()) } returns verifiers
+        every { verificationMutationPort.insertAll(any()) } answers {
+            val verifications = it.invocation.args[0] as List<Verification>
+            verifications.mapIndexed { i, verification -> verification.copy(verificationId = i.toLong()) }
+        }
 
         // when
         val result: SubjectStatusUpdate = subjectCreationAdapter.sendToVerificationSubject(1)
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any(), true) }
         verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
+        verify(exactly = 1) { verificationMutationPort.insertAll(any()) }
+        verify(exactly = 1) { verificationMutationPort.insertAll(any()) }
         assertEquals(expected, result)
     }
 
@@ -937,13 +1011,87 @@ internal class SubjectCreationAdapterTest {
             status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
             creationDate = Instant.now()
         )
-        every { subjectSearchPort.getSubjectById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getSubjectById(any(), true) } returns subjectToUpdate
 
         // when
         assertThrows(SubjectStatusChangeException::class.java) { subjectCreationAdapter.sendToVerificationSubject(1) }
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any(), true) }
         verify(exactly = 0) { subjectMutationPort.updateStatus(any()) }
+    }
+
+    @Test
+    fun `should update subject`() {
+        // given
+        val subjectToUpdate = Subject(
+            subjectId = 1,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 2,
+            initiator = initiator,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
+            creationDate = Instant.now()
+        )
+        val expectedResult = SubjectUpdate(
+            subjectId = 1,
+            topic = "zmiana",
+            topicInEnglish = "zmiana",
+            objective = "zmiana",
+            objectiveInEnglish = "zmiana",
+            realiseresNumber = 2,
+        )
+
+        every { subjectSearchPort.getSubjectById(any(), true) } returns subjectToUpdate
+        every { subjectMutationPort.updateSubject(any()) } answers { it.invocation.args[0] as SubjectUpdate }
+
+        // when
+        val result: SubjectUpdate = subjectCreationAdapter.updateSubject(expectedResult)
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any(), true) }
+        verify(exactly = 1) { subjectMutationPort.updateSubject(any()) }
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun `should thrown cannot update realisers number`() {
+        // given
+        val subjectToUpdate = Subject(
+            subjectId = 1,
+            topic = "Przyklad temat",
+            topicInEnglish = "Przyklad temat english",
+            objective = "Cel pracy",
+            objectiveInEnglish = "Cel pracy english",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 0,
+            initiator = initiator,
+            supervisor = supervisor,
+            graduationProcess = graduationProcess,
+            status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
+            creationDate = Instant.now()
+        )
+        val expectedResult = SubjectUpdate(
+            subjectId = 1,
+            topic = "zmiana",
+            topicInEnglish = "zmiana",
+            objective = "zmiana",
+            objectiveInEnglish = "zmiana",
+            realiseresNumber = 2,
+        )
+
+        every { subjectSearchPort.getSubjectById(any(), true) } returns subjectToUpdate
+
+        // when
+        assertThrows(SubjectConstraintViolationException::class.java) { subjectCreationAdapter.updateSubject(expectedResult) }
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getSubjectById(any(), true) }
+        verify(exactly = 0) { subjectMutationPort.updateSubject(any()) }
     }
 }

@@ -35,6 +35,15 @@ data class SubjectCreation (
     val graduationProcessId: Long,
 )
 
+data class SubjectUpdate (
+    val subjectId: Long,
+    val topic: String,
+    val topicInEnglish: String,
+    val objective: String,
+    val objectiveInEnglish: String,
+    val realiseresNumber: Int,
+)
+
 data class SubjectStatusUpdate(
     val subjectId: Long,
     val status: SubjectStatus

@@ -5,5 +5,5 @@ import com.example.dyplomowaniebackend.domain.model.exception.EntityNotFoundExce
 
 interface SubjectSearchPort {
     @Throws(EntityNotFoundException::class)
-    fun getSubjectById(subjectId: Long): Subject
+    fun getSubjectById(subjectId: Long, cut: Boolean = false): Subject
 }

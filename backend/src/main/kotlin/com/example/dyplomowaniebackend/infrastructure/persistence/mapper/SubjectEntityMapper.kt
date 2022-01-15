@@ -4,7 +4,7 @@ import com.example.dyplomowaniebackend.domain.model.Subject
 import com.example.dyplomowaniebackend.infrastructure.persistence.entity.SubjectEntity
 
 
-fun SubjectEntity.mapToDomain(): Subject =
+fun SubjectEntity.mapToDomain(cut: Boolean = false): Subject =
     Subject(
         subjectId = this.subjectId,
         topic = this.topic,
@@ -16,7 +16,7 @@ fun SubjectEntity.mapToDomain(): Subject =
         accepted = this.accepted,
         status = this.status,
         creationDate = this.creationDate,
-        initiator = this.initiator?.mapToDomain(),
+        initiator = if(cut) this.initiator?.mapToDomain(true) else this.initiator?.mapToDomain(false),
         supervisor = this.supervisor!!.mapToDomain(),
         graduationProcess = this.graduationProcess!!.mapToDomain(),
     )

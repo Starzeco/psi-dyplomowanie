@@ -23,7 +23,9 @@ class SubjectCreationAdapter(
     val propositionAcceptanceSearchPort: PropositionAcceptanceSearchPort,
     val subjectMutationPort: SubjectMutationPort,
     val subjectSearchPort: SubjectSearchPort,
-    val clock: Clock
+    val clock: Clock,
+    val verifierSearchPort: VerifierSearchPort,
+    val verificationMutationPort: VerificationMutationPort,
 ) : SubjectCreationPort {
     override fun createSubject(subjectCreation: SubjectCreation): Subject {
         if (subjectCreation.initiatorId == null && subjectCreation.proposedRealiserIds.isNotEmpty())
@@ -127,20 +129,37 @@ class SubjectCreationAdapter(
                 && (realisers.isEmpty() || realisers.all { it.subject == null })
 
     override fun sendToVerificationSubject(subjectId: Long): SubjectStatusUpdate {
-        val subject: Subject = subjectSearchPort.getSubjectById(subjectId)
-        return if (canSubjectBeSentToVerification(subject)) updateStatus(
-            SubjectStatusUpdate(
-                subjectId,
-                SubjectStatus.IN_VERIFICATION
+        val subject: Subject = subjectSearchPort.getSubjectById(subjectId, true)
+        return if (canSubjectBeSentToVerification(subject)) {
+            if(subject.status == SubjectStatus.IN_CORRECTION) verificationMutationPort.updateOldVerifications(subject.subjectId!!)
+            else {
+                val verifiers: List<Verifier> = verifierSearchPort.findVerifiersByGraduationProcessId(subject.graduationProcess.graduationProcessId!!)
+                val verifications: List<Verification> = verifiers.map { Verification(subject = subject, verifier = it) }
+                verificationMutationPort.insertAll(verifications)
+            }
+            updateStatus(
+                SubjectStatusUpdate(
+                    subjectId,
+                    SubjectStatus.IN_VERIFICATION
+                )
             )
-        )
+        }
         else throw SubjectStatusChangeException("Subject can not be sent to verification")
     }
 
     private fun canSubjectBeSentToVerification(subject: Subject): Boolean =
         subject.status == SubjectStatus.ACCEPTED_BY_INITIATOR
+                || subject.status == SubjectStatus.IN_CORRECTION
                 || (subject.status == SubjectStatus.DRAFT && subject.initiator == null)
 
     private fun updateStatus(subjectStatusUpdate: SubjectStatusUpdate): SubjectStatusUpdate =
         subjectMutationPort.updateStatus(subjectStatusUpdate)
+
+
+    override fun updateSubject(updateSubject: SubjectUpdate): SubjectUpdate {
+        val subject: Subject = subjectSearchPort.getSubjectById(updateSubject.subjectId, true)
+        if(subject.status != SubjectStatus.DRAFT && subject.realiseresNumber != updateSubject.realiseresNumber)
+            throw SubjectConstraintViolationException("You can not update realisersNumber in different status than DRAFT")
+        return subjectMutationPort.updateSubject(updateSubject)
+    }
 }

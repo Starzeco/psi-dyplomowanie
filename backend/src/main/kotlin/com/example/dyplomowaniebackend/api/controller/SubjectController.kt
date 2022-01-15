@@ -5,6 +5,7 @@ import com.example.dyplomowaniebackend.domain.model.Subject
 import com.example.dyplomowaniebackend.domain.model.SubjectCreation
 import com.example.dyplomowaniebackend.api.dto.PropositionAcceptancePartialInfoResponse
 import com.example.dyplomowaniebackend.domain.model.SubjectStatusUpdate
+import com.example.dyplomowaniebackend.domain.model.SubjectUpdate
 import com.example.dyplomowaniebackend.domain.submission.port.api.PropositionAcceptanceServicePort
 import org.springframework.web.bind.annotation.*
 
@@ -18,6 +19,10 @@ class SubjectController(
     @PostMapping
     fun createSubject(@RequestBody subjectCreation: SubjectCreation): Subject =
         subjectCreationPort.createSubject(subjectCreation)
+
+    @PutMapping
+    fun updateSubject(@RequestBody updateSubject: SubjectUpdate): SubjectUpdate =
+        subjectCreationPort.updateSubject(updateSubject)
 
     @PutMapping("status/reject/{subject_id}")
     fun rejectSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =

@@ -8,5 +8,5 @@ data class Verifier(
     val verificationsDeadline: Instant,
     val verifier: StaffMember,
     val graduationProcess: GraduationProcess,
-    val verifications: Set<Verification>
+    //val verifications: Set<Verification>
 )

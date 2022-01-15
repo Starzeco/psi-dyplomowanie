@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class SubjectSearchAdapter(val subjectRepository: SubjectRepository) : SubjectSearchPort {
-    override fun getSubjectById(subjectId: Long): Subject =
+    override fun getSubjectById(subjectId: Long, cut: Boolean): Subject =
         subjectRepository.findById(subjectId)
-            .map { staff -> staff.mapToDomain() }
+            .map { sub -> sub.mapToDomain(cut) }
             .orElseThrow{ throw EntityNotFoundException(Subject::class, subjectId) }
 }
