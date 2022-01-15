@@ -16,6 +16,10 @@ class SubjectController(
     fun createSubject(@RequestBody subjectCreation: SubjectCreation): Subject =
         subjectCreationPort.createSubject(subjectCreation)
 
+    @PutMapping
+    fun updateSubject(@RequestBody updateSubject: SubjectUpdate): SubjectUpdate =
+        subjectCreationPort.updateSubject(updateSubject)
+
     @PutMapping("status/reject/{subject_id}")
     fun rejectSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
         subjectCreationPort.rejectSubject(subjectId)

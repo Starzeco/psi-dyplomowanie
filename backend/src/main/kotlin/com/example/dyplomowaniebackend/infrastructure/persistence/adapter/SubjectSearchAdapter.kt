@@ -9,10 +9,9 @@ import com.example.dyplomowaniebackend.domain.candidature.port.persistance.Subje
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.SubjectSearchPort as SubjectSearchPortGraduationProcess
 
 @Service
-class SubjectSearchAdapter(val subjectRepository: SubjectRepository) : SubjectSearchPortCandidature,
-    SubjectSearchPortGraduationProcess {
-    override fun getSubjectById(subjectId: Long): Subject =
+class SubjectSearchAdapter(private val subjectRepository: SubjectRepository) : SubjectSearchPortGraduationProcess, SubjectSearchPortCandidature {
+    override fun getSubjectById(subjectId: Long, cut: Boolean): Subject =
         subjectRepository.findById(subjectId)
-            .map { staff -> staff.mapToDomain() }
-            .orElseThrow { throw EntityNotFoundException(Subject::class, subjectId) }
+            .map { sub -> sub.mapToDomain(cut) }
+            .orElseThrow{ throw EntityNotFoundException(Subject::class, subjectId) }
 }

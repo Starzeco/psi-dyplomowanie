@@ -11,7 +11,7 @@ class PropositionController(
 ) {
 
     @GetMapping("/{student_id}/{graduation_process_id}")
-    fun getAllPropositionAcceptancesByStudentIdAndGraduationProcessId(
+    fun getAllByStudentIdAndGraduationProcessId(
         @PathVariable(name = "student_id") studentId: Long,
         @PathVariable(name = "graduation_process_id") graduationProcessId: Long,
     ): Set<PropositionAcceptancePartialInfoResponse> =
@@ -21,7 +21,7 @@ class PropositionController(
             .toSet()
 
     @PutMapping("{proposition_acceptance_id}")
-    fun updatePropositionAcceptanceAcceptedFieldById(
+    fun updateAcceptedById(
         @PathVariable(name = "proposition_acceptance_id") propositionAcceptanceId: Long,
         @RequestBody accepted: Boolean,
     ): Long =
