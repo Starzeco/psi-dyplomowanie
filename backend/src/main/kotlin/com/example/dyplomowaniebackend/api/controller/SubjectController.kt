@@ -1,16 +1,13 @@
 package com.example.dyplomowaniebackend.api.controller
 
-import com.example.dyplomowaniebackend.api.dto.PropositionAcceptancePartialInfoResponse
 import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureServicePort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
 import com.example.dyplomowaniebackend.domain.model.*
-import com.example.dyplomowaniebackend.domain.submission.port.api.PropositionAcceptanceServicePort
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/subject")
 class SubjectController(
-    private val propositionAcceptanceService: PropositionAcceptanceServicePort,
     private val subjectCreationPort: SubjectCreationPort,
     private val candidatureServicePort: CandidatureServicePort
 ) {
@@ -37,27 +34,6 @@ class SubjectController(
     @PutMapping("status/send-verification/{subject_id}")
     fun sendToVerificationSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
         subjectCreationPort.sendToVerificationSubject(subjectId)
-
-    @GetMapping("propositions/{student_id}/{graduation_process_id}")
-    fun getAllPropositionAcceptancesByStudentIdAndGraduationProcessId(
-        @PathVariable(name = "student_id") studentId: Long,
-        @PathVariable(name = "graduation_process_id") graduationProcessId: Long,
-    ): Set<PropositionAcceptancePartialInfoResponse> =
-        propositionAcceptanceService
-            .getAllPropositionAcceptancesByStudentIdAndGraduationProcessId(studentId, graduationProcessId)
-            .map { PropositionAcceptancePartialInfoResponse.fromDomain(it) }
-            .toSet()
-
-    @PutMapping("propositions/{proposition_acceptance_id}")
-    fun updatePropositionAcceptanceAcceptedFieldById(
-        @PathVariable(name = "proposition_acceptance_id") propositionAcceptanceId: Long,
-        @RequestBody accepted: Boolean,
-    ): Long =
-        propositionAcceptanceService
-            .updatePropositionAcceptanceAcceptedFieldById(propositionAcceptanceId, accepted)
-
-    @GetMapping("candidature")
-
 
     @PostMapping("candidature")
     fun createCandidature(@RequestBody candidatureCreation: CandidatureCreation): Candidature =

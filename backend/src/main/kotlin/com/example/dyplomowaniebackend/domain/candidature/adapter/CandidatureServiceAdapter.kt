@@ -5,9 +5,7 @@ import com.example.dyplomowaniebackend.domain.candidature.port.persistance.Candi
 import com.example.dyplomowaniebackend.domain.candidature.port.persistance.CandidatureSearchPort
 import com.example.dyplomowaniebackend.domain.candidature.port.persistance.SubjectSearchPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.StudentSearchPort
-import com.example.dyplomowaniebackend.domain.model.Candidature
-import com.example.dyplomowaniebackend.domain.model.CandidatureAcceptance
-import com.example.dyplomowaniebackend.domain.model.CandidatureCreation
+import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.domain.model.exception.CandidatureAcceptanceConstraintViolationException
 import com.example.dyplomowaniebackend.domain.model.exception.CandidatureConstraintViolationException
 import org.springframework.stereotype.Service
@@ -64,5 +62,37 @@ class CandidatureServiceAdapter(
         )
         return candidatureAcceptanceId
     }
+
+    override fun getAllCandidatureAsSupervisor(
+        supervisorId: Long,
+        graduationProcessId: Long,
+        phrase: String?,
+        type: CandidatureType?,
+        status: CandidatureStatus?
+    ): Set<Pair<Candidature, Set<CandidatureAcceptance>>> = candidatureSearchPort.getAllCandidatureAsSupervisor(
+        supervisorId = supervisorId,
+        graduationProcessId = graduationProcessId,
+        phrase = phrase,
+        type = type,
+        status = status
+    ).map {
+        Pair(it, candidatureSearchPort.getCandidatureAcceptanceByCandidatureId(it.candidatureId!!))
+    }.toSet()
+
+    override fun getAllCandidatureAsStudent(
+        studentId: Long,
+        graduationProcessId: Long,
+        phrase: String?,
+        type: CandidatureType?,
+        status: CandidatureStatus?
+    ): Set<Pair<Candidature, Set<CandidatureAcceptance>>> = candidatureSearchPort.getAllCandidatureAsStudent(
+        studentId = studentId,
+        graduationProcessId = graduationProcessId,
+        phrase = phrase,
+        type = type,
+        status = status
+    ).map {
+        Pair(it, candidatureSearchPort.getCandidatureAcceptanceByCandidatureId(it.candidatureId!!))
+    }.toSet()
 
 }
