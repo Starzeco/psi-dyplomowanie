@@ -126,9 +126,9 @@ internal class SubjectCreationAdapterTest {
         every { studentSearchPort.findStudentById(any()) } returns initiator
         every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
         every { graduationProcessSearchPort.getGraduationProcessById(any()) } returns graduationProcess
-        every { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) } returns setOf()
+        every { propositionAcceptanceMutationPort.insertAll(any()) } returns setOf()
         every { clock.instant() } returns now
-        every { subjectMutationPort.saveSubject(any()) } answers { i ->
+        every { subjectMutationPort.insert(any()) } answers { i ->
             val subject = i.invocation.args[0] as Subject
             val subjectWithId = subject.copy(subjectId = 1)
             subjectWithId
@@ -151,11 +151,11 @@ internal class SubjectCreationAdapterTest {
         )
 
         // then
-        verify(exactly = 1) { subjectMutationPort.saveSubject(any()) }
+        verify(exactly = 1) { subjectMutationPort.insert(any()) }
         verify(exactly = 1) { studentSearchPort.findStudentById(any()) }
         verify(exactly = 1) { staffSearchPort.getStaffMemberById(any()) }
         verify(exactly = 1) { graduationProcessSearchPort.getGraduationProcessById(any()) }
-        verify(exactly = 1) { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) }
+        verify(exactly = 1) { propositionAcceptanceMutationPort.insertAll(any()) }
         verify(exactly = 0) { studentSearchPort.getStudentById(any()) }
         assertEquals(expectedResult, result)
     }
@@ -181,10 +181,10 @@ internal class SubjectCreationAdapterTest {
         every { studentSearchPort.findStudentById(any()) } returns initiator
         every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
         every { graduationProcessSearchPort.getGraduationProcessById(any()) } returns graduationProcess
-        every { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) } returns setOf()
+        every { propositionAcceptanceMutationPort.insertAll(any()) } returns setOf()
         every { studentSearchPort.getStudentById(any()) } returnsMany realisers.toList()
         every { clock.instant() } returns now
-        every { subjectMutationPort.saveSubject(any()) } answers { i ->
+        every { subjectMutationPort.insert(any()) } answers { i ->
             val subject = i.invocation.args[0] as Subject
             val subjectWithId = subject.copy(subjectId = 1)
             subjectWithId
@@ -207,11 +207,11 @@ internal class SubjectCreationAdapterTest {
         )
 
         // then
-        verify(exactly = 1) { subjectMutationPort.saveSubject(any()) }
+        verify(exactly = 1) { subjectMutationPort.insert(any()) }
         verify(exactly = 1) { studentSearchPort.findStudentById(any()) }
         verify(exactly = 1) { staffSearchPort.getStaffMemberById(any()) }
         verify(exactly = 1) { graduationProcessSearchPort.getGraduationProcessById(any()) }
-        verify(exactly = 1) { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) }
+        verify(exactly = 1) { propositionAcceptanceMutationPort.insertAll(any()) }
         verify(exactly = 2) { studentSearchPort.getStudentById(any()) }
         assertEquals(expectedResult, result)
     }
@@ -236,9 +236,9 @@ internal class SubjectCreationAdapterTest {
         )
         every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
         every { graduationProcessSearchPort.getGraduationProcessById(any()) } returns graduationProcess
-        every { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) } returns setOf()
+        every { propositionAcceptanceMutationPort.insertAll(any()) } returns setOf()
         every { clock.instant() } returns now
-        every { subjectMutationPort.saveSubject(any()) } answers { i ->
+        every { subjectMutationPort.insert(any()) } answers { i ->
             val subject = i.invocation.args[0] as Subject
             val subjectWithId = subject.copy(subjectId = 1)
             subjectWithId
@@ -261,11 +261,11 @@ internal class SubjectCreationAdapterTest {
         )
 
         // then
-        verify(exactly = 1) { subjectMutationPort.saveSubject(any()) }
+        verify(exactly = 1) { subjectMutationPort.insert(any()) }
         verify(exactly = 0) { studentSearchPort.findStudentById(any()) }
         verify(exactly = 1) { staffSearchPort.getStaffMemberById(any()) }
         verify(exactly = 1) { graduationProcessSearchPort.getGraduationProcessById(any()) }
-        verify(exactly = 1) { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) }
+        verify(exactly = 1) { propositionAcceptanceMutationPort.insertAll(any()) }
         verify(exactly = 0) { studentSearchPort.getStudentById(any()) }
         assertEquals(expectedResult, result)
     }
@@ -290,9 +290,9 @@ internal class SubjectCreationAdapterTest {
         )
         every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
         every { graduationProcessSearchPort.getGraduationProcessById(any()) } returns graduationProcess
-        every { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) } returns setOf()
+        every { propositionAcceptanceMutationPort.insertAll(any()) } returns setOf()
         every { clock.instant() } returns now
-        every { subjectMutationPort.saveSubject(any()) } answers { i ->
+        every { subjectMutationPort.insert(any()) } answers { i ->
             val subject = i.invocation.args[0] as Subject
             val subjectWithId = subject.copy(subjectId = 1)
             subjectWithId
@@ -315,11 +315,11 @@ internal class SubjectCreationAdapterTest {
         )
 
         // then
-        verify(exactly = 1) { subjectMutationPort.saveSubject(any()) }
+        verify(exactly = 1) { subjectMutationPort.insert(any()) }
         verify(exactly = 0) { studentSearchPort.findStudentById(any()) }
         verify(exactly = 1) { staffSearchPort.getStaffMemberById(any()) }
         verify(exactly = 1) { graduationProcessSearchPort.getGraduationProcessById(any()) }
-        verify(exactly = 1) { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) }
+        verify(exactly = 1) { propositionAcceptanceMutationPort.insertAll(any()) }
         verify(exactly = 0) { studentSearchPort.getStudentById(any()) }
         assertEquals(expectedResult, result)
     }
@@ -346,11 +346,11 @@ internal class SubjectCreationAdapterTest {
         }
 
         // then
-        verify(exactly = 0) { subjectMutationPort.saveSubject(any()) }
+        verify(exactly = 0) { subjectMutationPort.insert(any()) }
         verify(exactly = 0) { studentSearchPort.findStudentById(any()) }
         verify(exactly = 0) { staffSearchPort.getStaffMemberById(any()) }
         verify(exactly = 0) { graduationProcessSearchPort.getGraduationProcessById(any()) }
-        verify(exactly = 0) { propositionAcceptanceMutationPort.savePropositionAcceptances(any()) }
+        verify(exactly = 0) { propositionAcceptanceMutationPort.insertAll(any()) }
         verify(exactly = 0) { studentSearchPort.getStudentById(any()) }
     }
 

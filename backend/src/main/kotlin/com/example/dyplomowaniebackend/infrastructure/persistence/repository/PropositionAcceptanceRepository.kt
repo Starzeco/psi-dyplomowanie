@@ -11,9 +11,17 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 interface PropositionAcceptanceRepository : JpaRepository<PropositionAcceptanceEntity, Long> {
 
-    fun findByStudentStudentId(studentId: Long): Set<PropositionAcceptanceEntity>
+    fun findBySubjectSubjectId(studentId: Long): Set<PropositionAcceptanceEntity>
 
-    fun findBySubjectSubjectId(subjectId: Long): Set<PropositionAcceptanceEntity>
+    @Query(
+        "SELECT PAE FROM PropositionAcceptanceEntity PAE " +
+                "WHERE PAE.subjectId = :subjectId " +
+                "AND PAE.subject.graduationProcessId = :graduationProcessId"
+    )
+    fun findByStudentIdAndGraduationProcessId(
+        @Param("subjectId") subjectId: Long,
+        @Param("graduationProcessId") graduationProcessId: Long
+    ): Set<PropositionAcceptanceEntity>
 
     @Query(
         "UPDATE PropositionAcceptanceEntity PAE " +

@@ -11,8 +11,11 @@ class PropositionAcceptanceSearchAdapter(
     private val propositionAcceptanceRepository: PropositionAcceptanceRepository
 ) : PropositionAcceptanceSearchPort {
 
-    override fun getAllByStudentId(studentId: Long): Set<PropositionAcceptance> =
-        propositionAcceptanceRepository.findByStudentStudentId(studentId)
+    override fun getAllByStudentIdAndGraduationProcessId(
+        studentId: Long,
+        graduationProcessId: Long
+    ): Set<PropositionAcceptance> =
+        propositionAcceptanceRepository.findByStudentIdAndGraduationProcessId(studentId, graduationProcessId)
             .map { it.mapToDomain() }
             .toSet()
 

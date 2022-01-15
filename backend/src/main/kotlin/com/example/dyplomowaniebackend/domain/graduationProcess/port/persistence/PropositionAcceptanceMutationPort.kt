@@ -3,5 +3,5 @@ package com.example.dyplomowaniebackend.domain.graduationProcess.port.persistenc
 import com.example.dyplomowaniebackend.domain.model.PropositionAcceptance
 
 interface PropositionAcceptanceMutationPort {
-    fun savePropositionAcceptances(propositionAcceptances: Set<PropositionAcceptance>): Set<PropositionAcceptance>
+    fun insertAll(propositionAcceptances: Set<PropositionAcceptance>): Set<PropositionAcceptance>
 }

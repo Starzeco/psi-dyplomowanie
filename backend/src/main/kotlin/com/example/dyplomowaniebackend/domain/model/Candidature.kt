@@ -5,15 +5,33 @@ import java.time.Instant
 data class Candidature(
     val candidatureId: Long? = null,
     val accepted: Boolean? = null,
-    val creationDate: Instant = Instant.now(),
     val student: Student,
-    val candidatureAcceptances: Set<CandidatureAcceptance>,
-    val subject: Subject
+//    val candidatureAcceptances: Set<CandidatureAcceptance>,
+    val subject: Subject,
+    val creationDate: Instant,
 )
 
-class CandidatureAcceptance(
+enum class CandidatureType {
+    INDIVIDUAL,
+    GROUP
+}
+
+enum class CandidatureStatus {
+    TO_ACCEPT_BY_STUDENTS,
+    TO_ACCEPT_BY_SUPERVISOR,
+    ACCEPTED,
+    REJECTED,
+}
+
+data class CandidatureAcceptance(
     val candidatureAcceptanceId: Long? = null,
     val accepted: Boolean? = null,
     val student: Student,
     val candidature: Candidature
+)
+
+data class CandidatureCreation(
+    val studentId: Long,
+    val subjectId: Long,
+    val coauthors: Set<Long>
 )

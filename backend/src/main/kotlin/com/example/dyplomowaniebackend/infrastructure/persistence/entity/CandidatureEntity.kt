@@ -20,8 +20,8 @@ class CandidatureEntity(
     @JoinColumn(name = "student_id", insertable = false, updatable = false)
     val student: StudentEntity? = null,
 
-    @OneToMany(mappedBy = "candidature")
-    val candidatureAcceptances: Set<CandidatureAcceptanceEntity>,
+//    @OneToMany(mappedBy = "candidature")
+//    val candidatureAcceptances: Set<CandidatureAcceptanceEntity>,
 
     @Column(name = "subject_id")
     val subjectId: Long,

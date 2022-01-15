@@ -1,4 +1,4 @@
-package com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence
+package com.example.dyplomowaniebackend.domain.candidature.port.persistance
 
 import com.example.dyplomowaniebackend.domain.model.Subject
 

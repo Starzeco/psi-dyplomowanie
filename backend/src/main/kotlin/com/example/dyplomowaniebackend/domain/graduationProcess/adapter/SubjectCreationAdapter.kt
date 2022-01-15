@@ -1,7 +1,6 @@
 package com.example.dyplomowaniebackend.domain.graduationProcess.adapter
 
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
-import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.SubjectMutationPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.*
 import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.domain.model.exception.SubjectConstraintViolationException
@@ -15,15 +14,15 @@ import java.time.Instant
 @Service
 @Transactional
 class SubjectCreationAdapter(
-    val studentSearchPort: StudentSearchPort,
-    val studentMutationPort: StudentMutationPort,
-    val staffSearchPort: StaffSearchPort,
-    val graduationProcessSearchPort: GraduationProcessSearchPort,
-    val propositionAcceptanceMutationPort: PropositionAcceptanceMutationPort,
-    val propositionAcceptanceSearchPort: PropositionAcceptanceSearchPort,
-    val subjectMutationPort: SubjectMutationPort,
-    val subjectSearchPort: SubjectSearchPort,
-    val clock: Clock
+    private val studentSearchPort: StudentSearchPort,
+    private val studentMutationPort: StudentMutationPort,
+    private val staffSearchPort: StaffSearchPort,
+    private val graduationProcessSearchPort: GraduationProcessSearchPort,
+    private val propositionAcceptanceMutationPort: PropositionAcceptanceMutationPort,
+    private val propositionAcceptanceSearchPort: PropositionAcceptanceSearchPort,
+    private val subjectMutationPort: SubjectMutationPort,
+    private val subjectSearchPort: SubjectSearchPort,
+    private val clock: Clock
 ) : SubjectCreationPort {
     override fun createSubject(subjectCreation: SubjectCreation): Subject {
         if (subjectCreation.initiatorId == null && subjectCreation.proposedRealiserIds.isNotEmpty())
@@ -46,16 +45,16 @@ class SubjectCreationAdapter(
             graduationProcess = graduationProcess,
             creationDate = Instant.now(clock)
         )
-        val savedSubject: Subject = subjectMutationPort.saveSubject(subject)
-        createPropositionAcceptances(savedSubject, subjectCreation.proposedRealiserIds)
-        return savedSubject
+        val insertedSubject: Subject = subjectMutationPort.insert(subject)
+        createPropositionAcceptances(insertedSubject, subjectCreation.proposedRealiserIds)
+        return insertedSubject
     }
 
     private fun createPropositionAcceptances(
         subject: Subject,
         proposedRealiserIds: Set<Long>
     ): Set<PropositionAcceptance> {
-        return propositionAcceptanceMutationPort.savePropositionAcceptances(
+        return propositionAcceptanceMutationPort.insertAll(
             proposedRealiserIds.map { studentId ->
                 PropositionAcceptance(
                     student = studentSearchPort.getStudentById(studentId),
@@ -68,7 +67,7 @@ class SubjectCreationAdapter(
     override fun rejectSubject(subjectId: Long): SubjectStatusUpdate {
         val subject: Subject = subjectSearchPort.getSubjectById(subjectId)
         return if (canSubjectBeRejected(subject)) updateStatus(SubjectStatusUpdate(subjectId, SubjectStatus.REJECTED))
-        else throw SubjectStatusChangeException("Subject can not be rejected")
+        else throw SubjectStatusChangeException("Subject with id $subjectId can not be rejected")
     }
 
     // Subject is in DRAFT status (rejected by supervisor) or subject was made by student and supervisor accepted it (rejected by student)
@@ -83,7 +82,7 @@ class SubjectCreationAdapter(
                 SubjectStatus.ACCEPTED_BY_SUPERVISOR
             )
         )
-        else throw SubjectStatusChangeException("Subject can not be accepted by supervisor")
+        else throw SubjectStatusChangeException("Subject with id $subjectId can not be accepted by supervisor")
     }
 
     // Subject is made by student, and it is individual subject or all members accepted proposition
@@ -111,7 +110,7 @@ class SubjectCreationAdapter(
                 )
             )
         } else
-            throw SubjectStatusChangeException("Subject can not be accepted by initiator")
+            throw SubjectStatusChangeException("Subject with id $subjectId can not be accepted by initiator")
     }
 
     private fun assignSubject(students: Set<Student>, subject: Subject): Set<Long> {
@@ -134,7 +133,7 @@ class SubjectCreationAdapter(
                 SubjectStatus.IN_VERIFICATION
             )
         )
-        else throw SubjectStatusChangeException("Subject can not be sent to verification")
+        else throw SubjectStatusChangeException("Subject with id $subjectId can not be sent to verification")
     }
 
     private fun canSubjectBeSentToVerification(subject: Subject): Boolean =

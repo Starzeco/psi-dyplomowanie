@@ -1,6 +1,7 @@
 package com.example.dyplomowaniebackend.infrastructure.persistence.adapter
 
 import com.example.dyplomowaniebackend.domain.model.PropositionAcceptance
+import com.example.dyplomowaniebackend.domain.model.exception.PropositionAcceptanceConstraintViolationException
 import com.example.dyplomowaniebackend.domain.submission.port.persistence.PropositionAcceptanceMutationPort
 import com.example.dyplomowaniebackend.infrastructure.persistence.mapper.mapToDomain
 import com.example.dyplomowaniebackend.infrastructure.persistence.mapper.mapToEntity
@@ -18,19 +19,24 @@ class PropositionAcceptanceMutationAdapter(
         return propositionAcceptanceId
     }
 
-    override fun insert(propositionAcceptance: PropositionAcceptance): Long {
-        val exists =
-            propositionAcceptance.propositionAcceptanceId?.let { propositionAcceptanceRepository.existsById(it) }
-                ?: false
-        return if (!exists)
-            propositionAcceptanceRepository
-                .save(propositionAcceptance.mapToEntity())
-                .propositionAcceptanceId!!
-        else propositionAcceptance.propositionAcceptanceId!!
+    override fun insert(propositionAcceptance: PropositionAcceptance): PropositionAcceptance {
+        val hasPropositionAcceptanceId = propositionAcceptance.propositionAcceptanceId != null
+        if (hasPropositionAcceptanceId) throw PropositionAcceptanceConstraintViolationException(
+            "Can not insert a proposition acceptance with id: ${propositionAcceptance.propositionAcceptanceId}"
+        )
+        return propositionAcceptanceRepository.save(propositionAcceptance.mapToEntity()).mapToDomain()
     }
 
-    override fun savePropositionAcceptances(propositionAcceptances: Set<PropositionAcceptance>): Set<PropositionAcceptance> {
+
+    override fun insertAll(propositionAcceptances: Set<PropositionAcceptance>): Set<PropositionAcceptance> {
         if (propositionAcceptances.isEmpty()) return setOf()
+        val propositionAcceptanceIds = propositionAcceptances
+            .filter { it.propositionAcceptanceId != null }
+            .map { it.propositionAcceptanceId!! }
+        if (propositionAcceptanceIds.isNotEmpty())
+            throw PropositionAcceptanceConstraintViolationException(
+                "Can not insert a proposition acceptances with ids: [${propositionAcceptanceIds.joinToString(" | ")}]"
+            )
         return propositionAcceptanceRepository
             .saveAll(propositionAcceptances.map { it.mapToEntity() }.toSet())
             .map { it.mapToDomain() }
