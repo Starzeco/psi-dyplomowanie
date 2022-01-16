@@ -21,8 +21,8 @@ if [ "$(docker images | grep $PSI_WEB_IMAGE_NAME)" == "" ] || [ "$rebuild" == tr
     echo "Old $PSI_WEB_IMAGE_NAME and $PSI_FRONT_IMAGE_NAME image deleted"
   fi
   echo 'Building images'
-  docker build -t "$PSI_WEB_IMAGE_NAME" backend/
-  docker build -t "$PSI_FRONT_IMAGE_NAME" frontend/
+  docker build -t "$PSI_WEB_IMAGE_NAME" ../backend/
+  docker build -t "$PSI_FRONT_IMAGE_NAME" ../frontend/
   echo "Images built"
 fi
 
