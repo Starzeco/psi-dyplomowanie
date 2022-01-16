@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: psi-web-rs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: psi-web
+  template:
+    metadata:
+      name: psi-web
+      labels:
+          zone: prod
+          version: v1
+          app: psi-web
+    spec:
+      containers:
+        - image: psi-backend
+          imagePullPolicy: Never
+          name: psi-web
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          envFrom:
+          - secretRef:
+             name: psi-secrets
+          - configMapRef:
+             name: psi-config-map

@@ -20,6 +20,10 @@ class Bootstrap(
 ) :
     ApplicationListener<ContextRefreshedEvent> {
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
+        if(!studentRepository.existsById(1)) populateDB()
+    }
+
+    private fun populateDB() {
         val student0 = StudentEntity(
             index = "242422",
             email = "242422@student.pwr.edu.pl",

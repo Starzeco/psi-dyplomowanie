@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: psi-front-rs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: psi-front
+  template:
+    metadata:
+      name: psi-front
+      labels:
+          zone: prod
+          version: v1
+          app: psi-front
+    spec:
+      containers:
+        - image: psi-frontend
+          imagePullPolicy: Never
+          name: psi-front
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP

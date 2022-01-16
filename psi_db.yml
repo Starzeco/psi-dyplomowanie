@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: psi-db-rs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: psi-db
+  template:
+    metadata:
+      name: psi-db
+      labels:
+          app: psi-db
+    spec:
+      volumes:
+        - name: "psi-volume"
+          hostPath:
+            path: "/mnt/data-psi"
+      containers:
+        - image: postgres
+          imagePullPolicy: Always
+          name: psi-db
+          volumeMounts:
+              - mountPath: "/var/lib/postgresql/data"
+                name: "psi-volume"
+          ports:
+            - containerPort: 5432
+              name: http
+              protocol: TCP
+          envFrom:
+          - secretRef:
+             name: psi-secrets
+          - configMapRef:
+             name: psi-config-map
+
