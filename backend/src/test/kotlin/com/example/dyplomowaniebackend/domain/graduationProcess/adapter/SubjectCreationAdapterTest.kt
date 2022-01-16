@@ -433,14 +433,14 @@ internal class SubjectCreationAdapterTest {
             status = SubjectStatus.DRAFT,
             creationDate = Instant.now()
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
 
         // when
         val result: SubjectStatusUpdate = subjectCreationAdapter.rejectSubject(1)
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
         assertEquals(expected, result)
     }
@@ -464,14 +464,14 @@ internal class SubjectCreationAdapterTest {
             status = SubjectStatus.DRAFT,
             creationDate = Instant.now()
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
 
         // when
         val result: SubjectStatusUpdate = subjectCreationAdapter.rejectSubject(1)
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
         assertEquals(expected, result)
     }
@@ -495,14 +495,14 @@ internal class SubjectCreationAdapterTest {
             status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
             creationDate = Instant.now()
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
 
         // when
         val result: SubjectStatusUpdate = subjectCreationAdapter.rejectSubject(1)
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
         assertEquals(expected, result)
     }
@@ -525,7 +525,7 @@ internal class SubjectCreationAdapterTest {
             status = SubjectStatus.ACCEPTED_BY_INITIATOR,
             creationDate = Instant.now()
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
 
         // when
         assertThrows(SubjectStatusChangeException::class.java) {
@@ -533,7 +533,7 @@ internal class SubjectCreationAdapterTest {
         }
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 0) { subjectMutationPort.updateStatus(any()) }
     }
 
@@ -556,7 +556,7 @@ internal class SubjectCreationAdapterTest {
             status = SubjectStatus.DRAFT,
             creationDate = Instant.now()
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns setOf()
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
 
@@ -564,7 +564,7 @@ internal class SubjectCreationAdapterTest {
         val result: SubjectStatusUpdate = subjectCreationAdapter.acceptSubjectPreparedBySupervisor(1)
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { propositionAcceptanceSearchPort.getAllBySubjectId(any()) }
         verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
         assertEquals(expected, result)
@@ -603,7 +603,7 @@ internal class SubjectCreationAdapterTest {
                 accepted = true
             )
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns propositionsAcceptances
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
 
@@ -611,7 +611,7 @@ internal class SubjectCreationAdapterTest {
         val result: SubjectStatusUpdate = subjectCreationAdapter.acceptSubjectPreparedBySupervisor(1)
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { propositionAcceptanceSearchPort.getAllBySubjectId(any()) }
         verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
         assertEquals(expected, result)
@@ -649,14 +649,14 @@ internal class SubjectCreationAdapterTest {
                 accepted = null
             )
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns propositionsAcceptances
 
         // when
         assertThrows(SubjectStatusChangeException::class.java) { subjectCreationAdapter.acceptSubjectPreparedBySupervisor(1) }
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { propositionAcceptanceSearchPort.getAllBySubjectId(any()) }
         verify(exactly = 0) { subjectMutationPort.updateStatus(any()) }
     }
@@ -693,14 +693,14 @@ internal class SubjectCreationAdapterTest {
                 accepted = true
             )
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns propositionsAcceptances
 
         // when
         assertThrows(SubjectStatusChangeException::class.java) { subjectCreationAdapter.acceptSubjectPreparedBySupervisor(1) }
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { propositionAcceptanceSearchPort.getAllBySubjectId(any()) }
         verify(exactly = 0) { subjectMutationPort.updateStatus(any()) }
     }
@@ -738,7 +738,7 @@ internal class SubjectCreationAdapterTest {
                 accepted = true
             )
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns propositionsAcceptances
         every { studentMutationPort.updateSubjectIdByStudentIdIn(any(), any()) } returns setOf()
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
@@ -747,7 +747,7 @@ internal class SubjectCreationAdapterTest {
         val result: SubjectStatusUpdate = subjectCreationAdapter.acceptSubjectPreparedByInitiator(1)
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { subjectMutationPort.updateStatus(any()) }
         verify(exactly = 1) { propositionAcceptanceSearchPort.getAllBySubjectId(any()) }
         verify(exactly = 1) { studentMutationPort.updateSubjectIdByStudentIdIn(any(), any()) }
@@ -800,14 +800,14 @@ internal class SubjectCreationAdapterTest {
                 accepted = true
             )
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns propositionsAcceptances
 
         // when
         assertThrows(SubjectStatusChangeException::class.java) { subjectCreationAdapter.acceptSubjectPreparedByInitiator(1) }
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { propositionAcceptanceSearchPort.getAllBySubjectId(any()) }
         verify(exactly = 0) { subjectMutationPort.updateStatus(any()) }
         verify(exactly = 0) { studentMutationPort.updateSubjectIdByStudentIdIn(any(), any()) }
@@ -859,14 +859,14 @@ internal class SubjectCreationAdapterTest {
                 accepted = true
             )
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns propositionsAcceptances
 
         // when
         assertThrows(SubjectStatusChangeException::class.java) { subjectCreationAdapter.acceptSubjectPreparedByInitiator(1) }
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { propositionAcceptanceSearchPort.getAllBySubjectId(any()) }
         verify(exactly = 0) { subjectMutationPort.updateStatus(any()) }
         verify(exactly = 0) { studentMutationPort.updateSubjectIdByStudentIdIn(any(), any()) }
@@ -904,14 +904,14 @@ internal class SubjectCreationAdapterTest {
                 accepted = true
             )
         )
-        every { subjectSearchPort.getById(any()) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns propositionsAcceptances
 
         // when
         assertThrows(SubjectStatusChangeException::class.java) { subjectCreationAdapter.acceptSubjectPreparedByInitiator(1) }
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getById(any()) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 1) { propositionAcceptanceSearchPort.getAllBySubjectId(any()) }
         verify(exactly = 0) { subjectMutationPort.updateStatus(any()) }
         verify(exactly = 0) { studentMutationPort.updateSubjectIdByStudentIdIn(any(), any()) }
@@ -1047,14 +1047,14 @@ internal class SubjectCreationAdapterTest {
             realiseresNumber = 2,
         )
 
-        every { subjectSearchPort.getSubjectById(any(), true) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), true) } returns subjectToUpdate
         every { subjectMutationPort.updateSubject(any()) } answers { it.invocation.args[0] as SubjectUpdate }
 
         // when
         val result: SubjectUpdate = subjectCreationAdapter.updateSubject(expectedResult)
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getSubjectById(any(), true) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), true) }
         verify(exactly = 1) { subjectMutationPort.updateSubject(any()) }
         assertEquals(expectedResult, result)
     }
@@ -1085,13 +1085,13 @@ internal class SubjectCreationAdapterTest {
             realiseresNumber = 2,
         )
 
-        every { subjectSearchPort.getSubjectById(any(), true) } returns subjectToUpdate
+        every { subjectSearchPort.getById(any(), true) } returns subjectToUpdate
 
         // when
         assertThrows(SubjectConstraintViolationException::class.java) { subjectCreationAdapter.updateSubject(expectedResult) }
 
         // then
-        verify(exactly = 1) { subjectSearchPort.getSubjectById(any(), true) }
+        verify(exactly = 1) { subjectSearchPort.getById(any(), true) }
         verify(exactly = 0) { subjectMutationPort.updateSubject(any()) }
     }
 }

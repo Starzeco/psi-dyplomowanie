@@ -28,7 +28,7 @@ class CandidatureServiceAdapter(
         val subjectId = candidatureCreation.subjectId
 
         // verify if candidature can be created
-        val subject = subjectSearchPort.getById(subjectId)
+        val subject = subjectSearchPort.getById(subjectId, false)
         if (subject.status != SubjectStatus.VERIFIED)
             throw CandidatureConstraintViolationException("Could not create a candidature because a subject $subjectId is not ${SubjectStatus.VERIFIED}")
 

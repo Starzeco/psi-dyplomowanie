@@ -35,7 +35,6 @@ interface SubjectRepository : JpaRepository<SubjectEntity, Long> {
         @Param("subjectId") subjectId: Long,
         @Param("initiatorId") initiatorId: Long
     ): Int
-}
 
     @Query(
         "UPDATE SubjectEntity SUB " +

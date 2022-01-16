@@ -149,7 +149,7 @@ internal class CandidatureServiceAdapterTest {
 
         // then
         verifySequence {
-            subjectSearchPort.getSubjectById(subject.subjectId!!, false)
+            subjectSearchPort.getById(subject.subjectId!!, false)
             studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(setOf(candidatureOwner.studentId!!))
             studentSearchPort.getById(candidatureOwner.studentId!!)
             subjectSearchPort.getById(subject.subjectId!!, false)

@@ -67,7 +67,7 @@ class SubjectCreationAdapter(
     }
 
     override fun rejectSubject(subjectId: Long): SubjectStatusUpdate {
-        val subject: Subject = subjectSearchPort.getById(subjectId)
+        val subject: Subject = subjectSearchPort.getById(subjectId, false)
         return if (canSubjectBeRejected(subject)) updateStatus(SubjectStatusUpdate(subjectId, SubjectStatus.REJECTED))
         else throw SubjectStatusChangeException("Subject with id $subjectId can not be rejected")
     }
@@ -77,7 +77,7 @@ class SubjectCreationAdapter(
         subject.status == SubjectStatus.DRAFT || (subject.status == SubjectStatus.ACCEPTED_BY_SUPERVISOR && subject.initiator != null)
 
     override fun acceptSubjectPreparedBySupervisor(subjectId: Long): SubjectStatusUpdate {
-        val subject: Subject = subjectSearchPort.getById(subjectId)
+        val subject: Subject = subjectSearchPort.getById(subjectId, false)
         return if (canSubjectBeAcceptedBySupervisor(subject)) updateStatus(
             SubjectStatusUpdate(
                 subjectId,
@@ -97,7 +97,7 @@ class SubjectCreationAdapter(
     }
 
     override fun acceptSubjectPreparedByInitiator(subjectId: Long): SubjectStatusUpdate {
-        val subject: Subject = subjectSearchPort.getById(subjectId)
+        val subject: Subject = subjectSearchPort.getById(subjectId, false)
         val realisers: Set<Student> =
             propositionAcceptanceSearchPort.getAllBySubjectId(subject.subjectId!!)
                 .map { it.student }
@@ -127,7 +127,7 @@ class SubjectCreationAdapter(
                 && subject.initiator.subject == null
                 && (realisers.isEmpty() || realisers.all { it.subject == null })
 
-    override fun sendToVerificationSubject(subjectId: Long): SubjectStatusUpdate {
+    override fun sendSubjectToVerification(subjectId: Long): SubjectStatusUpdate {
         val subject: Subject = subjectSearchPort.getById(subjectId, true)
         return if (canSubjectBeSentToVerification(subject)) {
             if(subject.status == SubjectStatus.IN_CORRECTION) verificationMutationPort.updateOldVerifications(subject.subjectId!!)
@@ -156,7 +156,7 @@ class SubjectCreationAdapter(
 
 
     override fun updateSubject(updateSubject: SubjectUpdate): SubjectUpdate {
-        val subject: Subject = subjectSearchPort.getSubjectById(updateSubject.subjectId, true)
+        val subject: Subject = subjectSearchPort.getById(updateSubject.subjectId, true)
         if(subject.status != SubjectStatus.DRAFT && subject.realiseresNumber != updateSubject.realiseresNumber)
             throw SubjectConstraintViolationException("You can not update realisersNumber in different status than DRAFT")
         return subjectMutationPort.updateSubject(updateSubject)
