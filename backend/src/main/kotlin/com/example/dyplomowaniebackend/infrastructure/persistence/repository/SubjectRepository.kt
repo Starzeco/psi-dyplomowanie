@@ -36,3 +36,23 @@ interface SubjectRepository : JpaRepository<SubjectEntity, Long> {
         @Param("initiatorId") initiatorId: Long
     ): Int
 }
+
+    @Query(
+        "UPDATE SubjectEntity SUB " +
+                "SET SUB.topic = :topic, " +
+                "SUB.topicInEnglish = :topicInEnglish, " +
+                "SUB.objective = :objective, " +
+                "SUB.objectiveInEnglish = :objectiveInEnglish, " +
+                "SUB.realiseresNumber = :realiseresNumber " +
+                "WHERE SUB.subjectId = :subjectId"
+    )
+    @Modifying
+    @Transactional
+    fun updateSubject(
+        @Param("topic") topic: String,
+        @Param("topicInEnglish") topicInEnglish: String,
+        @Param("objective") objective: String,
+        @Param("objectiveInEnglish") objectiveInEnglish: String,
+        @Param("realiseresNumber") realiseresNumber: Int
+    ): Int
+}

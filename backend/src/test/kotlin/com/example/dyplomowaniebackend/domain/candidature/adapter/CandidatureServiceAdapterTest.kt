@@ -138,7 +138,7 @@ internal class CandidatureServiceAdapterTest {
         every { clock.instant() } returns now
         every { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(any()) } returns setOf()
         every { studentSearchPort.getById(any()) } returns candidatureOwner
-        every { subjectSearchPort.getById(any()) } returns subject
+        every { subjectSearchPort.getById(any(), false) } returns subject
         every { candidatureMutationPort.insert(any()) } answers { i ->
              (i.invocation.args[0] as Candidature).copy(candidatureId = candidatureId)
         }
@@ -149,9 +149,10 @@ internal class CandidatureServiceAdapterTest {
 
         // then
         verifySequence {
+            subjectSearchPort.getSubjectById(subject.subjectId!!, false)
             studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(setOf(candidatureOwner.studentId!!))
             studentSearchPort.getById(candidatureOwner.studentId!!)
-            subjectSearchPort.getById(subject.subjectId!!)
+            subjectSearchPort.getById(subject.subjectId!!, false)
             clock.instant()
             candidatureMutationPort.insert(candidature)
             candidatureMutationPort.insertAcceptances(setOf())
@@ -186,7 +187,7 @@ internal class CandidatureServiceAdapterTest {
         every { clock.instant()} returns now
         every { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(any()) } returns setOf()
         every { studentSearchPort.getById(any()) } returns candidatureOwner andThen studentWithoutSubject
-        every { subjectSearchPort.getById(any()) } returns subject
+        every { subjectSearchPort.getById(any(), false) } returns subject
         every { candidatureMutationPort.insert(any()) } answers { i ->
             (i.invocation.args[0] as Candidature).copy(candidatureId = candidatureId)
         }
@@ -199,7 +200,7 @@ internal class CandidatureServiceAdapterTest {
         verifySequence {
             studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(setOf(studentWithoutSubject.studentId!!, candidatureOwner.studentId!!))
             studentSearchPort.getById(candidatureOwner.studentId!!)
-            subjectSearchPort.getById(subject.subjectId!!)
+            subjectSearchPort.getById(subject.subjectId!!, false)
             clock.instant()
             candidatureMutationPort.insert(candidature)
             studentSearchPort.getById(studentWithoutSubject.studentId!!)
@@ -230,7 +231,7 @@ internal class CandidatureServiceAdapterTest {
         // then
         verify(exactly = 1) { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(setOf(studentWithSubject.studentId!!, candidatureOwner.studentId!!)) }
         verify(exactly = 0) { studentSearchPort.getById(any()) }
-        verify(exactly = 0) { subjectSearchPort.getById(any()) }
+        verify(exactly = 0) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 0) { candidatureMutationPort.insert(any()) }
         verify(exactly = 0) { candidatureMutationPort.insertAcceptances(any()) }
 

@@ -3,5 +3,5 @@ package com.example.dyplomowaniebackend.domain.graduationProcess.port.persistenc
 import com.example.dyplomowaniebackend.domain.model.Subject
 
 interface SubjectSearchPort {
-    fun getById(subjectId: Long): Subject
+    fun getById(subjectId: Long, cut: Boolean): Subject
 }

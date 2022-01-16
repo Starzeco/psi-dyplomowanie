@@ -16,6 +16,7 @@ class Bootstrap(
     val degreeCourseRepository: DegreeCourseRepository,
     val staffMemberRepository: StaffMemberRepository,
     val facultyRepository: FacultyRepository,
+    val verifierRepository: VerifierRepository,
 ) :
     ApplicationListener<ContextRefreshedEvent> {
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
@@ -81,5 +82,59 @@ class Bootstrap(
         )
 
         graduationProcessRepository.save(graduationProcess)
+
+        val verificationStaffMember0 = StaffMemberEntity(
+            email = "super.weryfikator@pwr.edu.pl",
+            name = "Super",
+            surname = "Weryfikator",
+            title = Title.DOCTOR,
+            currentWorkload = 24,
+            absoluteWorkload = 180,
+            facultyId = facultySaved.facultyId,
+        )
+
+        val verificationStaffMember1 = StaffMemberEntity(
+            email = "super.weryfikator1@pwr.edu.pl",
+            name = "Super1",
+            surname = "Weryfikator",
+            title = Title.DOCTOR,
+            currentWorkload = 24,
+            absoluteWorkload = 180,
+            facultyId = facultySaved.facultyId,
+        )
+
+        val verificationStaffMember2 = StaffMemberEntity(
+            email = "super.weryfikator2@pwr.edu.pl",
+            name = "Super2",
+            surname = "Weryfikator",
+            title = Title.DOCTOR,
+            currentWorkload = 24,
+            absoluteWorkload = 180,
+            facultyId = facultySaved.facultyId,
+        )
+        staffMemberRepository.saveAll(listOf(verificationStaffMember0, verificationStaffMember1, verificationStaffMember2))
+
+        val verifier0 = VerifierEntity(
+            name = "Weryfikator poziomu 0",
+            verificationsDeadline = Instant.now(),
+            staffMemberId = verificationStaffMember0.staffMemberId!!,
+            graduationProcessId = graduationProcess.graduationProcessId!!
+        )
+
+        val verifier1 = VerifierEntity(
+            name = "Weryfikator poziomu 1",
+            verificationsDeadline = Instant.now(),
+            staffMemberId = verificationStaffMember1.staffMemberId!!,
+            graduationProcessId = graduationProcess.graduationProcessId
+        )
+
+        val verifier2 = VerifierEntity(
+            name = "Weryfikator poziomu 2",
+            verificationsDeadline = Instant.now(),
+            staffMemberId = verificationStaffMember2.staffMemberId!!,
+            graduationProcessId = graduationProcess.graduationProcessId
+        )
+
+        verifierRepository.saveAll(listOf(verifier0, verifier1, verifier2))
     }
 }

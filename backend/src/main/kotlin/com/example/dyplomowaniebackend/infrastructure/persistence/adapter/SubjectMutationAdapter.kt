@@ -4,13 +4,15 @@ import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence
 import com.example.dyplomowaniebackend.domain.model.Subject
 import com.example.dyplomowaniebackend.domain.model.SubjectStatusUpdate
 import com.example.dyplomowaniebackend.domain.model.exception.SubjectConstraintViolationException
+import com.example.dyplomowaniebackend.domain.model.SubjectUpdate
 import com.example.dyplomowaniebackend.infrastructure.persistence.mapper.mapToDomain
 import com.example.dyplomowaniebackend.infrastructure.persistence.mapper.mapToEntity
 import com.example.dyplomowaniebackend.infrastructure.persistence.repository.SubjectRepository
 import org.springframework.stereotype.Service
 
 @Service
-class SubjectMutationAdapter(val subjectRepository: SubjectRepository) : SubjectMutationPort {
+class SubjectMutationAdapter(private val subjectRepository: SubjectRepository) : SubjectMutationPort,
+    com.example.dyplomowaniebackend.domain.verification.port.persistence.SubjectMutationPort {
     override fun insert(subject: Subject): Subject {
         val hasSubjectId = subject.subjectId != null
         if (hasSubjectId) throw SubjectConstraintViolationException(
@@ -26,4 +28,15 @@ class SubjectMutationAdapter(val subjectRepository: SubjectRepository) : Subject
 
     override fun updateInitiatorIdById(subjectId: Long, initiatorId: Long): Long =
         subjectRepository.updateInitiatorIdById(subjectId, initiatorId).toLong()
+
+    override fun updateSubject(updateSubject: SubjectUpdate): SubjectUpdate {
+        subjectRepository.updateSubject(
+            updateSubject.topic,
+            updateSubject.topicInEnglish,
+            updateSubject.objective,
+            updateSubject.objectiveInEnglish,
+            updateSubject.realiseresNumber
+        )
+        return updateSubject
+    }
 }

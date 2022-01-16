@@ -49,7 +49,7 @@ class CandidatureServiceAdapter(
         // preparing and inserting data
         val candidature = Candidature(
             student = studentSearchPort.getById(candidatureCreation.studentId),
-            subject = subjectSearchPort.getById(candidatureCreation.subjectId),
+            subject = subjectSearchPort.getById(candidatureCreation.subjectId, false),
             creationDate = Instant.now(clock)
         )
         val insertedCandidature = candidatureMutationPort.insert(candidature)

@@ -3,6 +3,7 @@ package com.example.dyplomowaniebackend.domain.graduationProcess.port.api
 import com.example.dyplomowaniebackend.domain.model.Subject
 import com.example.dyplomowaniebackend.domain.model.SubjectCreation
 import com.example.dyplomowaniebackend.domain.model.SubjectStatusUpdate
+import com.example.dyplomowaniebackend.domain.model.SubjectUpdate
 
 interface SubjectCreationPort {
     fun createSubject(subjectCreation: SubjectCreation): Subject
@@ -10,4 +11,5 @@ interface SubjectCreationPort {
     fun acceptSubjectPreparedBySupervisor(subjectId: Long): SubjectStatusUpdate
     fun acceptSubjectPreparedByInitiator(subjectId: Long): SubjectStatusUpdate
     fun sendSubjectToVerification(subjectId: Long): SubjectStatusUpdate
+    fun updateSubject(updateSubject: SubjectUpdate): SubjectUpdate
 }

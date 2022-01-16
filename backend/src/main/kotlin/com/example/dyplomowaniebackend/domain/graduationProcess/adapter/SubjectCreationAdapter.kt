@@ -22,7 +22,9 @@ class SubjectCreationAdapter(
     private val propositionAcceptanceSearchPort: PropositionAcceptanceSearchPort,
     private val subjectMutationPort: SubjectMutationPort,
     private val subjectSearchPort: SubjectSearchPort,
-    private val clock: Clock
+    private val clock: Clock,
+    private val verifierSearchPort: VerifierSearchPort,
+    private val verificationMutationPort: VerificationMutationPort,
 ) : SubjectCreationPort {
     override fun createSubject(subjectCreation: SubjectCreation): Subject {
         if (subjectCreation.initiatorId == null && subjectCreation.proposedRealiserIds.isNotEmpty())
@@ -125,21 +127,38 @@ class SubjectCreationAdapter(
                 && subject.initiator.subject == null
                 && (realisers.isEmpty() || realisers.all { it.subject == null })
 
-    override fun sendSubjectToVerification(subjectId: Long): SubjectStatusUpdate {
-        val subject: Subject = subjectSearchPort.getById(subjectId)
-        return if (canSubjectBeSentToVerification(subject)) updateStatus(
-            SubjectStatusUpdate(
-                subjectId,
-                SubjectStatus.IN_VERIFICATION
+    override fun sendToVerificationSubject(subjectId: Long): SubjectStatusUpdate {
+        val subject: Subject = subjectSearchPort.getById(subjectId, true)
+        return if (canSubjectBeSentToVerification(subject)) {
+            if(subject.status == SubjectStatus.IN_CORRECTION) verificationMutationPort.updateOldVerifications(subject.subjectId!!)
+            else {
+                val verifiers: List<Verifier> = verifierSearchPort.findVerifiersByGraduationProcessId(subject.graduationProcess.graduationProcessId!!)
+                val verifications: List<Verification> = verifiers.map { Verification(subject = subject, verifier = it) }
+                verificationMutationPort.insertAll(verifications)
+            }
+            updateStatus(
+                SubjectStatusUpdate(
+                    subjectId,
+                    SubjectStatus.IN_VERIFICATION
+                )
             )
-        )
+        }
         else throw SubjectStatusChangeException("Subject with id $subjectId can not be sent to verification")
     }
 
     private fun canSubjectBeSentToVerification(subject: Subject): Boolean =
         subject.status == SubjectStatus.ACCEPTED_BY_INITIATOR
+                || subject.status == SubjectStatus.IN_CORRECTION
                 || (subject.status == SubjectStatus.DRAFT && subject.initiator == null)
 
     private fun updateStatus(subjectStatusUpdate: SubjectStatusUpdate): SubjectStatusUpdate =
         subjectMutationPort.updateStatus(subjectStatusUpdate)
+
+
+    override fun updateSubject(updateSubject: SubjectUpdate): SubjectUpdate {
+        val subject: Subject = subjectSearchPort.getSubjectById(updateSubject.subjectId, true)
+        if(subject.status != SubjectStatus.DRAFT && subject.realiseresNumber != updateSubject.realiseresNumber)
+            throw SubjectConstraintViolationException("You can not update realisersNumber in different status than DRAFT")
+        return subjectMutationPort.updateSubject(updateSubject)
+    }
 }
