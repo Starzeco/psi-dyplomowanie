@@ -11,7 +11,7 @@ import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence
 @Service
 class SubjectSearchAdapter(val subjectRepository: SubjectRepository) : SubjectSearchPortCandidature,
     SubjectSearchPortGraduationProcess {
-    override fun getSubjectById(subjectId: Long): Subject =
+    override fun getById(subjectId: Long): Subject =
         subjectRepository.findById(subjectId)
             .map { staff -> staff.mapToDomain() }
             .orElseThrow { throw EntityNotFoundException(Subject::class, subjectId) }

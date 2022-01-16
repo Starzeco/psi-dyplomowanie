@@ -23,4 +23,16 @@ interface SubjectRepository : JpaRepository<SubjectEntity, Long> {
         @Param("subjectId") subjectId: Long,
         @Param("status") status: SubjectStatus
     ): Int
+
+    @Query(
+        "UPDATE SubjectEntity SUB " +
+                "SET SUB.status = :initiatorId " +
+                "WHERE SUB.subjectId = :subjectId"
+    )
+    @Modifying
+    @Transactional
+    fun updateInitiatorIdById(
+        @Param("subjectId") subjectId: Long,
+        @Param("initiatorId") initiatorId: Long
+    ): Int
 }

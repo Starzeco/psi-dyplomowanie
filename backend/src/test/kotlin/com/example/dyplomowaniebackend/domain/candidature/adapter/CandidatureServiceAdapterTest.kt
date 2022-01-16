@@ -3,7 +3,9 @@ package com.example.dyplomowaniebackend.domain.candidature.adapter
 import com.example.dyplomowaniebackend.domain.candidature.port.persistance.CandidatureMutationPort
 import com.example.dyplomowaniebackend.domain.candidature.port.persistance.CandidatureSearchPort
 import com.example.dyplomowaniebackend.domain.candidature.port.persistance.SubjectSearchPort
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.StudentMutationPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.StudentSearchPort
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.SubjectMutationPort
 import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.domain.model.exception.CandidatureAcceptanceConstraintViolationException
 import com.example.dyplomowaniebackend.domain.model.exception.CandidatureConstraintViolationException
@@ -18,14 +20,18 @@ import java.time.Instant
 internal class CandidatureServiceAdapterTest {
 
     private val studentSearchPort: StudentSearchPort = mockk()
+    private val studentMutationPort: StudentMutationPort = mockk()
     private val subjectSearchPort: SubjectSearchPort = mockk()
+    private val subjectMutationPort: SubjectMutationPort = mockk()
     private val candidatureSearchPort: CandidatureSearchPort = mockk()
     private val candidatureMutationPort: CandidatureMutationPort = mockk()
     private val clock: Clock = mockk()
 
     private val candidatureServiceAdapter = CandidatureServiceAdapter(
         studentSearchPort,
+        studentMutationPort,
         subjectSearchPort,
+        subjectMutationPort,
         candidatureSearchPort,
         candidatureMutationPort,
         clock
@@ -130,9 +136,9 @@ internal class CandidatureServiceAdapterTest {
         val expectedResult = candidature.copy(candidatureId = 1L)
 
         every { clock.instant() } returns now
-        every { studentSearchPort.findStudentsByStudentIdInAndSubjectIdNotNull(any()) } returns setOf()
-        every { studentSearchPort.getStudentById(any()) } returns candidatureOwner
-        every { subjectSearchPort.getSubjectById(any()) } returns subject
+        every { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(any()) } returns setOf()
+        every { studentSearchPort.getById(any()) } returns candidatureOwner
+        every { subjectSearchPort.getById(any()) } returns subject
         every { candidatureMutationPort.insert(any()) } answers { i ->
              (i.invocation.args[0] as Candidature).copy(candidatureId = candidatureId)
         }
@@ -143,9 +149,9 @@ internal class CandidatureServiceAdapterTest {
 
         // then
         verifySequence {
-            studentSearchPort.findStudentsByStudentIdInAndSubjectIdNotNull(setOf(candidatureOwner.studentId!!))
-            studentSearchPort.getStudentById(candidatureOwner.studentId!!)
-            subjectSearchPort.getSubjectById(subject.subjectId!!)
+            studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(setOf(candidatureOwner.studentId!!))
+            studentSearchPort.getById(candidatureOwner.studentId!!)
+            subjectSearchPort.getById(subject.subjectId!!)
             clock.instant()
             candidatureMutationPort.insert(candidature)
             candidatureMutationPort.insertAcceptances(setOf())
@@ -178,9 +184,9 @@ internal class CandidatureServiceAdapterTest {
         )
 
         every { clock.instant()} returns now
-        every { studentSearchPort.findStudentsByStudentIdInAndSubjectIdNotNull(any()) } returns setOf()
-        every { studentSearchPort.getStudentById(any()) } returns candidatureOwner andThen studentWithoutSubject
-        every { subjectSearchPort.getSubjectById(any()) } returns subject
+        every { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(any()) } returns setOf()
+        every { studentSearchPort.getById(any()) } returns candidatureOwner andThen studentWithoutSubject
+        every { subjectSearchPort.getById(any()) } returns subject
         every { candidatureMutationPort.insert(any()) } answers { i ->
             (i.invocation.args[0] as Candidature).copy(candidatureId = candidatureId)
         }
@@ -191,12 +197,12 @@ internal class CandidatureServiceAdapterTest {
 
         // then
         verifySequence {
-            studentSearchPort.findStudentsByStudentIdInAndSubjectIdNotNull(setOf(studentWithoutSubject.studentId!!, candidatureOwner.studentId!!))
-            studentSearchPort.getStudentById(candidatureOwner.studentId!!)
-            subjectSearchPort.getSubjectById(subject.subjectId!!)
+            studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(setOf(studentWithoutSubject.studentId!!, candidatureOwner.studentId!!))
+            studentSearchPort.getById(candidatureOwner.studentId!!)
+            subjectSearchPort.getById(subject.subjectId!!)
             clock.instant()
             candidatureMutationPort.insert(candidature)
-            studentSearchPort.getStudentById(studentWithoutSubject.studentId!!)
+            studentSearchPort.getById(studentWithoutSubject.studentId!!)
             candidatureMutationPort.insertAcceptances(setOf(candidatureAcceptance))
         }
 
@@ -214,7 +220,7 @@ internal class CandidatureServiceAdapterTest {
         val expectedExceptionMessage =
             "Can not create a candidature when one of its students realize a subject: [${studentWithSubject.studentId}]"
 
-        every { studentSearchPort.findStudentsByStudentIdInAndSubjectIdNotNull(any()) } returns setOf(studentWithSubject)
+        every { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(any()) } returns setOf(studentWithSubject)
 
         // when
         val result = assertThrows<CandidatureConstraintViolationException> {
@@ -222,9 +228,9 @@ internal class CandidatureServiceAdapterTest {
         }
 
         // then
-        verify(exactly = 1) { studentSearchPort.findStudentsByStudentIdInAndSubjectIdNotNull(setOf(studentWithSubject.studentId!!, candidatureOwner.studentId!!)) }
-        verify(exactly = 0) { studentSearchPort.getStudentById(any()) }
-        verify(exactly = 0) { subjectSearchPort.getSubjectById(any()) }
+        verify(exactly = 1) { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(setOf(studentWithSubject.studentId!!, candidatureOwner.studentId!!)) }
+        verify(exactly = 0) { studentSearchPort.getById(any()) }
+        verify(exactly = 0) { subjectSearchPort.getById(any()) }
         verify(exactly = 0) { candidatureMutationPort.insert(any()) }
         verify(exactly = 0) { candidatureMutationPort.insertAcceptances(any()) }
 
@@ -250,7 +256,7 @@ internal class CandidatureServiceAdapterTest {
         )
 
         every { candidatureSearchPort.getCandidatureAcceptanceById(any()) } returns candidatureAcceptance
-        every { studentSearchPort.existsStudentByStudentIdAndSubjectIdNotNull(any()) } returns false
+        every { studentSearchPort.existsByStudentIdAndSubjectIdNotNull(any()) } returns false
         every { candidatureMutationPort.updateAcceptanceAcceptedById(any(), any()) } returns 1L
 
         // when
@@ -259,7 +265,7 @@ internal class CandidatureServiceAdapterTest {
         // then
         verifySequence {
             candidatureSearchPort.getCandidatureAcceptanceById(candidatureAcceptance.candidatureAcceptanceId!!)
-            studentSearchPort.existsStudentByStudentIdAndSubjectIdNotNull(studentWithoutSubject.studentId!!)
+            studentSearchPort.existsByStudentIdAndSubjectIdNotNull(studentWithoutSubject.studentId!!)
             candidatureMutationPort.updateAcceptanceAcceptedById(candidatureAcceptance.candidatureAcceptanceId!!, accepted)
         }
 
@@ -287,7 +293,7 @@ internal class CandidatureServiceAdapterTest {
         val expectedExceptionMessage = "Can not decide about candidature acceptance with id ${candidatureAcceptance.candidatureAcceptanceId} because it have not been updated"
 
         every { candidatureSearchPort.getCandidatureAcceptanceById(any()) } returns candidatureAcceptance
-        every { studentSearchPort.existsStudentByStudentIdAndSubjectIdNotNull(any()) } returns false
+        every { studentSearchPort.existsByStudentIdAndSubjectIdNotNull(any()) } returns false
         every { candidatureMutationPort.updateAcceptanceAcceptedById(any(), any()) } returns 0L
 
         // when
@@ -298,7 +304,7 @@ internal class CandidatureServiceAdapterTest {
         // then
         verifySequence {
             candidatureSearchPort.getCandidatureAcceptanceById(candidatureAcceptance.candidatureAcceptanceId!!)
-            studentSearchPort.existsStudentByStudentIdAndSubjectIdNotNull(studentWithoutSubject.studentId!!)
+            studentSearchPort.existsByStudentIdAndSubjectIdNotNull(studentWithoutSubject.studentId!!)
             candidatureMutationPort.updateAcceptanceAcceptedById(candidatureAcceptance.candidatureAcceptanceId!!, accepted)
         }
 
@@ -327,7 +333,7 @@ internal class CandidatureServiceAdapterTest {
             "Can not decide about candidature acceptance with id ${candidatureAcceptance.candidatureAcceptanceId} because a student ${studentWithSubject.studentId} realizes a subject"
 
         every { candidatureSearchPort.getCandidatureAcceptanceById(candidatureAcceptance.candidatureAcceptanceId!!) } returns candidatureAcceptance
-        every { studentSearchPort.existsStudentByStudentIdAndSubjectIdNotNull(studentWithSubject.studentId!!) } returns true
+        every { studentSearchPort.existsByStudentIdAndSubjectIdNotNull(studentWithSubject.studentId!!) } returns true
 
         // when
         val result = assertThrows<CandidatureAcceptanceConstraintViolationException> {
@@ -337,7 +343,7 @@ internal class CandidatureServiceAdapterTest {
         // then
         verifySequence {
             candidatureSearchPort.getCandidatureAcceptanceById(candidatureAcceptance.candidatureAcceptanceId!!)
-            studentSearchPort.existsStudentByStudentIdAndSubjectIdNotNull(studentWithSubject.studentId!!)
+            studentSearchPort.existsByStudentIdAndSubjectIdNotNull(studentWithSubject.studentId!!)
         }
 
         assertEquals(expectedExceptionMessage, result.message)

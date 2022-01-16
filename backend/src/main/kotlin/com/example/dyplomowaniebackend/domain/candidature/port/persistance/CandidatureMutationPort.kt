@@ -14,4 +14,5 @@ interface CandidatureMutationPort {
         candidatureAcceptanceId: Long,
         accepted: Boolean
     ): Long
+    fun updateAcceptedToFalseWithExclusiveIdBySubjectId(subjectId: Long, candidatureId: Long): Long
 }

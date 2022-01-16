@@ -23,17 +23,17 @@ class SubjectController(
     // TODO only supervisor can trigger
     @PutMapping("status/accept-supervisor/{subject_id}")
     fun acceptSupervisorSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
-        subjectCreationPort.acceptSupervisorSubject(subjectId)
+        subjectCreationPort.acceptSubjectPreparedBySupervisor(subjectId)
 
     // TODO only initiator/student can trigger
     @PutMapping("status/accept-initiator/{subject_id}")
     fun acceptInitiatorSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
-        subjectCreationPort.acceptInitiatorSubject(subjectId)
+        subjectCreationPort.acceptSubjectPreparedByInitiator(subjectId)
 
     // TODO only supervisor can trigger
     @PutMapping("status/send-verification/{subject_id}")
     fun sendToVerificationSubject(@PathVariable(name = "subject_id") subjectId: Long): SubjectStatusUpdate =
-        subjectCreationPort.sendToVerificationSubject(subjectId)
+        subjectCreationPort.sendSubjectToVerification(subjectId)
 
     @PostMapping("candidature")
     fun createCandidature(@RequestBody candidatureCreation: CandidatureCreation): Candidature =

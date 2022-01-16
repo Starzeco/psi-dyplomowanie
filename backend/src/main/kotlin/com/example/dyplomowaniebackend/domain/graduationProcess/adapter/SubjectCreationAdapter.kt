@@ -27,7 +27,7 @@ class SubjectCreationAdapter(
     override fun createSubject(subjectCreation: SubjectCreation): Subject {
         if (subjectCreation.initiatorId == null && subjectCreation.proposedRealiserIds.isNotEmpty())
             throw SubjectConstraintViolationException("If there is not initiator then proposed realisers should be empty")
-        val initiator: Student? = subjectCreation.initiatorId?.let { studentSearchPort.findStudentById(it) }
+        val initiator: Student? = subjectCreation.initiatorId?.let { studentSearchPort.findById(it) }
         val supervisor: StaffMember = staffSearchPort.getStaffMemberById(subjectCreation.supervisorId)
         val graduationProcess: GraduationProcess =
             graduationProcessSearchPort.getGraduationProcessById(subjectCreation.graduationProcessId)
@@ -57,7 +57,7 @@ class SubjectCreationAdapter(
         return propositionAcceptanceMutationPort.insertAll(
             proposedRealiserIds.map { studentId ->
                 PropositionAcceptance(
-                    student = studentSearchPort.getStudentById(studentId),
+                    student = studentSearchPort.getById(studentId),
                     subject = subject
                 )
             }.toSet()
@@ -65,7 +65,7 @@ class SubjectCreationAdapter(
     }
 
     override fun rejectSubject(subjectId: Long): SubjectStatusUpdate {
-        val subject: Subject = subjectSearchPort.getSubjectById(subjectId)
+        val subject: Subject = subjectSearchPort.getById(subjectId)
         return if (canSubjectBeRejected(subject)) updateStatus(SubjectStatusUpdate(subjectId, SubjectStatus.REJECTED))
         else throw SubjectStatusChangeException("Subject with id $subjectId can not be rejected")
     }
@@ -74,8 +74,8 @@ class SubjectCreationAdapter(
     private fun canSubjectBeRejected(subject: Subject): Boolean =
         subject.status == SubjectStatus.DRAFT || (subject.status == SubjectStatus.ACCEPTED_BY_SUPERVISOR && subject.initiator != null)
 
-    override fun acceptSupervisorSubject(subjectId: Long): SubjectStatusUpdate {
-        val subject: Subject = subjectSearchPort.getSubjectById(subjectId)
+    override fun acceptSubjectPreparedBySupervisor(subjectId: Long): SubjectStatusUpdate {
+        val subject: Subject = subjectSearchPort.getById(subjectId)
         return if (canSubjectBeAcceptedBySupervisor(subject)) updateStatus(
             SubjectStatusUpdate(
                 subjectId,
@@ -94,8 +94,8 @@ class SubjectCreationAdapter(
                 && (acceptances.isEmpty() || acceptances.all { it.accepted != null && it.accepted })
     }
 
-    override fun acceptInitiatorSubject(subjectId: Long): SubjectStatusUpdate {
-        val subject: Subject = subjectSearchPort.getSubjectById(subjectId)
+    override fun acceptSubjectPreparedByInitiator(subjectId: Long): SubjectStatusUpdate {
+        val subject: Subject = subjectSearchPort.getById(subjectId)
         val realisers: Set<Student> =
             propositionAcceptanceSearchPort.getAllBySubjectId(subject.subjectId!!)
                 .map { it.student }
@@ -125,8 +125,8 @@ class SubjectCreationAdapter(
                 && subject.initiator.subject == null
                 && (realisers.isEmpty() || realisers.all { it.subject == null })
 
-    override fun sendToVerificationSubject(subjectId: Long): SubjectStatusUpdate {
-        val subject: Subject = subjectSearchPort.getSubjectById(subjectId)
+    override fun sendSubjectToVerification(subjectId: Long): SubjectStatusUpdate {
+        val subject: Subject = subjectSearchPort.getById(subjectId)
         return if (canSubjectBeSentToVerification(subject)) updateStatus(
             SubjectStatusUpdate(
                 subjectId,

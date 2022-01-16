@@ -1,12 +1,11 @@
 package com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence
 
 import com.example.dyplomowaniebackend.domain.model.Student
-import com.example.dyplomowaniebackend.domain.model.exception.EntityNotFoundException
 
 interface StudentSearchPort {
-    fun findStudentById(studentId: Long): Student?
-    @Throws(EntityNotFoundException::class)
-    fun getStudentById(studentId: Long): Student
-    fun findStudentsByStudentIdInAndSubjectIdNotNull(studentIds: Set<Long>): Set<Student>
-    fun existsStudentByStudentIdAndSubjectIdNotNull(studentId: Long): Boolean
+    fun findById(studentId: Long): Student?
+    fun getById(studentId: Long): Student
+    fun findAllByStudentIdInAndSubjectIdNotNull(studentIds: Set<Long>): Set<Student>
+    fun existsByStudentIdAndSubjectIdNotNull(studentId: Long): Boolean
+    fun existsAllBySubjectId(subjectId: Long) : Boolean
 }

@@ -7,7 +7,7 @@ import com.example.dyplomowaniebackend.domain.model.SubjectStatusUpdate
 interface SubjectCreationPort {
     fun createSubject(subjectCreation: SubjectCreation): Subject
     fun rejectSubject(subjectId: Long): SubjectStatusUpdate
-    fun acceptSupervisorSubject(subjectId: Long): SubjectStatusUpdate
-    fun acceptInitiatorSubject(subjectId: Long): SubjectStatusUpdate
-    fun sendToVerificationSubject(subjectId: Long): SubjectStatusUpdate
+    fun acceptSubjectPreparedBySupervisor(subjectId: Long): SubjectStatusUpdate
+    fun acceptSubjectPreparedByInitiator(subjectId: Long): SubjectStatusUpdate
+    fun sendSubjectToVerification(subjectId: Long): SubjectStatusUpdate
 }

@@ -47,4 +47,7 @@ class CandidatureMutationAdapter(
     override fun updateAcceptanceAcceptedById(candidatureAcceptanceId: Long, accepted: Boolean): Long =
         candidatureAcceptanceRepository.updateAcceptedById(candidatureAcceptanceId, accepted).toLong()
 
+    override fun updateAcceptedToFalseWithExclusiveIdBySubjectId(subjectId: Long, candidatureId: Long): Long =
+        candidatureRepository.updateAcceptedToFalseWithExclusiveIdBySubjectId(subjectId, candidatureId).toLong()
+
 }

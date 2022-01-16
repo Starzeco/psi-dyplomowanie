@@ -23,4 +23,7 @@ class SubjectMutationAdapter(val subjectRepository: SubjectRepository) : Subject
         subjectRepository.updateStatusById(subjectStatusUpdate.subjectId, subjectStatusUpdate.status)
         return subjectStatusUpdate
     }
+
+    override fun updateInitiatorIdById(subjectId: Long, initiatorId: Long): Long =
+        subjectRepository.updateInitiatorIdById(subjectId, initiatorId).toLong()
 }

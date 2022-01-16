@@ -9,21 +9,24 @@ import org.springframework.stereotype.Service
 
 @Service
 class StudentSearchAdapter(val studentRepository: StudentRepository) : StudentSearchPort {
-    override fun findStudentById(studentId: Long): Student? =
+    override fun findById(studentId: Long): Student? =
         studentRepository.findById(studentId)
             .map { student -> student.mapToDomain() }
             .orElse(null)
 
-    override fun getStudentById(studentId: Long): Student =
+    override fun getById(studentId: Long): Student =
         studentRepository.findById(studentId)
             .map { staff -> staff.mapToDomain() }
             .orElseThrow { throw EntityNotFoundException(Student::class, studentId) }
 
-    override fun findStudentsByStudentIdInAndSubjectIdNotNull(studentIds: Set<Long>): Set<Student> =
-        studentRepository.findStudentEntitiesByStudentIdIsInAndStudentIdIsNotNull(studentIds)
+    override fun findAllByStudentIdInAndSubjectIdNotNull(studentIds: Set<Long>): Set<Student> =
+        studentRepository.findAllByStudentIdIsInAndStudentIdIsNotNull(studentIds)
             .map { it.mapToDomain() }
             .toSet()
 
-    override fun existsStudentByStudentIdAndSubjectIdNotNull(studentId: Long): Boolean =
-        studentRepository.existsStudentEntityByStudentIdAndSubjectIdNotNull(studentId)
+    override fun existsByStudentIdAndSubjectIdNotNull(studentId: Long): Boolean =
+        studentRepository.existsByStudentIdAndSubjectIdNotNull(studentId)
+
+    override fun existsAllBySubjectId(subjectId: Long): Boolean =
+        studentRepository.existsAllBySubjectId(subjectId)
 }

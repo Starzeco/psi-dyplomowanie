@@ -30,6 +30,18 @@ interface CandidatureRepository : JpaRepository<CandidatureEntity, Long>, Candid
     fun updateAcceptedById(
         @Param("candidatureId") candidatureId: Long, @Param("accepted") accepted: Boolean
     ): Int
+
+    @Query(
+        "UPDATE CandidatureEntity CE " +
+                "SET CE.accepted = false " +
+                "WHERE CE.studentId = :studentId AND CE.candidatureId <> :candidatureId"
+    )
+    @Modifying
+    @Transactional
+    fun updateAcceptedToFalseWithExclusiveIdBySubjectId(
+        @Param("subjectId") subjectId: Long,
+        @Param("candidatureId") candidatureId: Long
+    ): Int
 }
 
 interface CandidatureRepositoryCustom {

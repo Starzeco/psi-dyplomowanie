@@ -61,4 +61,9 @@ class CandidatureSearchAdapter(
         ).map { it.mapToDomain() }
             .toSet()
 
+    override fun getCandidatureById(candidatureId: Long): Candidature =
+        candidatureRepository.findById(candidatureId)
+            .map { it.mapToDomain() }
+            .orElseThrow { throw EntityNotFoundException(Candidature::class, candidatureId) }
+
 }
