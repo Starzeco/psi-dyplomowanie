@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 interface StudentRepository : JpaRepository<StudentEntity, Long> {
     fun existsByStudentIdAndSubjectIdNotNull(studentId: Long): Boolean
     fun existsAllBySubjectId(subjectId: Long): Boolean
-    fun findAllByStudentIdIsInAndStudentIdIsNotNull(studentIds: Set<Long>): Set<StudentEntity>
+    fun findAllByStudentIdInAndSubjectIdNotNull(studentIds: Set<Long>): Set<StudentEntity>
     @Query(
         "UPDATE StudentEntity S " +
                 "SET S.subjectId = :subjectId " +

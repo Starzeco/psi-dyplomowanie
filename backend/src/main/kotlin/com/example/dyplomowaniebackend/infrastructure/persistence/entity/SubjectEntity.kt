@@ -34,6 +34,7 @@ class SubjectEntity(
 
     val creationDate: Instant = Instant.now(),
 
+    // WARN: THIS IS ID OF INITIATOR
     @Column(name = "student_id")
     val studentId: Long?,
 

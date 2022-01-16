@@ -26,7 +26,7 @@ interface SubjectRepository : JpaRepository<SubjectEntity, Long> {
 
     @Query(
         "UPDATE SubjectEntity SUB " +
-                "SET SUB.status = :initiatorId " +
+                "SET SUB.studentId = :initiatorId " +
                 "WHERE SUB.subjectId = :subjectId"
     )
     @Modifying

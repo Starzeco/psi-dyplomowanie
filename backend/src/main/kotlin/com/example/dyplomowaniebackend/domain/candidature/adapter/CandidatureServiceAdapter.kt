@@ -101,7 +101,6 @@ class CandidatureServiceAdapter(
         if (accepted) {
             candidatureMutationPort.updateAcceptedToFalseWithExclusiveIdBySubjectId(subjectId, candidatureId)
             val initiatorId = candidature.student.studentId!!
-            subjectMutationPort.updateInitiatorIdById(subjectId, initiatorId)
             val coauthorsIds = candidatureSearchPort.getCandidatureAcceptanceByCandidatureId(candidatureId).map { it.student.studentId!! }
             val studentIds = coauthorsIds.plus(initiatorId).toSet()
             studentMutationPort.updateSubjectIdByStudentIdIn(studentIds, subjectId)
