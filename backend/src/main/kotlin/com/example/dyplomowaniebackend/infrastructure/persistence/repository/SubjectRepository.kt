@@ -48,6 +48,7 @@ interface SubjectRepository : JpaRepository<SubjectEntity, Long> {
     @Modifying
     @Transactional
     fun updateSubject(
+        @Param("subjectId") subjectId: Long,
         @Param("topic") topic: String,
         @Param("topicInEnglish") topicInEnglish: String,
         @Param("objective") objective: String,

@@ -34,7 +34,7 @@ interface CandidatureRepository : JpaRepository<CandidatureEntity, Long>, Candid
     @Query(
         "UPDATE CandidatureEntity CE " +
                 "SET CE.accepted = false " +
-                "WHERE CE.studentId = :studentId AND CE.candidatureId <> :candidatureId"
+                "WHERE CE.subjectId = :subjectId AND CE.candidatureId <> :candidatureId"
     )
     @Modifying
     @Transactional

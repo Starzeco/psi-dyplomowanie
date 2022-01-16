@@ -31,6 +31,7 @@ class SubjectMutationAdapter(private val subjectRepository: SubjectRepository) :
 
     override fun updateSubject(updateSubject: SubjectUpdate): SubjectUpdate {
         subjectRepository.updateSubject(
+            updateSubject.subjectId,
             updateSubject.topic,
             updateSubject.topicInEnglish,
             updateSubject.objective,
