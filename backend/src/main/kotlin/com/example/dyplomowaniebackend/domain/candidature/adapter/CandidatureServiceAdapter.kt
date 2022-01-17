@@ -25,10 +25,10 @@ class CandidatureServiceAdapter(
     private val clock: Clock
 ) : CandidatureServicePort {
     override fun createCandidature(candidatureCreation: CandidatureCreation): Candidature {
-        val subjectId = candidatureCreation.subjectId
+        val subject = subjectSearchPort.getById(candidatureCreation.subjectId, false)
+        val subjectId = subject.subjectId!!
 
         // verify if candidature can be created
-        val subject = subjectSearchPort.getById(subjectId, false)
         if (subject.status != SubjectStatus.VERIFIED)
             throw CandidatureConstraintViolationException("Could not create a candidature because a subject $subjectId is not ${SubjectStatus.VERIFIED}")
 
@@ -49,7 +49,7 @@ class CandidatureServiceAdapter(
         // preparing and inserting data
         val candidature = Candidature(
             student = studentSearchPort.getById(candidatureCreation.studentId),
-            subject = subjectSearchPort.getById(candidatureCreation.subjectId, false),
+            subject = subject,
             creationDate = Instant.now(clock)
         )
         val insertedCandidature = candidatureMutationPort.insert(candidature)
