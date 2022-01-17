@@ -1,20 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {TestService} from "./test.service";
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
-  title = 'frontend';
 
-  constructor(private readonly test: TestService) {
-  }
+export class AppComponent {
 
-  ngOnInit(): void {
-    this.test.test().subscribe(y => {
-      console.log(y)
-    })
-  }
 }
