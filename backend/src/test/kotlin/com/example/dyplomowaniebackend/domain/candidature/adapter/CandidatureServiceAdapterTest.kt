@@ -9,7 +9,10 @@ import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence
 import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.domain.model.exception.CandidatureAcceptanceConstraintViolationException
 import com.example.dyplomowaniebackend.domain.model.exception.CandidatureConstraintViolationException
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import io.mockk.verifySequence
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -74,8 +77,22 @@ internal class CandidatureServiceAdapterTest {
         faculty = faculty
     )
 
-    private val subject = Subject(
+    private val verifiedSubject = Subject(
         subjectId = 1,
+        topic = "Przyklad temat",
+        topicInEnglish = "Przyklad temat english",
+        objective = "Cel pracy",
+        objectiveInEnglish = "Cel pracy english",
+        realizationLanguage = RealizationLanguage.POLISH,
+        realiseresNumber = 1,
+        supervisor = supervisor,
+        graduationProcess = graduationProcess,
+        status = SubjectStatus.VERIFIED,
+        creationDate = now
+    )
+
+    private val draftSubject = Subject(
+        subjectId = 2,
         topic = "Przyklad temat",
         topicInEnglish = "Przyklad temat english",
         objective = "Cel pracy",
@@ -113,7 +130,46 @@ internal class CandidatureServiceAdapterTest {
         name = "Kacper",
         surname = "Kowalski",
         graduationProcesses = setOf(),
-        subject = subject
+        subject = verifiedSubject
+    )
+
+    private val verifiedSubjectWithInitiator = Subject(
+        subjectId = 1,
+        topic = "Przyklad temat",
+        topicInEnglish = "Przyklad temat english",
+        objective = "Cel pracy",
+        objectiveInEnglish = "Cel pracy english",
+        realizationLanguage = RealizationLanguage.POLISH,
+        realiseresNumber = 1,
+        initiator = studentWithSubject,
+        supervisor = supervisor,
+        graduationProcess = graduationProcess,
+        status = SubjectStatus.VERIFIED,
+        creationDate = now
+    )
+
+    private val candidatureToVerifiedSubject = Candidature(
+        candidatureId = 1,
+        accepted = null,
+        student = candidatureOwner,
+        subject = verifiedSubject,
+        creationDate = now
+    )
+
+    private val candidatureToNotVerifiedSubject = Candidature(
+        candidatureId = 1,
+        accepted = null,
+        student = candidatureOwner,
+        subject = draftSubject,
+        creationDate = now
+    )
+
+    private val candidatureToVerifiedSubjectWithInitiator = Candidature(
+        candidatureId = 1,
+        accepted = null,
+        student = candidatureOwner,
+        subject = verifiedSubjectWithInitiator,
+        creationDate = now
     )
 
 
@@ -122,25 +178,27 @@ internal class CandidatureServiceAdapterTest {
         // given
         val candidatureCreation = CandidatureCreation(
             studentId = candidatureOwner.studentId!!,
-            subjectId = subject.subjectId!!,
+            subjectId = verifiedSubject.subjectId!!,
             coauthors = setOf()
         )
 
         val candidatureId = 1L
         val candidature = Candidature(
             student = candidatureOwner,
-            subject = subject,
+            subject = verifiedSubject,
             creationDate = now
         )
 
         val expectedResult = candidature.copy(candidatureId = 1L)
 
         every { clock.instant() } returns now
+        every { subjectSearchPort.getById(any(), any()) } returns verifiedSubject
+        every { studentSearchPort.existsAllBySubjectId(any()) } returns false
         every { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(any()) } returns setOf()
         every { studentSearchPort.getById(any()) } returns candidatureOwner
-        every { subjectSearchPort.getById(any(), false) } returns subject
+        every { subjectSearchPort.getById(any(), false) } returns verifiedSubject
         every { candidatureMutationPort.insert(any()) } answers { i ->
-             (i.invocation.args[0] as Candidature).copy(candidatureId = candidatureId)
+            (i.invocation.args[0] as Candidature).copy(candidatureId = candidatureId)
         }
         every { candidatureMutationPort.insertAcceptances(any()) } returns setOf()
 
@@ -149,10 +207,10 @@ internal class CandidatureServiceAdapterTest {
 
         // then
         verifySequence {
-            subjectSearchPort.getById(subject.subjectId!!, false)
+            subjectSearchPort.getById(verifiedSubject.subjectId!!, false)
+            studentSearchPort.existsAllBySubjectId(verifiedSubject.subjectId!!)
             studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(setOf(candidatureOwner.studentId!!))
             studentSearchPort.getById(candidatureOwner.studentId!!)
-            subjectSearchPort.getById(subject.subjectId!!, false)
             clock.instant()
             candidatureMutationPort.insert(candidature)
             candidatureMutationPort.insertAcceptances(setOf())
@@ -166,14 +224,14 @@ internal class CandidatureServiceAdapterTest {
         // given
         val candidatureCreation = CandidatureCreation(
             studentId = candidatureOwner.studentId!!,
-            subjectId = subject.subjectId!!,
+            subjectId = verifiedSubject.subjectId!!,
             coauthors = setOf(studentWithoutSubject.studentId!!)
         )
 
         val candidatureId = 1L
         val candidature = Candidature(
             student = candidatureOwner,
-            subject = subject,
+            subject = verifiedSubject,
             creationDate = now
         )
 
@@ -184,10 +242,12 @@ internal class CandidatureServiceAdapterTest {
             candidature = expectedResult
         )
 
-        every { clock.instant()} returns now
+        every { clock.instant() } returns now
+        every { subjectSearchPort.getById(any(), any()) } returns verifiedSubject
+        every { studentSearchPort.existsAllBySubjectId(any()) } returns false
         every { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(any()) } returns setOf()
         every { studentSearchPort.getById(any()) } returns candidatureOwner andThen studentWithoutSubject
-        every { subjectSearchPort.getById(any(), false) } returns subject
+        every { subjectSearchPort.getById(any(), false) } returns verifiedSubject
         every { candidatureMutationPort.insert(any()) } answers { i ->
             (i.invocation.args[0] as Candidature).copy(candidatureId = candidatureId)
         }
@@ -198,9 +258,15 @@ internal class CandidatureServiceAdapterTest {
 
         // then
         verifySequence {
-            studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(setOf(studentWithoutSubject.studentId!!, candidatureOwner.studentId!!))
+            subjectSearchPort.getById(verifiedSubject.subjectId!!, false)
+            studentSearchPort.existsAllBySubjectId(verifiedSubject.subjectId!!)
+            studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(
+                setOf(
+                    studentWithoutSubject.studentId!!,
+                    candidatureOwner.studentId!!
+                )
+            )
             studentSearchPort.getById(candidatureOwner.studentId!!)
-            subjectSearchPort.getById(subject.subjectId!!, false)
             clock.instant()
             candidatureMutationPort.insert(candidature)
             studentSearchPort.getById(studentWithoutSubject.studentId!!)
@@ -211,16 +277,79 @@ internal class CandidatureServiceAdapterTest {
     }
 
     @Test
+    fun `should try to create simple candidature to not verified subject and throw error`() {
+        // given
+        val candidatureCreation = CandidatureCreation(
+            studentId = candidatureOwner.studentId!!,
+            subjectId = draftSubject.subjectId!!,
+            coauthors = setOf(studentWithoutSubject.studentId!!)
+        )
+        val expectedExceptionMessage =
+            "Could not create a candidature because a subject ${draftSubject.subjectId} is not ${SubjectStatus.VERIFIED}"
+
+        every { subjectSearchPort.getById(any(), any()) } returns draftSubject
+
+        // when
+        val result = assertThrows<CandidatureConstraintViolationException> {
+            candidatureServiceAdapter.createCandidature(candidatureCreation)
+        }
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getById(draftSubject.subjectId!!, false) }
+        verify(exactly = 0) { studentSearchPort.existsAllBySubjectId(any()) }
+        verify(exactly = 0) { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(any()) }
+        verify(exactly = 0) { studentSearchPort.getById(any()) }
+        verify(exactly = 0) { candidatureMutationPort.insert(any()) }
+        verify(exactly = 0) { candidatureMutationPort.insertAcceptances(any()) }
+
+        assertEquals(expectedExceptionMessage, result.message)
+    }
+
+    @Test
+    fun `should try to create simple candidature to verified subject and throw error because subject is assigned to students`() {
+        // given
+        val candidatureCreation = CandidatureCreation(
+            studentId = candidatureOwner.studentId!!,
+            subjectId = verifiedSubject.subjectId!!,
+            coauthors = setOf(studentWithSubject.studentId!!)
+        )
+
+        val expectedExceptionMessage =
+            "Could not create a candidature because a subject ${verifiedSubject.subjectId} has already assigned students"
+
+        every { subjectSearchPort.getById(any(), any()) } returns verifiedSubject
+        every { studentSearchPort.existsAllBySubjectId(any()) } returns true
+
+        // when
+        val result = assertThrows<CandidatureConstraintViolationException> {
+            candidatureServiceAdapter.createCandidature(candidatureCreation)
+        }
+
+        // then
+        verify(exactly = 1) { subjectSearchPort.getById(verifiedSubject.subjectId!!, false) }
+        verify(exactly = 1) { studentSearchPort.existsAllBySubjectId(verifiedSubject.subjectId!!) }
+        verify(exactly = 0) { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(any()) }
+        verify(exactly = 0) { studentSearchPort.getById(any()) }
+        verify(exactly = 0) { candidatureMutationPort.insert(any()) }
+        verify(exactly = 0) { candidatureMutationPort.insertAcceptances(any()) }
+
+        assertEquals(expectedExceptionMessage, result.message)
+    }
+
+
+    @Test
     fun `should try to create simple candidature with coauthor that is attached to subject and throw error`() {
         // given
         val candidatureCreation = CandidatureCreation(
             studentId = candidatureOwner.studentId!!,
-            subjectId = subject.subjectId!!,
+            subjectId = verifiedSubject.subjectId!!,
             coauthors = setOf(studentWithSubject.studentId!!)
         )
         val expectedExceptionMessage =
-            "Can not create a candidature when one of its students realize a subject: [${studentWithSubject.studentId}]"
+            "Can not create a candidature when one of its students [${studentWithSubject.studentId}] realize a subject ${verifiedSubject.subjectId}"
 
+        every { subjectSearchPort.getById(any(), any()) } returns verifiedSubject
+        every { studentSearchPort.existsAllBySubjectId(any()) } returns false
         every { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(any()) } returns setOf(studentWithSubject)
 
         // when
@@ -229,12 +358,181 @@ internal class CandidatureServiceAdapterTest {
         }
 
         // then
-        verify(exactly = 1) { studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(setOf(studentWithSubject.studentId!!, candidatureOwner.studentId!!)) }
+        verify(exactly = 1) { subjectSearchPort.getById(verifiedSubject.subjectId!!, false) }
+        verify(exactly = 1) { studentSearchPort.existsAllBySubjectId(verifiedSubject.subjectId!!) }
+        verify(exactly = 1) {
+            studentSearchPort.findAllByStudentIdInAndSubjectIdNotNull(
+                setOf(
+                    studentWithSubject.studentId!!,
+                    candidatureOwner.studentId!!
+                )
+            )
+        }
         verify(exactly = 0) { studentSearchPort.getById(any()) }
-        verify(exactly = 0) { subjectSearchPort.getById(any(), false) }
         verify(exactly = 0) { candidatureMutationPort.insert(any()) }
         verify(exactly = 0) { candidatureMutationPort.insertAcceptances(any()) }
 
+        assertEquals(expectedExceptionMessage, result.message)
+    }
+
+    @Test
+    fun `should decide about candidature - accept`() {
+        // given
+        val accepted = true
+        val candidatureId = candidatureToVerifiedSubject.candidatureId!!
+        val subjectId = verifiedSubject.subjectId!!
+        val studentId = candidatureOwner.studentId!!
+        val subjectStatusUpdate = SubjectStatusUpdate(
+            subjectId = subjectId,
+            status = SubjectStatus.RESERVED
+        )
+
+        every { candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(any()) } returns false
+        every { candidatureSearchPort.getCandidatureById(any()) } returns candidatureToVerifiedSubject
+        every { candidatureMutationPort.updateAcceptedById(any(), any()) } returns 1L
+        every { candidatureSearchPort.getCandidatureAcceptanceByCandidatureId(any()) } returns setOf()
+        every { subjectMutationPort.updateStatus(any()) } returns subjectStatusUpdate
+        every { candidatureMutationPort.updateAcceptedToFalseWithExclusiveIdBySubjectId(any(), any()) } returns 0
+        every { studentMutationPort.updateSubjectIdByStudentIdIn(any(), any()) } returns setOf(studentId)
+
+        // when
+        val result = candidatureServiceAdapter.decideAboutCandidature(
+            candidatureId,
+            accepted
+        )
+
+        // then
+        verifySequence {
+            candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(
+                candidatureId
+            )
+            candidatureSearchPort.getCandidatureById(candidatureId)
+            candidatureMutationPort.updateAcceptedById(candidatureId, accepted)
+            subjectMutationPort.updateStatus(subjectStatusUpdate)
+            candidatureMutationPort.updateAcceptedToFalseWithExclusiveIdBySubjectId(subjectId, candidatureId)
+            candidatureSearchPort.getCandidatureAcceptanceByCandidatureId(candidatureId)
+            studentMutationPort.updateSubjectIdByStudentIdIn(setOf(studentId), subjectId)
+        }
+
+        assertEquals(candidatureId, result)
+    }
+
+    @Test
+    fun `should decide about candidature - reject`() {
+        // given
+        val accepted = false
+        val candidatureId = candidatureToVerifiedSubject.candidatureId!!
+
+        every { candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(any()) } returns false
+        every { candidatureSearchPort.getCandidatureById(any()) } returns candidatureToVerifiedSubject
+        every { candidatureMutationPort.updateAcceptedById(any(), any()) } returns 1L
+
+        // when
+        val result = candidatureServiceAdapter.decideAboutCandidature(
+            candidatureId,
+            accepted
+        )
+
+        // then
+        verifySequence {
+            candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(
+                candidatureId
+            )
+            candidatureSearchPort.getCandidatureById(candidatureId)
+            candidatureMutationPort.updateAcceptedById(candidatureId, accepted)
+        }
+
+        assertEquals(candidatureId, result)
+    }
+
+    @Test
+    fun `should try to decide about candidature but some not accepted acceptances exist`() {
+        // given
+        val accepted = true
+        val candidatureId = candidatureToVerifiedSubject.candidatureId!!
+
+        val expectedExceptionMessage =
+            "Could not decide about a candidature with id $candidatureId because some not accepted candidature acceptances exist"
+
+        every { candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(any()) } returns true
+
+        // when
+        val result = assertThrows<CandidatureConstraintViolationException> {
+            candidatureServiceAdapter.decideAboutCandidature(
+                candidatureId,
+                accepted
+            )
+        }
+
+        // then
+        verifySequence {
+            candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(
+                candidatureId
+            )
+        }
+
+        assertEquals(expectedExceptionMessage, result.message)
+    }
+
+    @Test
+    fun `should try to decide about candidature but a subject is not verified`() {
+        // given
+        val accepted = true
+        val candidatureId = candidatureToNotVerifiedSubject.candidatureId!!
+
+        val expectedExceptionMessage =
+            "Could not decide about a candidature with id $candidatureId because a subject is not ${SubjectStatus.VERIFIED}"
+
+        every { candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(any()) } returns false
+        every { candidatureSearchPort.getCandidatureById(any()) } returns candidatureToNotVerifiedSubject
+
+        // when
+        val result = assertThrows<CandidatureConstraintViolationException> {
+            candidatureServiceAdapter.decideAboutCandidature(
+                candidatureId,
+                accepted
+            )
+        }
+
+        // then
+        verifySequence {
+            candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(
+                candidatureId
+            )
+            candidatureSearchPort.getCandidatureById(candidatureId)
+        }
+
+        assertEquals(expectedExceptionMessage, result.message)
+    }
+
+    @Test
+    fun `should try to decide about candidature but a subject has an initiator`() {
+        // given
+        val accepted = true
+        val candidature = candidatureToVerifiedSubjectWithInitiator
+        val candidatureId = candidature.candidatureId!!
+
+        val expectedExceptionMessage =
+            "Could not decide about a candidature with id $candidatureId because a subject has an initiator"
+
+        every { candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(any()) } returns false
+        every { candidatureSearchPort.getCandidatureById(any()) } returns candidature
+
+        // when
+        val result = assertThrows<CandidatureConstraintViolationException> {
+            candidatureServiceAdapter.decideAboutCandidature(
+                candidatureId,
+                accepted
+            )
+        }
+
+        // then
+        verifySequence {
+            candidatureSearchPort.existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(
+                candidatureId
+            )
+            candidatureSearchPort.getCandidatureById(candidatureId)
+        }
         assertEquals(expectedExceptionMessage, result.message)
     }
 
@@ -246,7 +544,7 @@ internal class CandidatureServiceAdapterTest {
         val candidature = Candidature(
             candidatureId = 1,
             student = candidatureOwner,
-            subject = subject,
+            subject = verifiedSubject,
             creationDate = now
         )
 
@@ -261,13 +559,19 @@ internal class CandidatureServiceAdapterTest {
         every { candidatureMutationPort.updateAcceptanceAcceptedById(any(), any()) } returns 1L
 
         // when
-        val result = candidatureServiceAdapter.decideAboutCandidatureAcceptance(candidatureAcceptance.candidatureAcceptanceId!!, accepted)
+        val result = candidatureServiceAdapter.decideAboutCandidatureAcceptance(
+            candidatureAcceptance.candidatureAcceptanceId!!,
+            accepted
+        )
 
         // then
         verifySequence {
             candidatureSearchPort.getCandidatureAcceptanceById(candidatureAcceptance.candidatureAcceptanceId!!)
             studentSearchPort.existsByStudentIdAndSubjectIdNotNull(studentWithoutSubject.studentId!!)
-            candidatureMutationPort.updateAcceptanceAcceptedById(candidatureAcceptance.candidatureAcceptanceId!!, accepted)
+            candidatureMutationPort.updateAcceptanceAcceptedById(
+                candidatureAcceptance.candidatureAcceptanceId!!,
+                accepted
+            )
         }
 
         assertEquals(candidatureAcceptance.candidatureAcceptanceId!!, result)
@@ -281,7 +585,7 @@ internal class CandidatureServiceAdapterTest {
         val candidature = Candidature(
             candidatureId = 1,
             student = candidatureOwner,
-            subject = subject,
+            subject = verifiedSubject,
             creationDate = now
         )
 
@@ -291,7 +595,8 @@ internal class CandidatureServiceAdapterTest {
             candidature = candidature
         )
 
-        val expectedExceptionMessage = "Can not decide about candidature acceptance with id ${candidatureAcceptance.candidatureAcceptanceId} because it have not been updated"
+        val expectedExceptionMessage =
+            "Can not decide about candidature acceptance with id ${candidatureAcceptance.candidatureAcceptanceId} because it have not been updated"
 
         every { candidatureSearchPort.getCandidatureAcceptanceById(any()) } returns candidatureAcceptance
         every { studentSearchPort.existsByStudentIdAndSubjectIdNotNull(any()) } returns false
@@ -299,14 +604,20 @@ internal class CandidatureServiceAdapterTest {
 
         // when
         val result = assertThrows<CandidatureAcceptanceConstraintViolationException> {
-            candidatureServiceAdapter.decideAboutCandidatureAcceptance(candidatureAcceptance.candidatureAcceptanceId!!, accepted)
+            candidatureServiceAdapter.decideAboutCandidatureAcceptance(
+                candidatureAcceptance.candidatureAcceptanceId!!,
+                accepted
+            )
         }
 
         // then
         verifySequence {
             candidatureSearchPort.getCandidatureAcceptanceById(candidatureAcceptance.candidatureAcceptanceId!!)
             studentSearchPort.existsByStudentIdAndSubjectIdNotNull(studentWithoutSubject.studentId!!)
-            candidatureMutationPort.updateAcceptanceAcceptedById(candidatureAcceptance.candidatureAcceptanceId!!, accepted)
+            candidatureMutationPort.updateAcceptanceAcceptedById(
+                candidatureAcceptance.candidatureAcceptanceId!!,
+                accepted
+            )
         }
 
         assertEquals(expectedExceptionMessage, result.message)
@@ -320,7 +631,7 @@ internal class CandidatureServiceAdapterTest {
         val candidature = Candidature(
             candidatureId = 1,
             student = candidatureOwner,
-            subject = subject,
+            subject = verifiedSubject,
             creationDate = now
         )
 
@@ -338,7 +649,10 @@ internal class CandidatureServiceAdapterTest {
 
         // when
         val result = assertThrows<CandidatureAcceptanceConstraintViolationException> {
-            candidatureServiceAdapter.decideAboutCandidatureAcceptance(candidatureAcceptance.candidatureAcceptanceId!!, accepted)
+            candidatureServiceAdapter.decideAboutCandidatureAcceptance(
+                candidatureAcceptance.candidatureAcceptanceId!!,
+                accepted
+            )
         }
 
         // then
