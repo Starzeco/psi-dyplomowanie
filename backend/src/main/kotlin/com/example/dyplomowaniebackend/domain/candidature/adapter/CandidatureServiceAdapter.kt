@@ -87,18 +87,14 @@ class CandidatureServiceAdapter(
             "Can not decide about candidature with id $candidatureId because it have not been updated"
         )
 
-        val subjectId = candidature.subject.subjectId!!
-
-        // change a subject status
-        val subjectStatus = if (accepted) SubjectStatus.RESERVED else SubjectStatus.REJECTED
-        val subjectStatusUpdate = SubjectStatusUpdate(
-            subjectId = subjectId,
-            status = subjectStatus
-        )
-        subjectMutationPort.updateStatus(subjectStatusUpdate)
-
-        // if the candidature is accepted then reject others and assign students to a subject
+        // if the candidature is accepted then reject others and assign students to a subject and change a subject status
         if (accepted) {
+            val subjectId = candidature.subject.subjectId!!
+            val subjectStatusUpdate = SubjectStatusUpdate(
+                subjectId = subjectId,
+                status = SubjectStatus.RESERVED
+            )
+            subjectMutationPort.updateStatus(subjectStatusUpdate)
             candidatureMutationPort.updateAcceptedToFalseWithExclusiveIdBySubjectId(subjectId, candidatureId)
             val initiatorId = candidature.student.studentId!!
             val coauthorsIds = candidatureSearchPort.getCandidatureAcceptanceByCandidatureId(candidatureId).map { it.student.studentId!! }
