@@ -5,6 +5,7 @@ import { ComponentsModule } from './components/components.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ViewsModule } from './views/views.module';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     BrowserModule,
     HttpClientModule,
     ComponentsModule,
+    ViewsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

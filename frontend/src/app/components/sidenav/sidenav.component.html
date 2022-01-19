@@ -46,6 +46,9 @@
         </span>
     </mat-sidenav>
     <mat-sidenav-content>
-        <ng-content></ng-content>
+        <ng-content select="[toolbar]"></ng-content>
+        <div class="sidenav-content">
+            <ng-content></ng-content>
+        </div>
     </mat-sidenav-content>
 </mat-sidenav-container>

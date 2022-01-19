@@ -10,6 +10,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from "@angular/router";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidenavComponent } from './sidenav/sidenav.component';
@@ -29,6 +30,7 @@ const MAT_MODULES = [
   MatFormFieldModule,
   MatSelectModule,
   MatProgressSpinnerModule,
+  MatCardModule,
 ];
 
 @NgModule({
