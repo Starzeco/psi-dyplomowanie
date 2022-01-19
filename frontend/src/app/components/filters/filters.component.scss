@@ -5,13 +5,12 @@ app-filters {
     .container {
         display: flex;
         flex-flow: row wrap;
-
+        justify-content: space-between;
     }
 
     .filters-container {
         display: flex;
         flex-flow: row wrap;
-        gap: 1rem;
         min-width: 75%;
     }
 
