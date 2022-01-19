@@ -7,5 +7,10 @@
     "en": "English",
     "pl": "Polish",
     "informatyka_stosowana": "Applied Computer Science",
-    "master": "Master's degree"
+    "master": "Master's degree",
+    "loading_state_message": "Loading...",
+    "error_state_message": "Some error occured!",
+    "error_state_try_again": "Try again",
+    "empty_state_message": "Nothing has been found",
+    "empty_state_refetch": "Refetch"
 }

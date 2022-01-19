@@ -7,5 +7,10 @@
     "en": "Angielski",
     "pl": "Polski",
     "informatyka_stosowana": "Informatyka Stosowana",
-    "master": "Studia magisterskie"
+    "master": "Studia magisterskie",
+    "loading_state_message": "Ładowanie...",
+    "error_state_message": "Wystąpił błąd!",
+    "error_state_try_again": "Spróbuj ponownie",
+    "empty_state_message": "Nic nie zostało znalezione",
+    "empty_state_refetch": "Pobierz ponownie"
 }
