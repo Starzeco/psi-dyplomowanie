@@ -1,0 +1,10 @@
+app-toolbar {
+    .spacer {
+        flex: 1 1 auto;
+    }
+
+    .buttons-container {
+        display: flex;
+        gap: 1rem;
+    }
+}
