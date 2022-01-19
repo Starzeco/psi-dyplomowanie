@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
@@ -20,6 +21,9 @@ import {
 } from './loading-state/loading-state.component';
 import { ErrorStateComponent } from './error-state/error-state.component';
 import { EmptyStateComponent } from './empty-state/empty-state.component';
+import { FiltersComponent } from './filters/filters.component';
+import { TextSearchFilterComponent } from './filters/text-search-filter/text-search-filter.component';
+import { SelectFilterComponent } from './filters/select-filter/select-filter.component';
 
 const MAT_MODULES = [
   MatSidenavModule,
@@ -28,6 +32,7 @@ const MAT_MODULES = [
   MatIconModule,
   MatDividerModule,
   MatFormFieldModule,
+  MatInputModule,
   MatSelectModule,
   MatProgressSpinnerModule,
   MatCardModule,
@@ -40,6 +45,9 @@ const MAT_MODULES = [
     LoadingStateComponent,
     ErrorStateComponent,
     EmptyStateComponent,
+    FiltersComponent,
+    TextSearchFilterComponent,
+    SelectFilterComponent,
   ],
   exports: [
     SidenavComponent,
@@ -48,6 +56,8 @@ const MAT_MODULES = [
     LoadingStateComponent,
     ErrorStateComponent,
     EmptyStateComponent,
+    FiltersComponent,
+    TextSearchFilterComponent,
   ],
   imports: [
     CommonModule,

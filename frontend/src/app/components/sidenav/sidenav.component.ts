@@ -37,7 +37,6 @@ export class SidenavComponent {
     this.currentLanguage = translateService.getDefaultLang()
   }
 
-
   switchLanguage(event: MatSelectChange) {
     this.translateService.use(event.value as string)
   }

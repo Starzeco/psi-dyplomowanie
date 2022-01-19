@@ -12,5 +12,8 @@
     "error_state_message": "Wystąpił błąd!",
     "error_state_try_again": "Spróbuj ponownie",
     "empty_state_message": "Nic nie zostało znalezione",
-    "empty_state_refetch": "Pobierz ponownie"
+    "empty_state_refetch": "Pobierz ponownie",
+    "status": "Status",
+    "type": "Typ",
+    "search_by_topic_and_supervison": "Szukaj po temacie oraz promotorze"
 }

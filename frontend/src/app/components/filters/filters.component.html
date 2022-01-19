@@ -1,0 +1,25 @@
+<div class="container">
+    <span class="filters-container">
+        <ng-container *ngFor="let filterConfig of filtersConfig">
+
+            <ng-container [ngSwitch]="filterConfig.type">
+
+                <ng-container *ngSwitchCase="'SELECT'">
+                    <app-select-filter [config]="asSelectFilterConfig(filterConfig)"></app-select-filter>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'TEXT_SEARCH'">
+                    <app-text-search-filter [config]="asTextSearchFilterConfig(filterConfig)"></app-text-search-filter>
+                </ng-container>
+
+                <span *ngSwitchDefault=""></span>
+                
+            </ng-container>
+
+        </ng-container>
+    </span>
+    <span class="spacer"></span>
+    <span>
+        <button mat-raised-button color="primary">Primary</button>
+    </span>
+</div>

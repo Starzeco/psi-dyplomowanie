@@ -34,7 +34,7 @@
         <span>
             <mat-divider></mat-divider>
             <div class="sidenav-elem">
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="outline">
                     <mat-label>{{'language' | translate}}</mat-label>
                     <mat-select [value]="currentLanguage" (selectionChange)="switchLanguage($event)">
                         <mat-option *ngFor="let language of languages" [value]="language">

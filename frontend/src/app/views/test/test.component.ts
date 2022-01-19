@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FilterConfig } from 'src/app/components/filters/filters.component';
 
 export interface PeriodicElement {
   name: string;
@@ -20,6 +21,26 @@ const ELEMENT_DATA: PeriodicElement[] = [
   {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
 ];
 
+const filtersConfig_: FilterConfig[] = [
+  {
+    name: 'text_search',
+    labelKey: 'search_by_topic_and_supervison',
+    type: 'TEXT_SEARCH'
+  },
+  {
+    name: 'status',
+    labelKey: 'status',
+    options: [],
+    type: 'SELECT',
+  },
+  {
+    name: 'type',
+    labelKey: 'type',
+    options: [],
+    type: 'SELECT',
+  }
+]
+
 @Component({
   selector: 'app-test',
   templateUrl: './test.component.html',
@@ -29,4 +50,5 @@ export class TestComponent {
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
+  filtersConfig = filtersConfig_
 }

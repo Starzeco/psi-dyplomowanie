@@ -12,5 +12,8 @@
     "error_state_message": "Some error occured!",
     "error_state_try_again": "Try again",
     "empty_state_message": "Nothing has been found",
-    "empty_state_refetch": "Refetch"
+    "empty_state_refetch": "Refetch",
+    "status": "Status",
+    "type": "Type",
+    "search_by_topic_and_supervison": "Search by topic and supervisor"
 }
