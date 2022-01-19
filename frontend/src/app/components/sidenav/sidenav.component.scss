@@ -1,8 +1,49 @@
-.sidenav-conatiner {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #eee;
+app-sidenav {
+    .mat-drawer-container{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+
+    mat-sidenav {
+        width: 15vw;
+
+        .mat-drawer-inner-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    }
+
+    .sidenav-elem {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .user-session-info {
+        gap: unset;
+        grid-gap: unset;
+    }
+
+    .logo {
+        width: 50%;
+        height: auto;
+        margin: auto;
+    }
+
+    .link {
+        text-align: left;
+    }
+
+    .link-text {
+        white-space: pre-wrap !important;
+    }
+
+    .sidenav-content {
+        padding: 1rem;
+    }
 }

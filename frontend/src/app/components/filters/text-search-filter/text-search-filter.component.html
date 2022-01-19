@@ -1,0 +1,7 @@
+<mat-form-field class="search-form-field" appearance="outline">
+    <mat-label>{{config.labelKey | translate}}</mat-label>
+    <input [formControl]="formControl" matInput autocomplete="off" type="search">
+    <button *ngIf="formControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="formControl.reset()">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-form-field>

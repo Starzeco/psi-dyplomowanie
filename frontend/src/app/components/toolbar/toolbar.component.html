@@ -1,0 +1,13 @@
+<mat-toolbar color="primary">
+    <span>
+        <mat-icon>{{iconName}}</mat-icon>
+    </span>
+    <span class="title-container">{{ titleKey | translate }}</span>
+    <span class="spacer"></span>
+    <span class="buttons-container">
+        <button *ngFor="let buttonConfig of buttonsConfig" [disabled]="buttonConfig.disabled"
+            (click)="buttonConfig.click()" mat-raised-button>
+            {{buttonConfig.textKey | translate}}
+        </button>
+    </span>
+</mat-toolbar>

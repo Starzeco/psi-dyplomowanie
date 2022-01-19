@@ -1,5 +1,54 @@
-<mat-sidenav-container class="sidenav-container">
-    <mat-sidenav mode="side" opened>Sidenav content</mat-sidenav>
-    <mat-sidenav-content>Main content</mat-sidenav-content>
+<mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+        <span>
+            <div class="sidenav-elem">
+                <img class="logo" src="assets/images/pwr-logo.png">
+            </div>
+            <mat-divider></mat-divider>
+            <div class="sidenav-elem user-session-info" style="text-align: center;">
+                <span class="mat-h2">
+                    {{userSessionConfig.userFullName}}
+                </span>
+                <span class="mat-small">
+                    {{userSessionConfig.facultyShortName}}, {{userSessionConfig.degreeCourseNameKey | translate}}
+                </span>
+                <span class="mat-small">
+                    {{userSessionConfig.degreeNameKey | translate}}
+                </span>
+                <span class="mat-small">
+                    {{userSessionConfig.initialSemesterName}} - {{userSessionConfig.finalSemesterName}}
+                </span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="sidenav-elem">
+                <a *ngFor="let linkConfig of linksConfig" mat-button class="link" href="{{linkConfig.href}}">
+                    <mat-icon *ngIf="linkConfig.iconName!!" inline="true">
+                        {{linkConfig.iconName}}
+                    </mat-icon>
+                    <span class="link-text">
+                        {{linkConfig.textKey | translate}}
+                    </span>
+                </a>
+            </div>
+        </span>
+        <span>
+            <mat-divider></mat-divider>
+            <div class="sidenav-elem">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'language' | translate}}</mat-label>
+                    <mat-select [value]="currentLanguage" (selectionChange)="switchLanguage($event)">
+                        <mat-option *ngFor="let language of languages" [value]="language">
+                            {{language | translate}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </span>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <ng-content select="[toolbar]"></ng-content>
+        <div class="sidenav-content">
+            <ng-content></ng-content>
+        </div>
+    </mat-sidenav-content>
 </mat-sidenav-container>
-  
