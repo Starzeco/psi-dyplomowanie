@@ -6,7 +6,7 @@
     "language": "Language",
     "en": "English",
     "pl": "Polish",
-    "informatyka_stosowana": "Applied Computer Science",
+    "applied_computer_science": "Applied Computer Science",
     "master": "Master's degree",
     "loading_state_message": "Loading...",
     "error_state_message": "Some error occured!",
@@ -15,5 +15,6 @@
     "empty_state_refetch": "Refetch",
     "status": "Status",
     "type": "Type",
-    "search_by_topic_and_supervison": "Search by topic and supervisor"
+    "search_by_topic_and_supervison": "Search by topic and supervisor",
+    "clear": "Clear"
 }

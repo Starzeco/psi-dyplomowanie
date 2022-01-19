@@ -38,7 +38,7 @@ const userSessionConfig_: UserSessionConfig = {
   initialSemesterName: "Z21/22",
   finalSemesterName: "L21/22",
   facultyShortName: "W4N",
-  degreeCourseNameKey: "informatyka_stosowana",
+  degreeCourseNameKey: "applied_computer_science",
   degreeNameKey: "master"
 }
 
@@ -47,7 +47,6 @@ const userSessionConfig_: UserSessionConfig = {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-
 export class AppComponent {
 
   readonly buttonsConfig: ButtonConfig[] = buttonsConfig_

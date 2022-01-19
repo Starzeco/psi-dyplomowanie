@@ -2,8 +2,8 @@
   <mat-tab-group>
     <mat-tab label="First">
       <div class="tab-content">
-        <app-filters [filtersConfig]="filtersConfig"></app-filters>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <app-filters [filtersConfig]="filtersConfig" (filtersChange)=(logFiltersChange($event))></app-filters>
+        <table mat-table [dataSource]="dataSource">
 
           <ng-container matColumnDef="position">
             <th mat-header-cell *matHeaderCellDef> No. </th>
