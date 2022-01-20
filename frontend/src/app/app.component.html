@@ -1,7 +1,7 @@
-<app-sidenav [userSessionConfig]="userSessionConfig" [linksConfig]="linksConfig">
-    <app-toolbar titleKey="university_name" iconName="home" [buttonsConfig]="buttonsConfig" toolbar></app-toolbar>
+<app-sidenav>
+    <app-toolbar iconName="home" toolbar></app-toolbar>
     <!-- <app-loading-state></app-loading-state>
     <app-error-state></app-error-state>
     <app-empty-state></app-empty-state> -->
-    <app-test></app-test>
+    <router-outlet></router-outlet>
 </app-sidenav>

@@ -6,6 +6,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ViewsModule } from './views/views.module';
+import { AppRoutingModule } from "./app-routing.module";
+import {StudentPageModule} from "./views/student-page/student-page.module";
+import {SupervisorPageModule} from "./views/supervisor-page/supervisor-page.module";
+import {VerifierPageModule} from "./views/verifier-page/verifier-page.module";
 
 
 @NgModule({
@@ -17,6 +21,10 @@ import { ViewsModule } from './views/views.module';
     HttpClientModule,
     ComponentsModule,
     ViewsModule,
+    StudentPageModule,
+    SupervisorPageModule,
+    VerifierPageModule,
+    AppRoutingModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

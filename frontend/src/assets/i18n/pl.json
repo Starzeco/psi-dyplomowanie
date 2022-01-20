@@ -15,5 +15,8 @@
     "empty_state_refetch": "Pobierz ponownie",
     "status": "Status",
     "type": "Typ",
-    "search_by_topic_and_supervison": "Szukaj po temacie oraz promotorze"
+    "search_by_topic_and_supervison": "Szukaj po temacie oraz promotorze",
+    "create_subject": "Zgłoś temat",
+    "subjects_header": "Tematy Prac Dyplomowych",
+    "graduation_process_header": "Twoje procesy dyplomowania"
 }
