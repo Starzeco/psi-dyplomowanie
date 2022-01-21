@@ -6,7 +6,7 @@
     "language": "Language",
     "en": "English",
     "pl": "Polish",
-    "informatyka_stosowana": "Applied Computer Science",
+    "applied_computer_science": "Applied Computer Science",
     "master": "Master's degree",
     "loading_state_message": "Loading...",
     "error_state_message": "Some error occured!",
@@ -18,5 +18,6 @@
     "search_by_topic_and_supervison": "Search by topic and supervisor",
     "create_subject": "Create subject",
     "subjects_header": "Thesis topics",
-    "graduation_process_header": "Graduation Processes"
+    "graduation_process_header": "Graduation Processes",
+    "clear": "Clear"
 }

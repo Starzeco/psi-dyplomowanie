@@ -6,7 +6,7 @@
     "language": "Język",
     "en": "Angielski",
     "pl": "Polski",
-    "informatyka_stosowana": "Informatyka Stosowana",
+    "applied_computer_science": "Informatyka Stosowana",
     "master": "Studia magisterskie",
     "loading_state_message": "Ładowanie...",
     "error_state_message": "Wystąpił błąd!",
@@ -18,5 +18,6 @@
     "search_by_topic_and_supervison": "Szukaj po temacie oraz promotorze",
     "create_subject": "Zgłoś temat",
     "subjects_header": "Tematy Prac Dyplomowych",
-    "graduation_process_header": "Twoje procesy dyplomowania"
+    "graduation_process_header": "Twoje procesy dyplomowania",
+    "clear": "Wyczyść"
 }

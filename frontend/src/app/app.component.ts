@@ -8,7 +8,6 @@ import { Language } from './core/language';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-
 export class AppComponent {
 
   constructor(

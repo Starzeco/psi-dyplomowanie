@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, Subscription } from 'rxjs';
-import { DefaultFilterConfig } from '../filters.component';
+import { DefaultFilterComponent, DefaultFilterConfig, DefaultFilterEvent } from '../filters.core.';
 
 
 export type TextSearchFilterConfig = DefaultFilterConfig & {
@@ -13,12 +13,12 @@ export type TextSearchFilterConfig = DefaultFilterConfig & {
   templateUrl: './text-search-filter.component.html',
   styleUrls: ['./text-search-filter.component.scss']
 })
-export class TextSearchFilterComponent implements OnInit, OnDestroy {
+export class TextSearchFilterComponent extends DefaultFilterComponent implements OnInit, OnDestroy {
 
   @Input() config!: TextSearchFilterConfig;
-  @Output() filterChange = new EventEmitter<string>();
+  @Output() filterChange = new EventEmitter<DefaultFilterEvent>();
 
-  readonly formControl = new FormControl({ value: '' })
+  readonly formControl = new FormControl()
 
   private subscription!: Subscription;
 
@@ -27,12 +27,20 @@ export class TextSearchFilterComponent implements OnInit, OnDestroy {
     this.subscription = this.formControl.valueChanges.pipe(
       debounceTime(300),
     ).subscribe((value: string) => {
-      this.filterChange.emit(value);
+      this.filterChange.emit({
+        source: this.config.name,
+        value,
+      });
     });
   }
 
   ngOnDestroy(): void {
     this.subscription && this.subscription.unsubscribe();
+  }
+
+  clear(): void {
+    if (this.formControl.value)
+      this.formControl.reset()
   }
 
 }
