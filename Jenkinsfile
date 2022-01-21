@@ -1,20 +1,9 @@
 pipeline {
-    agent any
-    tools {
-        jdk 'jdk9'
-    	maven 'Maven 3.8.4'
-    	nodejs "node"
+    agent {
+    	docker { image 'docker:git'}
     }
     
     stages {
-    	stage('Initialize') {
-    		steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                '''
-            }
-    	}
     	
     	stage('Cloning Git') {
       		steps {
@@ -27,7 +16,7 @@ pipeline {
 			steps {
 				sh '''
 					cd backend
-                    mvn clean -Dmaven.test.skip=true package
+                    docker build -t psi-backend .
                 '''
 			}
 		}
@@ -35,7 +24,7 @@ pipeline {
 			steps {
 				sh '''
 					cd frontend
-                    npm run build -- --prod
+                    docker build -t psi-frontend .
                 '''
 			}
 		}
