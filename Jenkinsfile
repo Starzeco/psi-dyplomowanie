@@ -1,21 +1,42 @@
 pipeline {
-    agent none
+    agent any
+    tools {
+    	maven 'Maven 3.3.9'
+        jdk 'jdk8'
+    	nodejs "node"
+    }
     
     stages {
-		stage('Back-end') {
-			agent {
-				docker { image 'maven:3-alpine' }
-			}
+    	stage('Initialize') {
+    		steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                '''
+            }
+    	}
+    	
+    	stage('Cloning Git') {
+      		steps {
+        		git 'https://github.com/Starzeco/psi-dyplomowanie'
+      		}
+    	}
+    	
+		stage('Back-end-build') {
+			
 			steps {
-				sh 'mvn --version'
+				sh '''
+					cd backend
+                    mvn clean -Dmaven.test.skip=true package
+                '''
 			}
 		}
-		stage('Front-end') {
-			agent {
-				docker { image 'node:14-alpine' }
-			}
+		stage('Front-end-build') {
 			steps {
-				sh 'node --version'
+				sh '''
+					cd frontend
+                    npm run build -- --prod
+                '''
 			}
 		}
 	}
