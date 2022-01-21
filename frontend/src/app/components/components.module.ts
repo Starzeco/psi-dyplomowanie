@@ -13,7 +13,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from "@angular/router";
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import {
@@ -64,7 +63,6 @@ const MAT_MODULES = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    BrowserAnimationsModule,
     TranslateModule,
     ...MAT_MODULES,
   ]

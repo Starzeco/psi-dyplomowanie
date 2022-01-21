@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {LinkConfigService} from "../../shared/link-config.service";
-import {SessionConfigService} from "../../shared/session-config.service";
-import {LinkConfig, UserSessionConfig} from "../../components/sidenav/sidenav.component";
+import { LinkConfigService } from "../../shared/link-config.service";
+import { SessionConfigService } from "../../shared/session-config.service";
+import { LinkConfig, UserSessionConfig } from "../../components/sidenav/sidenav.component";
 
 
 const linksConfig_: LinkConfig[] = [
@@ -23,14 +23,16 @@ const userSessionConfig_: UserSessionConfig = {
 
 
 @Component({
-  selector: 'app-student-page',
-  templateUrl: './student-page.component.html',
-  styleUrls: ['./student-page.component.scss']
+  selector: 'app-student-view',
+  templateUrl: './student-view.component.html',
+  styleUrls: ['./student-view.component.scss']
 })
-export class StudentPageComponent implements OnInit {
+export class StudentViewComponent implements OnInit {
 
-  constructor(private readonly linkConfigService: LinkConfigService,
-              private readonly sessionConfigService: SessionConfigService,) { }
+  constructor(
+    private readonly linkConfigService: LinkConfigService,
+    private readonly sessionConfigService: SessionConfigService
+  ) { }
 
   ngOnInit(): void {
     this.linkConfigService.updateLinkConfig(linksConfig_);

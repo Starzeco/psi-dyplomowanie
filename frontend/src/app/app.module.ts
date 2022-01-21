@@ -6,10 +6,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ViewsModule } from './views/views.module';
-import { AppRoutingModule } from "./app-routing.module";
-import {StudentPageModule} from "./views/student-page/student-page.module";
-import {SupervisorPageModule} from "./views/supervisor-page/supervisor-page.module";
-import {VerifierPageModule} from "./views/verifier-page/verifier-page.module";
+import { RouterModule } from '@angular/router';
+import { APP_ROUTES } from './app.routes';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -18,13 +17,11 @@ import {VerifierPageModule} from "./views/verifier-page/verifier-page.module";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     ComponentsModule,
     ViewsModule,
-    StudentPageModule,
-    SupervisorPageModule,
-    VerifierPageModule,
-    AppRoutingModule,
+    RouterModule.forRoot(APP_ROUTES),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -34,6 +31,9 @@ import {VerifierPageModule} from "./views/verifier-page/verifier-page.module";
         deps: [HttpClient]
       }
     })
+  ],
+  exports: [
+    RouterModule
   ],
   providers: [],
   bootstrap: [
