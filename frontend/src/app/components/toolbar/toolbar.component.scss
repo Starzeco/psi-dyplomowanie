@@ -1,0 +1,22 @@
+app-toolbar {
+
+  mat-toolbar {
+    min-height: 4rem;
+    height: auto !important;
+    padding: 1rem 1rem !important;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .title-container {
+    white-space: pre-wrap !important;
+  }
+
+  .buttons-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+}
