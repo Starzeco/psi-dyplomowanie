@@ -33,11 +33,13 @@ pipeline {
 			}
 		}
 		
-		stage('Push images') {
-			sh '''
-				docker push $BACKEND_IMAGE_NAME:$IMAGE_TAG
-				docker push $FRONTEND_IMAGE_NAME:$IMAGE_TAG
-			'''
+		stage('Push-images') {
+			steps {
+				sh '''
+					docker push $BACKEND_IMAGE_NAME:$IMAGE_TAG
+					docker push $FRONTEND_IMAGE_NAME:$IMAGE_TAG
+				'''
+			}
 		}
 	}
 	
