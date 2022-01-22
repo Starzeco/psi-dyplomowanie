@@ -1,13 +1,7 @@
 pipeline {
-    agent any
+    agent none
     
     stages {
-    	
-    	stage('Cloning Git') {
-      		steps {
-        		git 'https://github.com/Starzeco/psi-dyplomowanie'
-      		}
-    	}
     	
 		stage('Back-end-build') {
 			agent {
