@@ -29,7 +29,7 @@ pipeline {
 		
 		stage('Front-end-build') {
 			steps {
-				sh 'docker build -t $FRONTEND_IMAGE_NAME:$IMAGE_TAG frontend/'
+				sh 'docker build --no-cache -t $FRONTEND_IMAGE_NAME:$IMAGE_TAG frontend/'
 			}
 		}
 		
