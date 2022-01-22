@@ -21,7 +21,7 @@ pipeline {
     	
 		stage('Back-end-build') {
 			steps {
-				sh 'docker build -t $BACKEND_IMAGE_NAME:$IMAGE_TAG backend/'
+				sh 'docker build --no-cache -t $BACKEND_IMAGE_NAME:$IMAGE_TAG backend/'
 			}
 		}
 		
