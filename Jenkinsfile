@@ -1,30 +1,49 @@
 pipeline {
-    agent none
+
+	agent {
+		label 'docker-build-node'
+	}
+	
+	environment {
+		DOCKERHUB_CREDENTIALS = credentials('abb56d58-f54e-467a-8c07-0055d2847982')
+		BACKEND_IMAGE_NAME = 'starzecstudent/psi-backend'
+		FRONTEND_IMAGE_NAME = 'starzecstudent/psi-frontend'
+		IMAGE_TAG = 'latest'
+	}
     
     stages {
     	
+    	stage('Login-dockerhub') {
+    		steps {
+    			sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+    		}
+    	}
+    	
 		stage('Back-end-build') {
-			agent {
-				docker { image 'maven:3.8.1-jdk-11' }
-			}
 			steps {
-				sh '''
-					cd backend
-                    mvn clean -Dmaven.test.skip=true package
-                '''
+				sh 'docker build -t $BACKEND_IMAGE_NAME:$IMAGE_TAG backend/'
 			}
 		}
+		
+		
+		
 		stage('Front-end-build') {
-			agent {
-				docker { image 'node:12.20-alpine' }
-			}
 			steps {
-				sh '''
-					cd frontend
-                    npm install
-                    npm run build -- --prod
-                '''
+				sh 'docker build -t $FRONTEND_IMAGE_NAME:$IMAGE_TAG frontend/'
 			}
+		}
+		
+		stage('Push images') {
+			sh '''
+				docker push $BACKEND_IMAGE_NAME:$IMAGE_TAG
+				docker push $FRONTEND_IMAGE_NAME:$IMAGE_TAG
+			'''
+		}
+	}
+	
+	post {
+		always {
+			sh 'docker logout'
 		}
 	}
 }
