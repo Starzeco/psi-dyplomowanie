@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm install & npm install -g @angular/cli
 COPY . .
-RUN ng build --configruation production
+RUN ng build --configuration production
 
 ### STAGE 2: Run ###
 FROM nginx:1.17.1-alpine
