@@ -2,9 +2,10 @@
 FROM node:12.20-alpine AS build
 
 WORKDIR /usr/src/app
-COPY package.json package-lock.json ./
-RUN npm install
+#COPY package.json package-lock.json ./
+#RUN npm install
 COPY . .
+RUN rm package-lock.json && npm install
 RUN npm run build -- --prod
 
 ### STAGE 2: Run ###
