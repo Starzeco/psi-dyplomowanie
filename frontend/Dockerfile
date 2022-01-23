@@ -2,9 +2,8 @@
 FROM node:16.13.2 AS build
 
 WORKDIR /usr/src/app
-COPY package.json package-lock.json ./
-RUN npm install & npm install -g @angular/cli
 COPY . .
+RUN npm install & npm install -g @angular/cli
 RUN ng build --configuration production
 
 ### STAGE 2: Run ###
