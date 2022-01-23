@@ -31,7 +31,7 @@ pipeline {
 			steps {
 				sh '''
 					cd frontend
-					docker build --no-cache -t $FRONTEND_IMAGE_NAME:$IMAGE_TAG .'
+					docker build --no-cache -t $FRONTEND_IMAGE_NAME:$IMAGE_TAG .
 				'''
 			}
 		}
