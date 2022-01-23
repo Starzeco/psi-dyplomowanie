@@ -18,5 +18,5 @@ export class GraduationProcessCardComponent {
 
   @Input() graduationProcess!: GraduationProcess
 
-  @Output() graduationProcessSelection = new EventEmitter<string>()
+  @Output() graduationProcessSelection = new EventEmitter<GraduationProcess>()
 }

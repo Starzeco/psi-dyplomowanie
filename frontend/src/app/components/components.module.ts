@@ -23,6 +23,8 @@ import { EmptyStateComponent } from './empty-state/empty-state.component';
 import { FiltersComponent } from './filters/filters.component';
 import { TextSearchFilterComponent } from './filters/text-search-filter/text-search-filter.component';
 import { SelectFilterComponent } from './filters/select-filter/select-filter.component';
+import { GraduationProcessesGridComponent } from './graduation-processes-grid/graduation-processes-grid.component';
+import { GraduationProcessCardComponent } from './graduation-processes-grid/graduation-process-card/graduation-process-card.component';
 
 const MAT_MODULES = [
   MatSidenavModule,
@@ -47,6 +49,8 @@ const MAT_MODULES = [
     FiltersComponent,
     TextSearchFilterComponent,
     SelectFilterComponent,
+    GraduationProcessesGridComponent,
+    GraduationProcessCardComponent,
   ],
   exports: [
     SidenavComponent,
@@ -57,6 +61,8 @@ const MAT_MODULES = [
     EmptyStateComponent,
     FiltersComponent,
     TextSearchFilterComponent,
+    GraduationProcessesGridComponent,
+    GraduationProcessCardComponent,
   ],
   imports: [
     CommonModule,
