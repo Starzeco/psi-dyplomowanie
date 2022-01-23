@@ -16,5 +16,12 @@
     "status": "Status",
     "type": "Typ",
     "search_by_topic_and_supervison": "Szukaj po temacie oraz promotorze",
-    "clear": "Wyczyść"
+    "create_subject": "Zgłoś temat",
+    "subjects_header": "Tematy Prac Dyplomowych",
+    "graduation_process_header": "Twoje procesy dyplomowania",
+    "clear": "Wyczyść",
+    "student": "Student",
+    "verifier": "Weryfikator",
+    "supervisor": "Promotor",
+    "select": "Wybierz"
 }

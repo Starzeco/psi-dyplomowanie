@@ -6,6 +6,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ViewsModule } from './views/views.module';
+import { RouterModule } from '@angular/router';
+import { APP_ROUTES } from './app.routes';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -14,9 +17,11 @@ import { ViewsModule } from './views/views.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     ComponentsModule,
     ViewsModule,
+    RouterModule.forRoot(APP_ROUTES),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -26,6 +31,9 @@ import { ViewsModule } from './views/views.module';
         deps: [HttpClient]
       }
     })
+  ],
+  exports: [
+    RouterModule
   ],
   providers: [],
   bootstrap: [

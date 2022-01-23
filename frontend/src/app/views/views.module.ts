@@ -1,30 +1,32 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatTableModule } from '@angular/material/table';
-import { ComponentsModule } from '../components/components.module';
+import { RouterModule } from '@angular/router';
+import { VIEWS_ROUTES } from './views.routes';
 import { TestComponent } from './test/test.component';
+import { StudentViewModule } from "./student-view/student-view.module";
+import { SupervisorViewModule } from "./supervisor-view/supervisor-view.module";
+import { VerifierViewModule } from "./verifier-view/verifier-view.module";
+import { GraduationProcessesViewModule } from './graduation-processes-view/graduation-processes-view.module';
 
-
-
-const MAT_MODULES = [
-  MatCardModule,
-  MatTabsModule,
-  MatTableModule
-];
 
 @NgModule({
   declarations: [
-    TestComponent
+    TestComponent,
+
   ],
   exports: [
     TestComponent,
+    StudentViewModule,
+    SupervisorViewModule,
+    VerifierViewModule,
   ],
   imports: [
     CommonModule,
-    ComponentsModule,
-    ...MAT_MODULES,
+    RouterModule.forChild(VIEWS_ROUTES),
+    StudentViewModule,
+    SupervisorViewModule,
+    VerifierViewModule,
+    GraduationProcessesViewModule,
   ]
 })
 export class ViewsModule { }

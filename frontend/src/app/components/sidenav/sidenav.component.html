@@ -5,7 +5,7 @@
                 <img class="logo" src="assets/images/pwr-logo.png">
             </div>
             <mat-divider></mat-divider>
-            <div class="sidenav-elem user-session-info" style="text-align: center;">
+            <div *ngIf="this.userSessionConfig" class="sidenav-elem user-session-info" style="text-align: center;">
                 <span class="mat-h2">
                     {{userSessionConfig.userFullName}}
                 </span>

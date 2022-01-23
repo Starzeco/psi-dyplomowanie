@@ -16,5 +16,12 @@
     "status": "Status",
     "type": "Type",
     "search_by_topic_and_supervison": "Search by topic and supervisor",
-    "clear": "Clear"
+    "create_subject": "Create subject",
+    "subjects_header": "Thesis topics",
+    "graduation_process_header": "Graduation Processes",
+    "clear": "Clear",
+    "student": "Student",
+    "verifier": "Verifier",
+    "supervisor": "Supervisor",
+    "select": "Select"
 }
