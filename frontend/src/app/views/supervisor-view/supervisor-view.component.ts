@@ -1,49 +1,13 @@
 import { Component } from '@angular/core';
-import { GraduationProcess } from 'src/app/components/graduation-processes-grid/graduation-process-card/graduation-process-card.component';
+import { GraduationProcessServiceService } from 'src/app/shared/graduation-process-service.service';
+import { LinkConfig } from 'src/app/shared/link-config.service';
+import { User } from 'src/app/shared/model';
 
-const graduationProcesses_: GraduationProcess[] = [
-  {
-    gradudationProcessId: '1',
-    initialSemesterName: "Z21/22",
-    finalSemesterName: "L21/22",
-    facultyShortName: "W4N",
-    degreeCourseNameKey: "informatyka_stosowana",
-    degreeNameKey: "master"
-  },
-  {
-    gradudationProcessId: '1',
-    initialSemesterName: "Z21/22",
-    finalSemesterName: "L21/22",
-    facultyShortName: "W4N",
-    degreeCourseNameKey: "informatyka_stosowana",
-    degreeNameKey: "master"
-  },
-  {
-    gradudationProcessId: '1',
-    initialSemesterName: "Z21/22",
-    finalSemesterName: "L21/22",
-    facultyShortName: "W4N",
-    degreeCourseNameKey: "informatyka_stosowana",
-    degreeNameKey: "master"
-  },
-  {
-    gradudationProcessId: '1',
-    initialSemesterName: "Z21/22",
-    finalSemesterName: "L21/22",
-    facultyShortName: "W4N",
-    degreeCourseNameKey: "informatyka_stosowana",
-    degreeNameKey: "master"
-  },
-  {
-    gradudationProcessId: '1',
-    initialSemesterName: "Z21/22",
-    finalSemesterName: "L21/22",
-    facultyShortName: "W4N",
-    degreeCourseNameKey: "informatyka_stosowana",
-    degreeNameKey: "master"
-  },
-]
-
+const user_: User = {
+  userId: 1,
+  type: "supervisor",
+  userFullName: "Marcel Krakowiak",
+}
 
 @Component({
   selector: 'app-supervisor-view',
@@ -52,7 +16,13 @@ const graduationProcesses_: GraduationProcess[] = [
 })
 export class SupervisorViewComponent {
 
-  graduationProcesses = graduationProcesses_
+  readonly linksConfig: LinkConfig[] = []
+  readonly user = user_
 
+  constructor(
+    readonly gpService: GraduationProcessServiceService
+  ) {
+
+  }
 
 }

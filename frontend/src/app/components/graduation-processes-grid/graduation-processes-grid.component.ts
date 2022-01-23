@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { GraduationProcess } from './graduation-process-card/graduation-process-card.component';
+import { GraduationProcess } from 'src/app/shared/model';
 
 
 @Component({

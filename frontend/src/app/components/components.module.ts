@@ -13,7 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from "@angular/router";
-import { SidenavComponent } from './sidenav/sidenav.component';
+import SidenavComponent from './sidenav/sidenav.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import {
   LoadingStateComponent,
@@ -25,6 +25,7 @@ import { TextSearchFilterComponent } from './filters/text-search-filter/text-sea
 import { SelectFilterComponent } from './filters/select-filter/select-filter.component';
 import { GraduationProcessesGridComponent } from './graduation-processes-grid/graduation-processes-grid.component';
 import { GraduationProcessCardComponent } from './graduation-processes-grid/graduation-process-card/graduation-process-card.component';
+import { StateComponent } from './state/state.component';
 
 const MAT_MODULES = [
   MatSidenavModule,
@@ -51,6 +52,7 @@ const MAT_MODULES = [
     SelectFilterComponent,
     GraduationProcessesGridComponent,
     GraduationProcessCardComponent,
+    StateComponent,
   ],
   exports: [
     SidenavComponent,
@@ -63,6 +65,7 @@ const MAT_MODULES = [
     TextSearchFilterComponent,
     GraduationProcessesGridComponent,
     GraduationProcessCardComponent,
+    StateComponent,
   ],
   imports: [
     CommonModule,

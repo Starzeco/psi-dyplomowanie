@@ -1,8 +1,4 @@
-<app-sidenav>
+<app-sidenav [linksConfig]="linksConfig" [user]="user" [graduationProcessObservable]="this.gpService.observable">
     <app-toolbar iconName="home" toolbar></app-toolbar>
-    <!-- <app-loading-state></app-loading-state>
-    <app-error-state></app-error-state>
-    <!-- <app-views></app-empty-state> -->
-    <!-- <router-outlet></router-outlet> -->
-    <app-graduation-processes-grid [graduationProcesses]="graduationProcesses"></app-graduation-processes-grid>
+    <router-outlet></router-outlet>
 </app-sidenav>
