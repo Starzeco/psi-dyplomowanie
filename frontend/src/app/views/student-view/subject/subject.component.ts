@@ -1,12 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {ToolbarButtonService} from "../../../shared/toolbar-button.service";
-import {ToolbarTitleKeyService} from "../../../shared/toolbar-title-key.service";
-import {ButtonConfig} from "../../../components/toolbar/toolbar.component";
+import {Component} from '@angular/core';
+import {ToolbarConfig} from "../../../components/toolbar/toolbar.component";
 import {Router} from "@angular/router";
 import {RestService} from "../../../shared/rest.service";
-import {Subject} from "../../../shared/model";
+import {CandidaturePartialInfo, Subject} from "../../../shared/model";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {FilterConfig, FiltersEvent} from "../../../components/filters/filters.component";
+import {ToolbarService} from "../../../components/toolbar/toolbar.service";
 
 
 const filtersConfigAvailable_: FilterConfig[] = [
@@ -60,34 +59,67 @@ const filtersConfigApplied_: FilterConfig[] = [
 ]
 
 
+const filterCandidatureConf_: FilterConfig[] = [
+  {
+    name: 'text_search',
+    labelKey: 'search_by_topic_and_supervison',
+    type: 'TEXT_SEARCH'
+  },
+  {
+    name: 'status',
+    labelKey: 'status',
+    options: [
+      { nameKey: 'to_accept_by_supervisor_students_status', value: 'TO_ACCEPT_BY_STUDENTS' },
+      { nameKey: 'to_accept_by_supervisor_status', value: 'TO_ACCEPT_BY_SUPERVISOR' },
+      { nameKey: 'accepted_status', value: 'ACCEPTED' },
+      { nameKey: 'rejected_status', value: 'REJECTED' },
+    ],
+    type: 'SELECT',
+  },
+  {
+    name: 'type',
+    labelKey: 'type',
+    options: [
+      { nameKey: 'group_type_label', value: 'GROUP' },
+      { nameKey: 'individual_type_label', value: 'INDIVIDUAL' },
+    ],
+    type: 'SELECT',
+  }
+]
+
+
 @Component({
   selector: 'app-subject',
   templateUrl: './subject.component.html',
   styleUrls: ['./subject.component.scss']
 })
-export class SubjectComponent implements OnInit {
+export class SubjectComponent {
 
   filterAvailableConf = filtersConfigAvailable_;
   filterAppliedConf = filtersConfigApplied_;
+  filterCandidatureConf = filterCandidatureConf_;
 
-  private buttonsConfig: ButtonConfig[] = [
-    {
-      textKey: 'create_subject',
-      click: () => this.router.navigate(['student', 'subject'])
-    }
-  ];
+  private toolbarConfig_: ToolbarConfig = {
+    titleKey: 'subjects_header',
+    iconName: 'note',
+    buttonsConfig: [
+      {
+        textKey: 'create_subject',
+        click: () => this.router.navigate(['student', 'subject'])
+      }
+    ]
+  }
 
   subjects: Subject[] = [];
+  candidatures: CandidaturePartialInfo[] = [];
 
-  constructor(private readonly buttonService: ToolbarButtonService,
-              private readonly titleService: ToolbarTitleKeyService,
+  constructor(private readonly toolbarService: ToolbarService,
               private readonly restService: RestService,
               private readonly router: Router) {
   }
 
   ngOnInit(): void {
-    this.buttonService.updateButtonsConfig(this.buttonsConfig);
-    this.titleService.updateTitleKey('subjects_header');
+    this.toolbarService.updateToolbarConfig(this.toolbarConfig_);
     this.getSubjects(null, null, null, true);
   }
 
@@ -98,12 +130,24 @@ export class SubjectComponent implements OnInit {
     });
   }
 
+  getCandidatures(phrase: string | null, type: string | null, status: string | null) {
+    this.restService.getCandidaturesForStudent(1, 1, phrase, type, status).subscribe(cands => {
+      this.candidatures = cands;
+      console.log(this.candidatures);
+    });
+  }
+
   onTabChange(event: MatTabChangeEvent) {
     if(event.index == 0) this.getSubjects(null, null, null, true);
     else if(event.index == 1) this.getSubjects(null, null, null, false);
+    else this.getCandidatures(null, null, null);
   }
 
   onFilterChange(event: FiltersEvent, availableSubjects: boolean) {
     this.getSubjects(event.text_search as string, event.type as string, event.status as string, availableSubjects);
+  }
+
+  onCandidatureFilterChange(event: FiltersEvent) {
+    this.getCandidatures(event.text_search as string, event.type as string, event.status as string);
   }
 }

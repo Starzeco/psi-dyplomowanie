@@ -7,6 +7,7 @@ import com.example.dyplomowaniebackend.domain.model.CandidatureType
 
 data class CandidaturePartialInfoResponse(
     val subjectTopic: String,
+    val subjectTopicEnglish: String,
     val supervisorName: String,
     val type: CandidatureType,
     val status: CandidatureStatus
@@ -28,6 +29,7 @@ data class CandidaturePartialInfoResponse(
         fun fromDomain(candidature: Candidature, candidatureAcceptances: Set<CandidatureAcceptance>): CandidaturePartialInfoResponse =
             CandidaturePartialInfoResponse(
                 subjectTopic = candidature.subject.topic,
+                subjectTopicEnglish = candidature.subject.topicInEnglish,
                 supervisorName = candidature.subject.supervisor.fullName,
                 type = if (candidatureAcceptances.isNotEmpty()) CandidatureType.GROUP else CandidatureType.INDIVIDUAL,
                 status = prepareStatus(candidature, candidatureAcceptances)

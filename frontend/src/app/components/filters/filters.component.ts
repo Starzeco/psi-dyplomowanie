@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChildren, QueryList, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, Subscription } from 'rxjs';
-import { DefaultFilterComponent, DefaultFilterEvent } from './filters.core.';
+import { DefaultFilterComponent, DefaultFilterEvent } from './filters.core';
 
 import { SelectFilterConfig } from './select-filter/select-filter.component';
 import { TextSearchFilterConfig } from './text-search-filter/text-search-filter.component';

@@ -40,5 +40,11 @@
     "in_correction_status": "In correction",
     "verified_status": "Verified",
     "rejected_status": "Rejected",
-    "reserved_status": "Reserved"
+    "reserved_status": "Reserved",
+    "graduation_processes": "Graduation processes",
+    "subjects": "Subjects",
+    "table_student_third_label": "Candidatures",
+    "to_accept_by_supervisor_students_status": "To be accepted by co-realisers",
+    "to_accept_by_supervisor_status": "To be accepted by supervisor",
+    "accepted_status": "Accepted"
 }

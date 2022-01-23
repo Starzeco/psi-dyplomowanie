@@ -5,30 +5,37 @@
                 <img class="logo" src="assets/images/pwr-logo.png">
             </div>
             <mat-divider></mat-divider>
-            <div *ngIf="this.userSessionConfig" class="sidenav-elem user-session-info" style="text-align: center;">
+            <div class="sidenav-elem user-session-info" style="text-align: center;">
+                <span class="mat-h3">
+                    {{user.type | translate}}
+                </span>
                 <span class="mat-h2">
-                    {{userSessionConfig.userFullName}}
+                    {{user.userFullName}}
                 </span>
-                <span class="mat-small">
-                    {{userSessionConfig.facultyShortName}}, {{userSessionConfig.degreeCourseNameKey | translate}}
-                </span>
-                <span class="mat-small">
-                    {{userSessionConfig.degreeNameKey | translate}}
-                </span>
-                <span class="mat-small">
-                    {{userSessionConfig.initialSemesterName}} - {{userSessionConfig.finalSemesterName}}
-                </span>
+                <ng-container *ngIf="graduationProcess">
+                    <span class="mat-small">
+                        {{graduationProcess.facultyShortName}}, {{graduationProcess.degreeCourseNameKey | translate}}
+                    </span>
+                    <span class="mat-small">
+                        {{graduationProcess.degreeNameKey | translate}}
+                    </span>
+                    <span class="mat-small">
+                        {{graduationProcess.initialSemesterName}} - {{graduationProcess.finalSemesterName}}
+                    </span>
+                </ng-container>
             </div>
             <mat-divider></mat-divider>
             <div class="sidenav-elem">
-                <a *ngFor="let linkConfig of linksConfig" mat-button class="link" href="{{linkConfig.href}}">
-                    <mat-icon *ngIf="linkConfig.iconName!!" inline="true">
-                        {{linkConfig.iconName}}
-                    </mat-icon>
-                    <span class="link-text">
-                        {{linkConfig.textKey | translate}}
-                    </span>
-                </a>
+                <ng-container *ngIf="graduationProcess">
+                    <a *ngFor="let linkConfig of linksConfig" mat-button class="link" href="{{linkConfig.href}}">
+                        <mat-icon *ngIf="linkConfig.iconName!!" inline="true">
+                            {{linkConfig.iconName}}
+                        </mat-icon>
+                        <span class="link-text">
+                            {{linkConfig.textKey | translate}}
+                        </span>
+                    </a>
+                </ng-container>
             </div>
         </span>
         <span>

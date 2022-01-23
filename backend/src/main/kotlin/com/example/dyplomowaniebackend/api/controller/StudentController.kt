@@ -17,9 +17,9 @@ class StudentController(
     fun getAllCandidatures(
         @PathVariable(name = "student_id") studentId: Long,
         @PathVariable(name = "graduation_process_id") graduationProcessId: Long,
-        @RequestParam(name = "phrase") phrase: String?,
-        @RequestParam(name = "type") type: CandidatureType?,
-        @RequestParam(name = "status") status: CandidatureStatus?
+        @RequestParam(name = "phrase", required = false) phrase: String?,
+        @RequestParam(name = "type", required = false) type: CandidatureType?,
+        @RequestParam(name = "status", required = false) status: CandidatureStatus?
     ): Set<CandidaturePartialInfoResponse> = candidatureServicePort.getAllCandidatureAsStudent(
         studentId = studentId,
         graduationProcessId = graduationProcessId,

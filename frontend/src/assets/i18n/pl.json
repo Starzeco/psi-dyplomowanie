@@ -40,5 +40,11 @@
     "in_correction_status": "W poprawie",
     "verified_status": "Zweryfikowany",
     "rejected_status": "Odrzucony",
-    "reserved_status": "Zarezerwowany"
+    "reserved_status": "Zarezerwowany",
+    "graduation_processes": "Procesy dyplomowania",
+    "subjects": "Tematy",
+    "table_student_third_label": "Kandydatury",
+    "to_accept_by_supervisor_students_status": "Do zaakcpetowania przez współrealizatorów",
+    "to_accept_by_supervisor_status": "Do zaakcpetowania przez promotora",
+    "accepted_status": "Zaakceptowana"
 }

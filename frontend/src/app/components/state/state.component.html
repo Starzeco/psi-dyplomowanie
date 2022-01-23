@@ -1,0 +1,20 @@
+<ng-container *ngIf="loading">
+    <div class="state_container">
+        <app-loading-state></app-loading-state>
+    </div>
+</ng-container>
+<ng-container *ngIf="error">
+    <div class="state_container">
+
+        <app-error-state (tryAgain)="tryAgain.emit()"></app-error-state>
+    </div>
+</ng-container>
+<ng-container *ngIf="empty && !loading">
+    <div class="state_container">
+        <app-empty-state (refetch)="refetch.emit()"></app-empty-state>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!loading && !error && !empty">
+    <ng-content></ng-content>
+</ng-container>

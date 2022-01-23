@@ -12,6 +12,14 @@ export type Subject = {
   supervisor: StaffMember
 }
 
+export type CandidaturePartialInfo = {
+  subjectTopic: string,
+  subjectTopicEnglish: string,
+  supervisorName: string,
+  type: string,
+  status: string
+}
+
 export type StaffMember = {
   staffMemberId: number,
   email: string,
@@ -21,3 +29,21 @@ export type StaffMember = {
   currentWorkload: number,
   absoluteWorkload: number,
 }
+
+export type UserType = "student" | "supervisor" | "verifier"
+
+export type User = {
+  userId: number
+  type: UserType
+  userFullName: string,
+}
+
+export type GraduationProcess = {
+  graduationProcessId: number,
+  initialSemesterName: string,
+  finalSemesterName: string,
+  facultyShortName: string,
+  degreeCourseNameKey: string,
+  degreeNameKey: string,
+}
+

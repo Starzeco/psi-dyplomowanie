@@ -1,4 +1,4 @@
-<mat-card class="card">
+<mat-card>
     <mat-card-subtitle> {{graduationProcess.degreeNameKey | translate}}</mat-card-subtitle>
     <mat-card-title>{{graduationProcess.facultyShortName}}, {{graduationProcess.degreeCourseNameKey | translate}}
     </mat-card-title>
@@ -7,6 +7,6 @@
     </mat-card-content>
     <mat-divider inset></mat-divider>
     <mat-card-actions>
-        <button mat-button (click)="graduationProcessSelection.emit(graduationProcess.gradudationProcessId)">{{ 'select' | translate }}</button>
+        <button mat-button (click)="graduationProcessSelection.emit(graduationProcess)">{{ 'select' | translate }}</button>
     </mat-card-actions>
 </mat-card>
