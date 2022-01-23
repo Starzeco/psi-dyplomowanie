@@ -19,5 +19,9 @@
     "create_subject": "Zgłoś temat",
     "subjects_header": "Tematy Prac Dyplomowych",
     "graduation_process_header": "Twoje procesy dyplomowania",
-    "clear": "Wyczyść"
+    "clear": "Wyczyść",
+    "student": "Student",
+    "verifier": "Weryfikator",
+    "supervisor": "Promotor",
+    "select": "Wybierz"
 }

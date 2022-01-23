@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import {Subject} from "rxjs";
-import {LinkConfig} from "../components/sidenav/sidenav.component";
+
+export type LinkConfig = {
+  textKey: string,
+  href: string,
+  iconName?: string,
+}
+
 
 @Injectable({
   providedIn: 'root'

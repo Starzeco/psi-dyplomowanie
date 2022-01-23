@@ -19,5 +19,9 @@
     "create_subject": "Create subject",
     "subjects_header": "Thesis topics",
     "graduation_process_header": "Graduation Processes",
-    "clear": "Clear"
+    "clear": "Clear",
+    "student": "Student",
+    "verifier": "Verifier",
+    "supervisor": "Supervisor",
+    "select": "Select"
 }

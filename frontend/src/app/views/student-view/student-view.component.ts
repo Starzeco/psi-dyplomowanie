@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LinkConfigService } from "../../shared/link-config.service";
-import { SessionConfigService } from "../../shared/session-config.service";
-import { LinkConfig, UserSessionConfig } from "../../components/sidenav/sidenav.component";
+import { LinkConfig, LinkConfigService } from "../../shared/link-config.service";
+import { UserSessionConfig, UserSessionConfigService } from "../../shared/session-config.service";
 
 
 const linksConfig_: LinkConfig[] = [
@@ -31,12 +30,12 @@ export class StudentViewComponent implements OnInit {
 
   constructor(
     private readonly linkConfigService: LinkConfigService,
-    private readonly sessionConfigService: SessionConfigService
+    private readonly userSessionConfigService: UserSessionConfigService
   ) { }
 
   ngOnInit(): void {
     this.linkConfigService.updateLinkConfig(linksConfig_);
-    this.sessionConfigService.updateSessionConfig(userSessionConfig_);
+    this.userSessionConfigService.updateSessionConfig(userSessionConfig_);
   }
 
 }

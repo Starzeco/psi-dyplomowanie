@@ -19,4 +19,4 @@ const MAT_MODULES = [
     ...MAT_MODULES,
   ]
 })
-export class VerifierPageModule { }
+export class VerifierViewModule { }

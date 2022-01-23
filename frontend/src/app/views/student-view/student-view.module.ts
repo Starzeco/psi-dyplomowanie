@@ -31,4 +31,4 @@ const MAT_MODULES = [
     ...MAT_MODULES,
   ]
 })
-export class StudentPageModule { }
+export class StudentViewModule { }
