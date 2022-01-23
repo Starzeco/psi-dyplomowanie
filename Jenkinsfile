@@ -7,7 +7,6 @@ pipeline {
 	environment {
 		DOCKERHUB_CREDENTIALS = credentials('abb56d58-f54e-467a-8c07-0055d2847982')
 		BACKEND_IMAGE_NAME = 'starzecstudent/psi-backend'
-		FRONTEND_IMAGE_NAME = 'starzecstudent/psi-frontend'
 		IMAGE_TAG = 'latest'
 	}
     
@@ -26,22 +25,9 @@ pipeline {
 		}
 		
 		
-		
-		stage('Front-end-build') {
-			steps {
-				sh '''
-					cd frontend
-					docker build --no-cache -t $FRONTEND_IMAGE_NAME:$IMAGE_TAG .
-				'''
-			}
-		}
-		
 		stage('Push-images') {
 			steps {
-				sh '''
-					docker push $BACKEND_IMAGE_NAME:$IMAGE_TAG
-					docker push $FRONTEND_IMAGE_NAME:$IMAGE_TAG
-				'''
+				sh 'docker push $BACKEND_IMAGE_NAME:$IMAGE_TAG'
 			}
 		}
 	}
