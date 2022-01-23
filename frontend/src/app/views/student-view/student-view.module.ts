@@ -10,6 +10,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterModule } from '@angular/router';
 import { STUDENT_VIEW_ROUTES } from './student-view.routes';
+import { SubjectTableComponent } from './subject/subject-table/subject-table.component';
 
 const MAT_MODULES = [
   MatCardModule,
@@ -23,6 +24,7 @@ const MAT_MODULES = [
     StudentViewComponent,
     SubjectComponent,
     GraduationProcessComponent,
+    SubjectTableComponent,
   ],
   imports: [
     CommonModule,

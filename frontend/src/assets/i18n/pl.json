@@ -23,5 +23,22 @@
     "student": "Student",
     "verifier": "Weryfikator",
     "supervisor": "Promotor",
-    "select": "Wybierz"
+    "select": "Wybierz",
+    "table_topic": "Temat",
+    "table_supervisor": "Promotor",
+    "table_type": "Typ",
+    "table_status": "Status",
+    "table_button_text": "Szczegóły",
+    "table_student_first_label": "Dostępne",
+    "table_student_second_label": "Zgłoszone",
+    "group_type_label": "Grupowy",
+    "individual_type_label": "Indywidualny",
+    "draft_status": "Roboczy",
+    "accepted_by_supervisor_status": "Zaakceptowane przez promotora",
+    "accepted_by_initiator_status": "Zaakceptowane przez inicjatora",
+    "in_verification_status": "W weryfikacji",
+    "in_correction_status": "W poprawie",
+    "verified_status": "Zweryfikowany",
+    "rejected_status": "Odrzucony",
+    "reserved_status": "Zarezerwowany"
 }

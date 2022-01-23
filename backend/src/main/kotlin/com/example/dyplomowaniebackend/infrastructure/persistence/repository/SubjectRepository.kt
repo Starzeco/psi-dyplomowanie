@@ -55,4 +55,6 @@ interface SubjectRepository : JpaRepository<SubjectEntity, Long> {
         @Param("objectiveInEnglish") objectiveInEnglish: String,
         @Param("realiseresNumber") realiseresNumber: Int
     ): Int
+
+    fun findAllByStatusIn(status: List<SubjectStatus>): Set<SubjectEntity>
 }

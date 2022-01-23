@@ -54,6 +54,10 @@ enum class RealizationLanguage {
     ENGLISH
 }
 
+enum class SubjectType {
+    INDIVIDUAL, GROUP
+}
+
 enum class SubjectStatus {
     DRAFT,
     ACCEPTED_BY_SUPERVISOR,

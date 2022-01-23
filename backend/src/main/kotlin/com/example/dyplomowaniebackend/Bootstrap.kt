@@ -1,6 +1,8 @@
 package com.example.dyplomowaniebackend
 
 import com.example.dyplomowaniebackend.domain.model.Degree
+import com.example.dyplomowaniebackend.domain.model.RealizationLanguage
+import com.example.dyplomowaniebackend.domain.model.SubjectStatus
 import com.example.dyplomowaniebackend.domain.model.Title
 import com.example.dyplomowaniebackend.infrastructure.persistence.entity.*
 import com.example.dyplomowaniebackend.infrastructure.persistence.repository.*
@@ -17,6 +19,7 @@ class Bootstrap(
     val staffMemberRepository: StaffMemberRepository,
     val facultyRepository: FacultyRepository,
     val verifierRepository: VerifierRepository,
+    val subjectRepository: SubjectRepository
 ) :
     ApplicationListener<ContextRefreshedEvent> {
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
@@ -140,5 +143,19 @@ class Bootstrap(
         )
 
         verifierRepository.saveAll(listOf(verifier0, verifier1, verifier2))
+
+        val verifiedSubject = SubjectEntity(
+            topic = "temat1",
+            topicInEnglish = "tematAngielski",
+            objective = "cel",
+            objectiveInEnglish = "celPoAngielsku",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 1,
+            status = SubjectStatus.VERIFIED,
+            staffMemberId = 1,
+            graduationProcessId = 1,
+            studentId = null,
+        )
+        subjectRepository.save(verifiedSubject)
     }
 }

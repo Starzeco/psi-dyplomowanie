@@ -1,6 +1,7 @@
 package com.example.dyplomowaniebackend.infrastructure.persistence.adapter
 
 import com.example.dyplomowaniebackend.domain.model.Subject
+import com.example.dyplomowaniebackend.domain.model.SubjectStatus
 import com.example.dyplomowaniebackend.domain.model.exception.EntityNotFoundException
 import com.example.dyplomowaniebackend.infrastructure.persistence.mapper.mapToDomain
 import com.example.dyplomowaniebackend.infrastructure.persistence.repository.SubjectRepository
@@ -14,4 +15,8 @@ class SubjectSearchAdapter(private val subjectRepository: SubjectRepository) : S
         subjectRepository.findById(subjectId)
             .map { sub -> sub.mapToDomain(cut) }
             .orElseThrow{ throw EntityNotFoundException(Subject::class, subjectId) }
+
+    override fun getSubjectsInStatus(subjectStatuses: List<SubjectStatus>): Set<Subject> {
+        return subjectRepository.findAllByStatusIn(subjectStatuses).map { it.mapToDomain(true) }.toSet()
+    }
 }

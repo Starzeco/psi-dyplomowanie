@@ -23,5 +23,22 @@
     "student": "Student",
     "verifier": "Verifier",
     "supervisor": "Supervisor",
-    "select": "Select"
+    "select": "Select",
+    "table_topic": "Topic",
+    "table_supervisor": "Supervisor",
+    "table_type": "Type",
+    "table_status": "Status",
+    "table_button_text": "Details",
+    "table_student_first_label": "Available",
+    "table_student_second_label": "Applied",
+    "group_type_label": "Group",
+    "individual_type_label": "Individual",
+    "draft_status": "Draft",
+    "accepted_by_supervisor_status": "Accepted by supervisor",
+    "accepted_by_initiator_status": "Accepted by initiator",
+    "in_verification_status": "In verification",
+    "in_correction_status": "In correction",
+    "verified_status": "Verified",
+    "rejected_status": "Rejected",
+    "reserved_status": "Reserved"
 }

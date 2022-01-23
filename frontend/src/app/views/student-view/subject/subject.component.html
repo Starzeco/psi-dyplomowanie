@@ -1,1 +1,21 @@
-<p>subject works!</p>
+<mat-card>
+  <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab label="{{'table_student_first_label' | translate}}">
+      <div class="tab-content content-margin">
+        <app-filters [filtersConfig]="filterAvailableConf" (filtersChange)="this.onFilterChange($event, true)"></app-filters>
+        <app-subject-table [subjects]="this.subjects"></app-subject-table>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{'table_student_second_label' | translate}}">
+      <div class="tab-content content-margin">
+        <app-filters [filtersConfig]="filterAppliedConf" (filtersChange)="this.onFilterChange($event, false)"></app-filters>
+        <app-subject-table [subjects]="this.subjects"></app-subject-table>
+      </div>
+    </mat-tab>
+    <mat-tab label="Third">
+      <div class="tab-content">
+        Content 3
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>
