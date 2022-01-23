@@ -3,7 +3,7 @@ FROM node:16.13.2 AS build
 
 WORKDIR /usr/src/app
 COPY . .
-RUN npm install & npm install -g @angular/cli
+RUN npm install & npm install -g @angular/cli & npm uninstall @angular-devkit/build-angular & npm install --save-dev @angular-devkit/build-angular
 RUN ng build --configuration production
 
 ### STAGE 2: Run ###
