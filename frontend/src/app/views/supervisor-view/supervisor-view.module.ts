@@ -6,6 +6,7 @@ import { SupervisorViewComponent } from "./supervisor-view.component";
 import { RouterModule } from '@angular/router';
 import { SUPERVISOR_VIEW_ROUTES } from './supervisor-view.routes';
 import { SupervisorGraduationProcessesComponent } from './supervisor-graduation-processes/supervisor-graduation-processes.component';
+import { SupervisorSubjectsComponent } from './supervisor-subjects/supervisor-subjects.component';
 
 
 const MAT_MODULES = [
@@ -16,7 +17,8 @@ const MAT_MODULES = [
 @NgModule({
   declarations: [
     SupervisorViewComponent,
-    SupervisorGraduationProcessesComponent
+    SupervisorGraduationProcessesComponent,
+    SupervisorSubjectsComponent
   ],
   imports: [
     CommonModule,

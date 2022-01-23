@@ -9,6 +9,19 @@ const user_: User = {
   userFullName: "Marcel Krakowiak",
 }
 
+const linksConfig_: LinkConfig[] = [
+  {
+    textKey: 'graduation_processes',
+    href: '',
+    iconName: 'view_module'
+  },
+  {
+    textKey: 'subjects',
+    href: '',
+    iconName: 'note'
+  }
+]
+
 @Component({
   selector: 'app-supervisor-view',
   templateUrl: './supervisor-view.component.html',
@@ -16,7 +29,7 @@ const user_: User = {
 })
 export class SupervisorViewComponent {
 
-  readonly linksConfig: LinkConfig[] = []
+  readonly linksConfig: LinkConfig[] = linksConfig_
   readonly user = user_
 
   constructor(

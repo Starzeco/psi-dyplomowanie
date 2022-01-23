@@ -10,6 +10,11 @@ app-toolbar {
     flex: 1 1 auto;
   }
 
+  .icon-and-title-container {
+    display: flex;
+    gap: 1rem
+  } 
+  
   .title-container {
     white-space: pre-wrap !important;
   }

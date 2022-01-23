@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GraduationProcessServiceService } from 'src/app/shared/graduation-process-service.service';
+import { ToolbarConfig } from 'src/app/components/toolbar/toolbar.component';
+import { ToolbarService } from 'src/app/components/toolbar/toolbar.service';
+import { GraduationProcessServiceService as GraduationProcessService } from 'src/app/shared/graduation-process-service.service';
 import { GraduationProcess } from 'src/app/shared/model';
 
 const graduationProcesses_: GraduationProcess[] = [
@@ -46,6 +48,12 @@ const graduationProcesses_: GraduationProcess[] = [
   },
 ]
 
+const toolbarConfig_: ToolbarConfig = {
+  titleKey: 'graduation_processes',
+  iconName: 'view_module',
+  buttonsConfig: []
+}
+
 @Component({
   selector: 'app-supervisor-graduation-processes',
   templateUrl: './supervisor-graduation-processes.component.html',
@@ -58,18 +66,20 @@ export class SupervisorGraduationProcessesComponent implements OnInit {
   error = false
 
   constructor(
-    private readonly graduationProcessServiceService: GraduationProcessServiceService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly graduationProcessService: GraduationProcessService,
+    private readonly toolbarService: ToolbarService
   ) { }
 
   ngOnInit(): void {
     this.getGraduationProcesses()
+    this.toolbarService.updateToolbarConfig(toolbarConfig_)
   }
 
   graduationProcessSelection(graduationProcess: GraduationProcess): void {
-    this.graduationProcessServiceService.setGraduationProcess(graduationProcess)
+    this.graduationProcessService.setGraduationProcess(graduationProcess)
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate([`graduation_process/${graduationProcess.graduationProcessId}`])
+    this.router.navigate(['graduation_process', `${graduationProcess.graduationProcessId}`, 'subject'])
   }
 
   private getGraduationProcesses(): void {

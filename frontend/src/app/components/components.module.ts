@@ -26,6 +26,7 @@ import { SelectFilterComponent } from './filters/select-filter/select-filter.com
 import { GraduationProcessesGridComponent } from './graduation-processes-grid/graduation-processes-grid.component';
 import { GraduationProcessCardComponent } from './graduation-processes-grid/graduation-process-card/graduation-process-card.component';
 import { StateComponent } from './state/state.component';
+import { ToolbarService } from './toolbar/toolbar.service';
 
 const MAT_MODULES = [
   MatSidenavModule,
@@ -74,6 +75,9 @@ const MAT_MODULES = [
     RouterModule,
     TranslateModule,
     ...MAT_MODULES,
+  ],
+  providers: [
+    ToolbarService
   ]
 })
 

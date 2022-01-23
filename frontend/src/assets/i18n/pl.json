@@ -23,5 +23,7 @@
     "student": "Student",
     "verifier": "Weryfikator",
     "supervisor": "Promotor",
-    "select": "Wybierz"
+    "select": "Wybierz",
+    "graduation_processes": "Procesy dyplomowania",
+    "subjects": "Tematy"
 }
