@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable, Subscription } from 'rxjs';
 import { Language } from 'src/app/core/language';
-import { LinkConfig, LinkConfigService } from "../../shared/link-config.service";
-import { UserSessionConfigService, UserSessionConfig } from "../../shared/session-config.service";
-import { Subscription } from "rxjs";
+import { GraduationProcess, User } from 'src/app/shared/model';
+import { LinkConfig } from '../../shared/link-config.service';
 
 
 @Component({
@@ -12,40 +12,37 @@ import { Subscription } from "rxjs";
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent implements OnInit, OnDestroy {
+export default class SidenavComponent implements OnInit, OnDestroy {
 
-  userSessionConfig!: UserSessionConfig
-  linksConfig!: LinkConfig[]
+  @Input() user!: User
+  @Input() linksConfig!: LinkConfig[]
+  @Input() graduationProcessObservable!: Observable<GraduationProcess>
 
-  sessionConfigSubscription!: Subscription;
-  linksConfigSubscription!: Subscription;
+
+  graduationProcess?: GraduationProcess
+  subsription?: Subscription
 
   languages: string[] = Object.values(Language)
   currentLanguage: string
 
-  constructor(
-    private readonly translateService: TranslateService,
-    private readonly linkConfigService: LinkConfigService,
-    private readonly userSessionConfigService: UserSessionConfigService,
-  ) {
+  constructor(private readonly translateService: TranslateService) {
     this.currentLanguage = translateService.getDefaultLang()
+  }
+
+  ngOnInit(): void {
+    this.subsription = this.graduationProcessObservable.subscribe(gp => {
+      console.log(gp)
+      this.graduationProcess = gp
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.subsription && this.subsription.unsubscribe()
   }
 
   switchLanguage(event: MatSelectChange) {
     this.translateService.use(event.value as string)
   }
 
-  ngOnInit(): void {
-    this.sessionConfigSubscription = this.userSessionConfigService.sessionConfigObservable.subscribe(
-      sessionConfig => this.userSessionConfig = sessionConfig
-    );
-    this.linksConfigSubscription = this.linkConfigService.linkConfigObservable.subscribe(
-      linksConfig => this.linksConfig = linksConfig
-    );
-  }
 
-  ngOnDestroy(): void {
-    this.sessionConfigSubscription.unsubscribe();
-    this.linksConfigSubscription.unsubscribe();
-  }
 }

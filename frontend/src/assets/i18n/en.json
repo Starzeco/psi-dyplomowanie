@@ -23,5 +23,7 @@
     "student": "Student",
     "verifier": "Verifier",
     "supervisor": "Supervisor",
-    "select": "Select"
+    "select": "Select",
+    "graduation_processes": "Graduation processes",
+    "subjects": "Subjects"
 }

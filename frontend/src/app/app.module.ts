@@ -9,6 +9,7 @@ import { ViewsModule } from './views/views.module';
 import { RouterModule } from '@angular/router';
 import { APP_ROUTES } from './app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GraduationProcessServiceService } from './shared/graduation-process-service.service';
 
 
 @NgModule({
@@ -35,7 +36,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   exports: [
     RouterModule
   ],
-  providers: [],
+  providers: [
+    GraduationProcessServiceService
+  ],
   bootstrap: [
     AppComponent,
   ]

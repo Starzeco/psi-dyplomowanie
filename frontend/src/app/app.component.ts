@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Language } from './core/language';
 
@@ -11,7 +11,7 @@ import { Language } from './core/language';
 export class AppComponent {
 
   constructor(
-    private readonly translateService: TranslateService,
+    translateService: TranslateService,
   ) {
     translateService.addLangs(Object.values(Language))
     translateService.setDefaultLang(Language.EN)

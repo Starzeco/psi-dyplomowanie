@@ -1,13 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-
-export type GraduationProcess = {
-  gradudationProcessId: string,
-  initialSemesterName: string,
-  finalSemesterName: string,
-  facultyShortName: string,
-  degreeCourseNameKey: string,
-  degreeNameKey: string,
-}
+import { GraduationProcess } from 'src/app/shared/model';
 
 @Component({
   selector: 'app-graduation-process-card',
@@ -18,5 +10,5 @@ export class GraduationProcessCardComponent {
 
   @Input() graduationProcess!: GraduationProcess
 
-  @Output() graduationProcessSelection = new EventEmitter<string>()
+  @Output() graduationProcessSelection = new EventEmitter<GraduationProcess>()
 }

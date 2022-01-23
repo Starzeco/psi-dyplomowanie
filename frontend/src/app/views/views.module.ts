@@ -6,7 +6,6 @@ import { TestComponent } from './test/test.component';
 import { StudentViewModule } from "./student-view/student-view.module";
 import { SupervisorViewModule } from "./supervisor-view/supervisor-view.module";
 import { VerifierViewModule } from "./verifier-view/verifier-view.module";
-import { GraduationProcessesViewModule } from './graduation-processes-view/graduation-processes-view.module';
 
 
 @NgModule({
@@ -26,7 +25,6 @@ import { GraduationProcessesViewModule } from './graduation-processes-view/gradu
     StudentViewModule,
     SupervisorViewModule,
     VerifierViewModule,
-    GraduationProcessesViewModule,
   ]
 })
 export class ViewsModule { }

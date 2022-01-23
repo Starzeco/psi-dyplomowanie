@@ -1,12 +1,17 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ToolbarButtonService} from "../../shared/toolbar-button.service";
-import {ToolbarTitleKeyService} from "../../shared/toolbar-title-key.service";
-import {Subscription} from "rxjs";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ToolbarService } from "./toolbar.service";
+import { Subscription } from "rxjs";
 
 export type ButtonConfig = {
   textKey: string,
   click: () => void
   disabled?: boolean,
+}
+
+export type ToolbarConfig = {
+  titleKey: string,
+  iconName: string,
+  buttonsConfig: ButtonConfig[]
 }
 
 @Component({
@@ -15,23 +20,18 @@ export type ButtonConfig = {
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
-  titleKey!: string;
-  buttonsConfig: ButtonConfig[] = []
-  @Input() iconName!: string;
 
-  titleSubscription!: Subscription;
-  buttonSubscription!: Subscription;
+  config!: ToolbarConfig
 
-  constructor(private readonly buttonService: ToolbarButtonService,
-              private readonly titleService: ToolbarTitleKeyService) {}
+  subscription!: Subscription;
+
+  constructor(private readonly service: ToolbarService) { }
 
   ngOnInit(): void {
-    this.titleSubscription = this.titleService.titleKeyObservable.subscribe(titleKey => this.titleKey = titleKey);
-    this.buttonSubscription = this.buttonService.buttonsConfigObservable.subscribe(buttonsConfig => this.buttonsConfig = buttonsConfig);
+    this.subscription = this.service.observable.subscribe(config => this.config = config);
   }
 
   ngOnDestroy(): void {
-    this.titleSubscription.unsubscribe();
-    this.buttonSubscription.unsubscribe();
+    this.subscription.unsubscribe()
   }
 }

@@ -1,1 +1,4 @@
-<p>supervisor-page works!</p>
+<app-sidenav [linksConfig]="linksConfig" [user]="user" [graduationProcessObservable]="this.gpService.observable">
+    <app-toolbar iconName="home" toolbar></app-toolbar>
+    <router-outlet></router-outlet>
+</app-sidenav>
