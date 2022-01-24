@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ToolbarConfig } from "../../../components/toolbar/toolbar.component";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { RestService } from "../../../shared/rest.service";
 import { CandidaturePartialInfo, Subject } from "../../../shared/model";
 import { MatTabChangeEvent } from "@angular/material/tabs";
@@ -114,15 +114,12 @@ export class SubjectComponent {
   candidatures: CandidaturePartialInfo[] = [];
 
   constructor(
-    private readonly route: ActivatedRoute,
     private readonly toolbarService: ToolbarService,
     private readonly restService: RestService,
     private readonly router: Router
   ) { }
 
   ngOnInit(): void {
-    const z = this.route.snapshot.paramMap.get('graduation_process_id')!
-    console.log(`Graduation process in subject: ${z}`)
     this.toolbarService.updateToolbarConfig(this.toolbarConfig_);
     this.getSubjects(null, null, null, true);
   }

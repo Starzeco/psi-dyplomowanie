@@ -1,5 +1,5 @@
 <div class="container" >
     <mat-icon class="icon">error</mat-icon>
     <span class="mat-body-strong">{{messageKey | translate}}</span>
-    <button mat-raised-button color="primary">{{'error_state_try_again' | translate}}</button>
+    <button mat-raised-button (click)="this.tryAgain.emit()" color="primary">{{'error_state_try_again' | translate}}</button>
 </div>

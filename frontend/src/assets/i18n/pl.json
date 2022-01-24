@@ -46,5 +46,11 @@
     "table_student_third_label": "Kandydatury",
     "to_accept_by_supervisor_students_status": "Do zaakcpetowania przez współrealizatorów",
     "to_accept_by_supervisor_status": "Do zaakcpetowania przez promotora",
-    "accepted_status": "Zaakceptowana"
+    "accepted_status": "Zaakceptowana",
+    "verifications": "Weryfikacje",
+    "in_verification": "W weryfikacji",
+    "accepted": "Zaakceptowane",
+    "rejected": "Odrzucone",
+    "reject_all": "Odrzuć wszystkie",
+    "accept_all": "Zaakceptuj wszystkie"
 }

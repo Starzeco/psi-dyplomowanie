@@ -1,0 +1,8 @@
+<div class="tab-content content-margin">
+    <app-filters [filtersConfig]="filtersConfig" (filtersChange)="this.refetchVerificationsOnFiltersEvent($event)">
+    </app-filters>
+    <app-state [loading]="loading" [error]="error" [empty]="verifications.length === 0"
+        (refetch)="this.refetchVerifications()" (tryAgain)="this.refetchVerifications()">
+        done
+    </app-state>
+</div>

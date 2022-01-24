@@ -6,7 +6,7 @@ import { GraduationProcess } from './model';
   providedIn: 'root'
 })
 
-export class GraduationProcessServiceService {
+export class GraduationProcessService {
 
   private readonly subject = new Subject<GraduationProcess>();
   private currentGraduationProcessId?: number
