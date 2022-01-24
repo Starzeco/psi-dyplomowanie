@@ -13,7 +13,8 @@ export class AppComponent {
   constructor(
     translateService: TranslateService,
   ) {
-    translateService.addLangs(Object.values(Language))
-    translateService.setDefaultLang(Language.EN)
+    translateService.addLangs(Object.values(Language));
+    translateService.setDefaultLang(Language.EN);
+    translateService.use(Language.EN);
   }
 }

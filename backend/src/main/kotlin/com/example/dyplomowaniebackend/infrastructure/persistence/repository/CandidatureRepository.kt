@@ -131,7 +131,7 @@ class CandidatureRepositoryCustomImpl(
         val subjectJoin: Join<CandidatureEntity, SubjectEntity> = root.join("subject")
         val subjectIdPredicate = criteriaBuilder.and(
             criteriaBuilder.equal(subjectJoin.get<Long>("graduationProcessId"), graduationProcessId),
-            criteriaBuilder.like(subjectJoin.get("name"), "%$phrase%"),
+            criteriaBuilder.like(subjectJoin.get("topic"), "%${phrase.orEmpty()}%"),
         )
 
         val subqueryStudentHasAccessToCandidature = query.subquery(Boolean::class.java)

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SubjectComponent } from "./subject/subject.component";
-import { GraduationProcessComponent } from "./graduation-process/graduation-process.component";
 import { StudentViewComponent } from "./student-view.component";
 import { ComponentsModule } from "../../components/components.module";
 import { MatCardModule } from "@angular/material/card";
@@ -10,6 +9,9 @@ import { MatTableModule } from "@angular/material/table";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterModule } from '@angular/router';
 import { STUDENT_VIEW_ROUTES } from './student-view.routes';
+import { SubjectTableComponent } from './subject/subject-table/subject-table.component';
+import { GraduationProcessComponent } from './graduation-process/graduation-process.component';
+import { CandidatureTableComponent } from './subject/candidature-table/candidature-table.component';
 
 const MAT_MODULES = [
   MatCardModule,
@@ -22,7 +24,9 @@ const MAT_MODULES = [
   declarations: [
     StudentViewComponent,
     SubjectComponent,
+    SubjectTableComponent,
     GraduationProcessComponent,
+    CandidatureTableComponent,
   ],
   imports: [
     CommonModule,

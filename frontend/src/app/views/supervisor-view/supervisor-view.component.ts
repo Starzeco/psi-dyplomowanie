@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { GraduationProcessServiceService } from 'src/app/shared/graduation-process-service.service';
-import { LinkConfig } from 'src/app/shared/link-config.service';
 import { User } from 'src/app/shared/model';
+import {LinkConfig} from "../../components/sidenav/sidenav.component";
 
 const user_: User = {
   userId: 1,

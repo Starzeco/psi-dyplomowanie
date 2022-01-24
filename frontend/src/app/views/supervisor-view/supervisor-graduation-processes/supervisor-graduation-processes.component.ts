@@ -79,7 +79,7 @@ export class SupervisorGraduationProcessesComponent implements OnInit {
   graduationProcessSelection(graduationProcess: GraduationProcess): void {
     this.graduationProcessService.setGraduationProcess(graduationProcess)
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['graduation_process', `${graduationProcess.graduationProcessId}`, 'subject'])
+    this.router.navigate(['supervisor', 'graduation_process', `${graduationProcess.graduationProcessId}`, 'subject'])
   }
 
   private getGraduationProcesses(): void {

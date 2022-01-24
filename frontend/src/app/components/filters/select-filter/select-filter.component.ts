@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, Subscription } from 'rxjs';
-import { DefaultFilterComponent, DefaultFilterConfig, DefaultFilterEvent } from '../filters.core.';
+import { DefaultFilterComponent, DefaultFilterConfig, DefaultFilterEvent } from '../filters.core';
 
 
 export type SelectFilterConfig = DefaultFilterConfig & {

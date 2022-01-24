@@ -5,7 +5,10 @@ import { SupervisorViewComponent } from "./supervisor-view.component";
 
 export const SUPERVISOR_VIEW_ROUTES: Route[] = [
     {
-        path: '', component: SupervisorViewComponent,
+        path: '', pathMatch: 'full', redirectTo: 'supervisor'
+    },
+    {
+        path: 'supervisor', component: SupervisorViewComponent,
         children: [
             {
                 path: '', component: SupervisorGraduationProcessesComponent,

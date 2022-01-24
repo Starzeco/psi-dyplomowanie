@@ -1,24 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { LinkConfig, LinkConfigService } from "../../shared/link-config.service";
-import { UserSessionConfig, UserSessionConfigService } from "../../shared/session-config.service";
+import { Component } from '@angular/core';
+import {User} from "../../shared/model";
+import {LinkConfig} from "../../components/sidenav/sidenav.component";
+import {GraduationProcessServiceService} from "../../shared/graduation-process-service.service";
 
+
+const user_: User = {
+  userId: 1,
+  type: "student",
+  userFullName: "Marcel Krakowiak",
+}
 
 const linksConfig_: LinkConfig[] = [
   {
-    textKey: 'marcel_krakowiak',
-    href: 'https://www.facebook.com/marcel.krakowiak.963',
-    iconName: 'account_circle'
+    textKey: 'graduation_processes',
+    href: '',
+    iconName: 'view_module'
+  },
+  {
+    textKey: 'subjects',
+    href: '',
+    iconName: 'note'
   }
 ]
-
-const userSessionConfig_: UserSessionConfig = {
-  userFullName: "Marcel Krakowiak",
-  initialSemesterName: "Z21/22",
-  finalSemesterName: "L21/22",
-  facultyShortName: "W4N",
-  degreeCourseNameKey: "informatyka_stosowana",
-  degreeNameKey: "master"
-}
 
 
 @Component({
@@ -26,16 +29,12 @@ const userSessionConfig_: UserSessionConfig = {
   templateUrl: './student-view.component.html',
   styleUrls: ['./student-view.component.scss']
 })
-export class StudentViewComponent implements OnInit {
+export class StudentViewComponent {
+
+  readonly linksConfig: LinkConfig[] = linksConfig_
+  readonly user = user_
 
   constructor(
-    private readonly linkConfigService: LinkConfigService,
-    private readonly userSessionConfigService: UserSessionConfigService
+    readonly gpService: GraduationProcessServiceService
   ) { }
-
-  ngOnInit(): void {
-    this.linkConfigService.updateLinkConfig(linksConfig_);
-    this.userSessionConfigService.updateSessionConfig(userSessionConfig_);
-  }
-
 }

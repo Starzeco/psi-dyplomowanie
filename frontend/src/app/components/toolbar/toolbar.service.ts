@@ -3,7 +3,6 @@ import { Subject } from "rxjs";
 import { ToolbarConfig } from './toolbar.component';
 
 
-
 @Injectable({
   providedIn: 'root'
 })

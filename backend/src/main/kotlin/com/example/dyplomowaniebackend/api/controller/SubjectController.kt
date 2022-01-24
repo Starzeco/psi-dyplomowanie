@@ -2,6 +2,7 @@ package com.example.dyplomowaniebackend.api.controller
 
 import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureServicePort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectSearchPort
 import com.example.dyplomowaniebackend.domain.model.*
 import org.springframework.web.bind.annotation.*
 
@@ -9,8 +10,18 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/subject")
 class SubjectController(
     private val subjectCreationPort: SubjectCreationPort,
+    private val subjectSearchPort: SubjectSearchPort,
     private val candidatureServicePort: CandidatureServicePort
 ) {
+
+    @GetMapping("student/{student_id}")
+    fun getSubjectsForStudent(@PathVariable(name = "student_id") studentId: Long,
+                              @RequestParam(required = false)  searchPhrase: String?,
+                              @RequestParam(required = false)  subjectType: SubjectType?,
+                              @RequestParam(required = false)  subjectStatus: SubjectStatus?,
+                              @RequestParam(required = false)  availableSubjects: Boolean
+    ): Set<Subject> =
+        subjectSearchPort.getSubjectsForStudent(studentId, searchPhrase, subjectType, availableSubjects, subjectStatus)
 
     @PostMapping
     fun createSubject(@RequestBody subjectCreation: SubjectCreation): Subject =

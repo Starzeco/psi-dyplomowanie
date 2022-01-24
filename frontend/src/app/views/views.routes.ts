@@ -5,7 +5,7 @@ import { VerifierViewModule } from './verifier-view/verifier-view.module';
 
 export const VIEWS_ROUTES: Routes = [
   {
-    path: '', pathMatch: 'full', redirectTo: "supervisor"
+    path: '', pathMatch: 'full', redirectTo: "student"
   },
   {
     path: 'student', loadChildren: () => StudentViewModule

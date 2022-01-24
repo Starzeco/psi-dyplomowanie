@@ -4,7 +4,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { Language } from 'src/app/core/language';
 import { GraduationProcess, User } from 'src/app/shared/model';
-import { LinkConfig } from '../../shared/link-config.service';
+
+
+export type LinkConfig = {
+  textKey: string,
+  href: string,
+  iconName?: string,
+}
 
 
 @Component({
