@@ -12,7 +12,7 @@ class VerificationController(val verificationSearchPort: VerificationSearchPort,
 
     @GetMapping
     fun findAllVerifications(@RequestParam verifierId: Long,
-                             @RequestParam phrase: String,
+                             @RequestParam(required = false) phrase: String?,
                              @RequestParam(required = false) verified: Boolean?): List<Verification> =
         verificationSearchPort.findAllVerifications(verifierId, phrase, verified)
 

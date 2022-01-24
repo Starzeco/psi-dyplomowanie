@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class VerificationSearchAdapter(val verificationRepository: VerificationRepository) : VerificationSearchPort {
-    override fun findAllVerifications(verifierId: Long, phrase: String, verified: Boolean?): List<Verification> {
-        val searchPhrase = "%$phrase%"
+    override fun findAllVerifications(verifierId: Long, phrase: String?, verified: Boolean?): List<Verification> {
+        val searchPhrase = "%${phrase.orEmpty()}%"
         return verificationRepository.findByVerifierIdAndVerifiedAndSubjectTopicLike(verifierId, verified, searchPhrase).map { it.mapToDomain(true) }
     }
 

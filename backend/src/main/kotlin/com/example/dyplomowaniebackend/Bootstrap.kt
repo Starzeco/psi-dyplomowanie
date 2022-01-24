@@ -19,7 +19,8 @@ class Bootstrap(
     val staffMemberRepository: StaffMemberRepository,
     val facultyRepository: FacultyRepository,
     val verifierRepository: VerifierRepository,
-    val subjectRepository: SubjectRepository
+    val subjectRepository: SubjectRepository,
+    val candidatureRepository: CandidatureRepository
 ) :
     ApplicationListener<ContextRefreshedEvent> {
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
@@ -157,5 +158,12 @@ class Bootstrap(
             studentId = null,
         )
         subjectRepository.save(verifiedSubject)
+
+        val candidature = CandidatureEntity(
+            studentId = 1,
+            subjectId = verifiedSubject.subjectId!!
+        )
+
+        candidatureRepository.save(candidature)
     }
 }

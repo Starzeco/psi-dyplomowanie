@@ -25,7 +25,7 @@ class VerificationMutationAdapter(val verificationRepository: VerificationReposi
     }
 
     override fun verifyAllVerifications(verifierId: Long, decision: Boolean, justification: String): List<Verification> {
-        verificationRepository.updateVerifiedByVerifierId(verifierId, decision, justification)
+        verificationRepository.updateVerifiedByVerifierIdAndVerifiedIsNull(verifierId, decision, justification)
         return verificationRepository.findByVerifierVerifierId(verifierId).map { it.mapToDomain(true) }
     }
 }

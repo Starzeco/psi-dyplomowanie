@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {GraduationProcess} from "../../../shared/model";
 import {ToolbarConfig} from "../../../components/toolbar/toolbar.component";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {GraduationProcessServiceService as GraduationProcessService} from "../../../shared/graduation-process-service.service";
 import {ToolbarService} from "../../../components/toolbar/toolbar.service";
 
@@ -68,12 +68,15 @@ export class GraduationProcessComponent implements OnInit {
   error = false
 
   constructor(
+    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly graduationProcessService: GraduationProcessService,
     private readonly toolbarService: ToolbarService
   ) { }
 
   ngOnInit(): void {
+    const z = this.route.snapshot.paramMap.get('graduation_process_id')!
+    console.log(`Graduation process in graduations: ${z}`)
     this.getGraduationProcesses()
     this.toolbarService.updateToolbarConfig(toolbarConfig_)
   }

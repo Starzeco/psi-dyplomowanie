@@ -10,7 +10,12 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface VerificationRepository : JpaRepository<VerificationEntity, Long> {
-    fun findByVerifierIdAndVerifiedAndSubjectTopicLike(verifierId: Long, verified: Boolean?, title: String): List<VerificationEntity>
+    fun findByVerifierIdAndVerifiedAndSubjectTopicLike(
+        verifierId: Long,
+        verified: Boolean?,
+        title: String
+    ): List<VerificationEntity>
+
     fun findByVerifierVerifierId(verifierId: Long): List<VerificationEntity>
     fun findBySubjectSubjectId(subjectId: Long): List<VerificationEntity>
 
@@ -32,13 +37,15 @@ interface VerificationRepository : JpaRepository<VerificationEntity, Long> {
         "UPDATE VerificationEntity VE " +
                 "SET VE.verified = :decision, " +
                 "VE.justification = :justification " +
-                "WHERE VE.verifier.verifierId = :verifierId"
+                "WHERE VE.verifier.verifierId = :verifierId AND VE.verified IS NULL "
     )
     @Modifying
     @Transactional
-    fun updateVerifiedByVerifierId(@Param("verifierId") verifierId: Long,
-                                   @Param("decision") decision: Boolean,
-                                   @Param("justification") justification: String): Int
+    fun updateVerifiedByVerifierIdAndVerifiedIsNull(
+        @Param("verifierId") verifierId: Long,
+        @Param("decision") decision: Boolean,
+        @Param("justification") justification: String
+    ): Int
 
     @Query(
         "UPDATE VerificationEntity VE " +
