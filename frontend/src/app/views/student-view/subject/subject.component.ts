@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
-import {ToolbarConfig} from "../../../components/toolbar/toolbar.component";
-import {Router} from "@angular/router";
-import {RestService} from "../../../shared/rest.service";
-import {CandidaturePartialInfo, Subject} from "../../../shared/model";
-import {MatTabChangeEvent} from "@angular/material/tabs";
-import {FilterConfig, FiltersEvent} from "../../../components/filters/filters.component";
-import {ToolbarService} from "../../../components/toolbar/toolbar.service";
+import { Component } from '@angular/core';
+import { ToolbarConfig } from "../../../components/toolbar/toolbar.component";
+import { Router } from "@angular/router";
+import { RestService } from "../../../shared/rest.service";
+import { CandidaturePartialInfo, Subject } from "../../../shared/model";
+import { MatTabChangeEvent } from "@angular/material/tabs";
+import { FilterConfig, FiltersEvent } from "../../../components/filters/filters.component";
+import { ToolbarService } from "../../../components/toolbar/toolbar.service";
 
 
 const filtersConfigAvailable_: FilterConfig[] = [
@@ -113,10 +113,11 @@ export class SubjectComponent {
   subjects: Subject[] = [];
   candidatures: CandidaturePartialInfo[] = [];
 
-  constructor(private readonly toolbarService: ToolbarService,
-              private readonly restService: RestService,
-              private readonly router: Router) {
-  }
+  constructor(
+    private readonly toolbarService: ToolbarService,
+    private readonly restService: RestService,
+    private readonly router: Router
+  ) { }
 
   ngOnInit(): void {
     this.toolbarService.updateToolbarConfig(this.toolbarConfig_);
@@ -138,8 +139,8 @@ export class SubjectComponent {
   }
 
   onTabChange(event: MatTabChangeEvent) {
-    if(event.index == 0) this.getSubjects(null, null, null, true);
-    else if(event.index == 1) this.getSubjects(null, null, null, false);
+    if (event.index == 0) this.getSubjects(null, null, null, true);
+    else if (event.index == 1) this.getSubjects(null, null, null, false);
     else this.getCandidatures(null, null, null);
   }
 

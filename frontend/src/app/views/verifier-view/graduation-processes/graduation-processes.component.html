@@ -1,0 +1,5 @@
+<app-state [loading]="loading" [error]="error" [empty]="!graduationProcesses">
+  <app-graduation-processes-grid [graduationProcesses]="graduationProcesses!"
+    (graduationProcessSelection)="graduationProcessSelection($event)">
+  </app-graduation-processes-grid>
+</app-state>

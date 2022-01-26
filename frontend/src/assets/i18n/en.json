@@ -62,5 +62,11 @@
     "co-realisers-label": "Co-realisers",
     "co-realisers-first": "First co-realiser",
     "co-realisers-second": "Second co-realiser",
-    "co-realisers-third": "Third co-realiser"
+    "co-realisers-third": "Third co-realiser",
+    "verifications": "Verifications",
+    "in_verification": "In verification",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "reject_all": "Accept all",
+    "accept_all": "Reject all"
 }

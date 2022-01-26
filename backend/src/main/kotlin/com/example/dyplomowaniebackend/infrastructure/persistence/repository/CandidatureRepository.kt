@@ -83,8 +83,11 @@ class CandidatureRepositoryCustomImpl(
         val subjectIdPredicate = criteriaBuilder.and(
             criteriaBuilder.equal(subjectJoin.get<Long>("staffMemberId"), supervisorId),
             criteriaBuilder.equal(subjectJoin.get<Long>("graduationProcessId"), graduationProcessId),
-            criteriaBuilder.like(subjectJoin.get("name"), "%$phrase%"),
         )
+
+        val subjectNamePredicate =
+            prepareSubjectTopicPredicate(criteriaBuilder, subjectJoin, phrase)
+
 
         val supervisorJoin: Join<SubjectEntity, StaffMemberEntity> = subjectJoin.join("supervisor")
         val supervisorNamePredicate = prepareSupervisorNamePredicate(criteriaBuilder, supervisorJoin, phrase)
@@ -106,10 +109,13 @@ class CandidatureRepositoryCustomImpl(
 
         val predicates = criteriaBuilder.and(
             subjectIdPredicate,
-            supervisorNamePredicate,
             acceptedCandidaturesPredicate,
             candidatureAcceptancesPredicate,
-            acceptedCriteriaAcceptancesPredicate
+            acceptedCriteriaAcceptancesPredicate,
+            criteriaBuilder.or(
+                subjectNamePredicate,
+                supervisorNamePredicate,
+            )
         )
 
         return executeQuery(query, root, predicates)
@@ -127,12 +133,13 @@ class CandidatureRepositoryCustomImpl(
             else -> criteriaBuilder.isTrue(criteriaBuilder.literal(true))
         }
 
-
         val subjectJoin: Join<CandidatureEntity, SubjectEntity> = root.join("subject")
         val subjectIdPredicate = criteriaBuilder.and(
             criteriaBuilder.equal(subjectJoin.get<Long>("graduationProcessId"), graduationProcessId),
-            criteriaBuilder.like(subjectJoin.get("topic"), "%${phrase.orEmpty()}%"),
         )
+
+        val subjectNamePredicate =
+            prepareSubjectTopicPredicate(criteriaBuilder, subjectJoin, phrase)
 
         val subqueryStudentHasAccessToCandidature = query.subquery(Boolean::class.java)
         val studentJoin: Join<CandidatureAcceptanceEntity, CandidatureEntity> =
@@ -171,10 +178,13 @@ class CandidatureRepositoryCustomImpl(
 
         val predicates = criteriaBuilder.and(
             subjectIdPredicate,
-            supervisorNamePredicate,
             acceptedCandidaturesPredicate,
             candidatureAcceptancesPredicate,
-            acceptedCriteriaAcceptancesPredicate
+            acceptedCriteriaAcceptancesPredicate,
+            criteriaBuilder.or(
+                subjectNamePredicate,
+                supervisorNamePredicate,
+            ),
         )
 
         return executeQuery(query, root, predicates)
@@ -220,14 +230,29 @@ class CandidatureRepositoryCustomImpl(
         return Pair(subqueryCandidatureAcceptances, subqueryAcceptedCandidatureAcceptances)
     }
 
+    private fun prepareSubjectTopicPredicate(
+        criteriaBuilder: CriteriaBuilder,
+        path: Path<SubjectEntity>,
+        phrase: String?
+    ) = if (!phrase.isNullOrEmpty()) {
+        val sqlLikePhrase = "%${phrase}%"
+        criteriaBuilder.or(
+            criteriaBuilder.like(path.get("topic"), sqlLikePhrase),
+            criteriaBuilder.like(path.get("topicInEnglish"), sqlLikePhrase),
+        )
+    } else criteriaBuilder.isTrue(criteriaBuilder.literal(true))
+
+
     private fun prepareSupervisorNamePredicate(
-        criteriaBuilder: CriteriaBuilder, supervisorPath: Path<StaffMemberEntity>, phrase: String?
-    ) = if (phrase != null) criteriaBuilder.like(
+        criteriaBuilder: CriteriaBuilder,
+        path: Path<StaffMemberEntity>,
+        phrase: String?
+    ) = if (!phrase.isNullOrEmpty()) criteriaBuilder.like(
         criteriaBuilder.concat(
-            supervisorPath.get("title"), criteriaBuilder.concat(
+            path.get("title"), criteriaBuilder.concat(
                 " ", criteriaBuilder.concat(
-                    supervisorPath.get("name"), criteriaBuilder.concat(
-                        " ", supervisorPath.get("surname")
+                    path.get("name"), criteriaBuilder.concat(
+                        " ", path.get("surname")
                     )
                 )
             )

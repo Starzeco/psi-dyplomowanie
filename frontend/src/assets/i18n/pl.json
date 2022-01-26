@@ -60,5 +60,11 @@
     "co-realisers-label": "Współrealizatorzy",
     "co-realisers-first": "Pierwszy współrealizator",
     "co-realisers-second": "Drugi współrealizator",
-    "co-realisers-third": "Trzeci współrealizator"
+    "co-realisers-third": "Trzeci współrealizator",
+    "verifications": "Weryfikacje",
+    "in_verification": "W weryfikacji",
+    "accepted": "Zaakceptowane",
+    "rejected": "Odrzucone",
+    "reject_all": "Odrzuć wszystkie",
+    "accept_all": "Zaakceptuj wszystkie"
 }

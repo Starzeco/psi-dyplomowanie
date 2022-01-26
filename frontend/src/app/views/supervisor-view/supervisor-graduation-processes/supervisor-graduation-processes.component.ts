@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToolbarConfig } from 'src/app/components/toolbar/toolbar.component';
 import { ToolbarService } from 'src/app/components/toolbar/toolbar.service';
-import { GraduationProcessServiceService as GraduationProcessService } from 'src/app/shared/graduation-process-service.service';
+import { GraduationProcessService } from 'src/app/shared/graduation-process.service';
 import { GraduationProcess } from 'src/app/shared/model';
 
 const graduationProcesses_: GraduationProcess[] = [

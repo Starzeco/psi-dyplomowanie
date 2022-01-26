@@ -12,6 +12,21 @@ export type Subject = {
   supervisor: StaffMember
 }
 
+export enum SubjectType {
+  INDIVIDUAL = 'INDIVIDUAL',
+  GROUP = 'GROUP'
+}
+
+export type Verification = {
+  verificationId: number,
+  verified: boolean | null,
+  justification: string | null,
+  updateDate: string | null,
+  subject: Subject,
+  verifier: StaffMember
+}
+
+
 export type CandidaturePartialInfo = {
   subjectTopic: string,
   subjectTopicEnglish: string,

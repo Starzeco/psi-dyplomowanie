@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {StaffMember, Subject} from "../../../../shared/model";
-import {RestService} from "../../../../shared/rest.service";
-import {ToolbarConfig} from "../../../../components/toolbar/toolbar.component";
-import {ToolbarService} from "../../../../components/toolbar/toolbar.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {MatCheckboxChange} from "@angular/material/checkbox";
-import {Dictionary} from "../../../../shared/dictionary";
+import { ActivatedRoute } from "@angular/router";
+import { StaffMember, Subject } from "../../../../shared/model";
+import { RestService } from "../../../../shared/rest.service";
+import { ToolbarConfig } from "../../../../components/toolbar/toolbar.component";
+import { ToolbarService } from "../../../../components/toolbar/toolbar.service";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatCheckboxChange } from "@angular/material/checkbox";
+import { Dictionary } from 'src/app/shared/dictionary';
 
 @Component({
   selector: 'app-details',
@@ -79,7 +79,7 @@ export class DetailsComponent implements OnInit {
 
   private getSubject() {
     const subjectId = this.route.snapshot.paramMap.get('subject_id');
-    if(subjectId == null) {
+    if (subjectId == null) {
       this.toolbarService.updateToolbarConfig(this.toolbarApplySubject);
       this.restService.getSupervisorsByGraduationProcessId(1).subscribe(supervisors => {
         this.supervisors = supervisors;
@@ -117,7 +117,7 @@ export class DetailsComponent implements OnInit {
     });
   }
 
-  private collectData() : Dictionary<any> {
+  private collectData(): Dictionary<any> {
     const controls = this.subjectForm.controls;
     return {
       /*eslint-disable */
@@ -139,7 +139,7 @@ export class DetailsComponent implements OnInit {
 
   groupChange(event: MatCheckboxChange) {
     const controls = this.subjectForm.controls;
-    if(event.checked) {
+    if (event.checked) {
       controls.firstCoRealiser.enable();
       controls.secondCoRealiser.enable();
       controls.thirdCoRealiser.enable();

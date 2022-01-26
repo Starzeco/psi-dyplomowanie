@@ -1,0 +1,96 @@
+POST http://localhost:8080/api/v1/subject
+Content-Type: application/json
+
+{
+  "topic": "pup1",
+  "topicInEnglish": "pup2",
+  "objective": "ss",
+  "objectiveInEnglish": "ee",
+  "realizationLanguage": "POLISH",
+  "realiseresNumber": 2,
+  "initiatorId": 1,
+  "proposedRealiserIds": [2],
+  "supervisorId": 1,
+  "graduationProcessId": 1
+}
+
+###
+PUT http://localhost:8080/api/v1/propositions/1
+Accept: application/json
+Content-Type: application/json
+
+true
+
+###
+PUT http://localhost:8080/api/v1/propositions/2
+Accept: application/json
+Content-Type: application/json
+
+true
+
+###
+PUT http://localhost:8080/api/v1/subject/status/accept-supervisor/1
+Accept: application/json
+
+###
+PUT http://localhost:8080/api/v1/subject/status/accept-initiator/1
+Accept: application/json
+
+###
+PUT http://localhost:8080/api/v1/subject/status/send-verification/1
+Accept: application/json
+
+###
+
+GET http://localhost:8080/api/v1/verification?verifierId=2&phrase=pup&verified=
+
+###
+PUT http://localhost:8080/api/v1/verification?verificationId=1&decision=true&justification=super
+Accept: application/json
+
+###
+PUT http://localhost:8080/api/v1/verification?verificationId=2&decision=true&justification=swietna
+Accept: application/json
+
+###
+PUT http://localhost:8080/api/v1/verification/all?verifierId=3&decision=true&justification=ujdzie
+Accept: application/json
+
+###
+PUT http://localhost:8080/api/v1/subject
+Accept: application/json
+Content-Type: application/json
+
+{
+  "subjectId": 1,
+  "topic": "zmiana1",
+  "topicInEnglish": "zmiana2",
+  "objective": "zmiana3",
+  "objectiveInEnglish": "zmiana4",
+  "realiseresNumber": 3
+}
+
+###
+POST http://localhost:8080/api/v1/subject/candidature
+Accept: application/json
+Content-Type: application/json
+
+{
+  "studentId": 1,
+  "subjectId": 1,
+  "coauthors": []
+}
+
+###
+PUT http://localhost:8080/api/v1/subject/candidature_acceptance/1
+Accept: application/json
+Content-Type: application/json
+
+true
+
+###
+PUT http://localhost:8080/api/v1/subject/candidature/2
+Accept: application/json
+Content-Type: application/json
+
+true

@@ -170,26 +170,26 @@ internal class VerificationSearchAdapterTest {
     @Test
     fun `should return empty list`() {
         // given
-        every { verificationSearchPort.findAllVerifications(any(), any(), any()) } returns listOf()
+        every { verificationSearchPort.findAllVerifications(any(), any(), any(), any()) } returns listOf()
 
         // when
-        val result = verificationSearchAdapter.findAllVerifications(1, "test", true)
+        val result = verificationSearchAdapter.findAllVerifications(1, "test", true, null)
 
         // then
-        verify(exactly = 1) { verificationSearchPort.findAllVerifications(any(), any(), any()) }
+        verify(exactly = 1) { verificationSearchPort.findAllVerifications(any(), any(), any(), any()) }
         assertEquals(listOf<Verification>(), result)
     }
 
     @Test
     fun `should return list of some verifications`() {
         // given
-        every { verificationSearchPort.findAllVerifications(any(), any(), any()) } returns verifications
+        every { verificationSearchPort.findAllVerifications(any(), any(), any(), any()) } returns verifications
 
         // when
-        val result = verificationSearchAdapter.findAllVerifications(1, "test", true)
+        val result = verificationSearchAdapter.findAllVerifications(1, "test", true, null)
 
         // then
-        verify(exactly = 1) { verificationSearchPort.findAllVerifications(any(), any(), any()) }
+        verify(exactly = 1) { verificationSearchPort.findAllVerifications(any(), any(), any(), any()) }
         assertEquals(verifications, result)
     }
 }

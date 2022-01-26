@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GraduationProcessServiceService } from 'src/app/shared/graduation-process-service.service';
+import { GraduationProcessService } from 'src/app/shared/graduation-process.service';
 import { User } from 'src/app/shared/model';
 import {LinkConfig} from "../../components/sidenav/sidenav.component";
 
@@ -33,7 +33,7 @@ export class SupervisorViewComponent {
   readonly user = user_
 
   constructor(
-    readonly gpService: GraduationProcessServiceService
+    readonly gpService: GraduationProcessService
   ) {
 
   }
