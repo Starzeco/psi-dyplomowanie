@@ -20,7 +20,7 @@ pipeline {
     	
 		stage('Back-end-build') {
 			steps {
-				sh 'docker build --no-cache -t $BACKEND_IMAGE_NAME:$IMAGE_TAG backend/'
+				sh 'docker build --no-cache -t $BACKEND_IMAGE_NAME:$IMAGE_TAG -t $BACKEND_IMAGE_NAME:$GIT_COMMIT backend/'
 			}
 		}
 		

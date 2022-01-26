@@ -46,5 +46,19 @@
     "table_student_third_label": "Kandydatury",
     "to_accept_by_supervisor_students_status": "Do zaakcpetowania przez współrealizatorów",
     "to_accept_by_supervisor_status": "Do zaakcpetowania przez promotora",
-    "accepted_status": "Zaakceptowana"
+    "accepted_status": "Zaakceptowana",
+    "create_subject_header": "Zgłoś temat",
+    "create_subject_button": "Zgłoś",
+    "topic_native_lang_label": "Temat pracy po polsku",
+    "topic_native_lang_req": "Temat pracy po polsku jest wymagany",
+    "topic_english_lang_label": "Temat pracy po angielsku",
+    "topic_english_lang_req": "Temat pracy po angielsku jest wymagany",
+    "objective_native_lang_label": "Cel pracy po polsku",
+    "objective_native_lang_req": "Cel pracy po polsku jest wymagany",
+    "realization_lang_label": "Język realizacji",
+    "supervisors_label": "Promotor",
+    "co-realisers-label": "Współrealizatorzy",
+    "co-realisers-first": "Pierwszy współrealizator",
+    "co-realisers-second": "Drugi współrealizator",
+    "co-realisers-third": "Trzeci współrealizator"
 }

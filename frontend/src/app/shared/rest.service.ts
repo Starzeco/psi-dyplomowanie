@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {CandidaturePartialInfo, Subject} from "./model";
+import {CandidaturePartialInfo, StaffMember, Student, Subject} from "./model";
+import {Dictionary} from "./dictionary";
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +53,29 @@ export class RestService {
     return this.http.get<CandidaturePartialInfo[]>(`${environment.apiUrl}/student/${studentId}/graduation_process/${graduationProcessId}/candidature`, {
       params: params
     });
+  }
+
+  getSubjectById(subjectId: number) {
+    return this.http.get<Subject>(`${environment.apiUrl}/subject/${subjectId}`);
+  }
+
+  getSupervisorsByGraduationProcessId(graduationProcessId: number) {
+    return this.http.get<StaffMember[]>(`${environment.apiUrl}/supervisor`, {
+      params: {
+        graduation_process_id: graduationProcessId
+      }
+    });
+  }
+
+  getStudentsByIndexes(indexes: string[]) {
+    return this.http.get<Student[]>(`${environment.apiUrl}/student`, {
+      params: {
+        indexes: indexes.join(',')
+      }
+    });
+  }
+
+  createSubject(subject: Dictionary<any>) {
+    return this.http.post(`${environment.apiUrl}/subject`, subject);
   }
 }

@@ -29,4 +29,9 @@ class StudentSearchAdapter(val studentRepository: StudentRepository) : StudentSe
 
     override fun existsAllBySubjectId(subjectId: Long): Boolean =
         studentRepository.existsAllBySubjectId(subjectId)
+
+    override fun getAllStudentsIndexIn(indexes: List<String>): Set<Student> =
+        studentRepository.findAllByIndexIn(indexes)
+            .map { it.mapToDomain(true) }
+            .toSet()
 }

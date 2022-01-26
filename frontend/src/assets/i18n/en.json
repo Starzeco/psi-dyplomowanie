@@ -46,5 +46,21 @@
     "table_student_third_label": "Candidatures",
     "to_accept_by_supervisor_students_status": "To be accepted by co-realisers",
     "to_accept_by_supervisor_status": "To be accepted by supervisor",
-    "accepted_status": "Accepted"
+    "accepted_status": "Accepted",
+    "create_subject_header": "Create subject",
+    "create_subject_button": "Create",
+    "topic_native_lang_label": "Topic in polish",
+    "topic_native_lang_req": "Topic in polish is required",
+    "topic_english_lang_label": "Topic in english",
+    "topic_english_lang_req": "Topic in english is required",
+    "objective_native_lang_label": "Objective in polish",
+    "objective_native_lang_req": "Objective in polish is required",
+    "objective_english_lang_label": "Objective in english",
+    "objective_english_lang_req": "Objective in english is required",
+    "realization_lang_label": "Realization language",
+    "supervisors_label": "Supervisor",
+    "co-realisers-label": "Co-realisers",
+    "co-realisers-first": "First co-realiser",
+    "co-realisers-second": "Second co-realiser",
+    "co-realisers-third": "Third co-realiser"
 }

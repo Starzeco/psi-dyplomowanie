@@ -11,7 +11,7 @@ fun StudentEntity.mapToDomain(cut: Boolean = false): Student {
         name = this.name,
         surname = this.surname,
         subject = if(cut) null else this.subject?.mapToDomain(),
-        graduationProcesses = this.graduationProcesses.map { it.mapToDomain() }.toSet()
+        graduationProcesses = if(cut) setOf() else this.graduationProcesses.map { it.mapToDomain() }.toSet()
     )
 }
 

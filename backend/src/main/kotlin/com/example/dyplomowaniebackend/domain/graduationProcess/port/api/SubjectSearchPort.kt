@@ -12,4 +12,6 @@ interface SubjectSearchPort {
         availableSubjects: Boolean,
         subjectStatus: SubjectStatus?
     ): Set<Subject>
+
+    fun getSubjectById(subjectId: Long): Subject
 }

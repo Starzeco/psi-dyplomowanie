@@ -9,6 +9,7 @@ import {
   TITLE_TRANSLATION
 } from "../../../../shared/dictionary";
 import {TranslateService} from "@ngx-translate/core";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-subject-table',
@@ -21,7 +22,8 @@ export class SubjectTableComponent {
   subjects: Subject[] = [];
   displayedColumns: string[] = ['topic', 'supervisor', 'type', 'status', 'details'];
 
-  constructor(private readonly translateService: TranslateService) {
+  constructor(private readonly translateService: TranslateService,
+              private readonly router: Router) {
   }
 
   getTopic(subject: Subject): string {
@@ -47,5 +49,9 @@ export class SubjectTableComponent {
   getStatus(subject: Subject): string {
     if(this.translateService.currentLang == Language.EN) return SUBJECT_STATUS[subject.status];
     else return SUBJECT_STATUS_POLISH[subject.status];
+  }
+
+  toDetails(subject: Subject) {
+    void this.router.navigate(['student', 'graduation_process', '1', 'subject', subject.subjectId]);
   }
 }

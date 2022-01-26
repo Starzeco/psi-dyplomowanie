@@ -12,12 +12,24 @@ import { STUDENT_VIEW_ROUTES } from './student-view.routes';
 import { SubjectTableComponent } from './subject/subject-table/subject-table.component';
 import { GraduationProcessComponent } from './graduation-process/graduation-process.component';
 import { CandidatureTableComponent } from './subject/candidature-table/candidature-table.component';
+import { DetailsComponent } from './subject/details/details.component';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import {MatRadioModule} from "@angular/material/radio";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 const MAT_MODULES = [
   MatCardModule,
   MatTabsModule,
   MatTableModule,
   MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatRadioModule,
+  MatCheckboxModule,
 ];
 
 @NgModule({
@@ -27,10 +39,13 @@ const MAT_MODULES = [
     SubjectTableComponent,
     GraduationProcessComponent,
     CandidatureTableComponent,
+    DetailsComponent,
   ],
   imports: [
     CommonModule,
     ComponentsModule,
+    ReactiveFormsModule,
+    FormsModule,
     RouterModule.forChild(STUDENT_VIEW_ROUTES),
     ...MAT_MODULES,
   ]

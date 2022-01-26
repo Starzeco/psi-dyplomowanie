@@ -6,4 +6,5 @@ import com.example.dyplomowaniebackend.domain.model.exception.EntityNotFoundExce
 interface StaffSearchPort {
     @Throws(EntityNotFoundException::class)
     fun getStaffMemberById(staffMemberId: Long): StaffMember
+    fun getAllSupervisorsInGraduationProcess(graduationProcessId: Long): Set<StaffMember>
 }

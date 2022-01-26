@@ -27,28 +27,6 @@ class Bootstrap(
     }
 
     private fun populateDB() {
-        val student0 = StudentEntity(
-            index = "242422",
-            email = "242422@student.pwr.edu.pl",
-            name = "Marcel",
-            surname = "Krakowiak",
-            graduationProcesses = setOf(),
-        )
-        val student1 = StudentEntity(
-            index = "242421",
-            email = "242421@student.pwr.edu.pl",
-            name = "Kacper",
-            surname = "Kowalski",
-            graduationProcesses = setOf(),
-        )
-        val student2 = StudentEntity(
-            index = "242420",
-            email = "242420@student.pwr.edu.pl",
-            name = "Stasiek",
-            surname = "Kolorowy",
-            graduationProcesses = setOf(),
-        )
-        studentRepository.saveAll(setOf(student0, student1, student2))
 
         val faculty = FacultyEntity(
             name = "Wydział infy i zarządznia",
@@ -75,6 +53,28 @@ class Bootstrap(
 
         val savedDegreeCourse = degreeCourseRepository.save(degreeCourse)
 
+        val student0 = StudentEntity(
+            index = "242422",
+            email = "242422@student.pwr.edu.pl",
+            name = "Marcel",
+            surname = "Krakowiak",
+            graduationProcesses = setOf(),
+        )
+        val student1 = StudentEntity(
+            index = "242421",
+            email = "242421@student.pwr.edu.pl",
+            name = "Kacper",
+            surname = "Kowalski",
+            graduationProcesses = setOf(),
+        )
+        val student2 = StudentEntity(
+            index = "242420",
+            email = "242420@student.pwr.edu.pl",
+            name = "Stasiek",
+            surname = "Kolorowy",
+            graduationProcesses = setOf(),
+        )
+
         val graduationProcess = GraduationProcessEntity(
             cSDeadline = Instant.now(),
             vFDeadline = Instant.now(),
@@ -84,11 +84,12 @@ class Bootstrap(
             finalSemester = "Jakis semestr 6",
             degree = Degree.BATCHELOR,
             hCPerSubject = 10,
-            students = setOf(),
+            students = setOf(student0, student1, student2),
             degreeCourseId = savedDegreeCourse.degreeCourseId!!,
         )
 
         graduationProcessRepository.save(graduationProcess)
+        studentRepository.saveAll(setOf(student0, student1, student2))
 
         val verificationStaffMember0 = StaffMemberEntity(
             email = "super.weryfikator@pwr.edu.pl",

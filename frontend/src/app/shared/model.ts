@@ -28,6 +28,15 @@ export type StaffMember = {
   title: string,
   currentWorkload: number,
   absoluteWorkload: number,
+  fullName: string
+}
+
+export type Student = {
+  studentId: number,
+  index: string,
+  email: string,
+  name: string,
+  surname: string,
 }
 
 export type UserType = "student" | "supervisor" | "verifier"

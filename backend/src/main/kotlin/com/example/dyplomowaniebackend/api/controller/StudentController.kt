@@ -2,15 +2,22 @@ package com.example.dyplomowaniebackend.api.controller
 
 import com.example.dyplomowaniebackend.api.dto.CandidaturePartialInfoResponse
 import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureServicePort
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.StudentSearchPort
 import com.example.dyplomowaniebackend.domain.model.CandidatureStatus
 import com.example.dyplomowaniebackend.domain.model.CandidatureType
+import com.example.dyplomowaniebackend.domain.model.Student
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/student")
 class StudentController(
-    private val candidatureServicePort: CandidatureServicePort
+    private val candidatureServicePort: CandidatureServicePort,
+    private val studentSearchPort: StudentSearchPort,
 ) {
+
+    @GetMapping
+    fun getStudentsByIndexes(@RequestParam(name = "indexes") indexes: String): Set<Student> =
+        studentSearchPort.getStudentsByIndexes(indexes.split(","))
 
     //TODO: studentId could be passed from auth context - it can be stored within TOKEN
     @GetMapping("{student_id}/graduation_process/{graduation_process_id}/candidature")

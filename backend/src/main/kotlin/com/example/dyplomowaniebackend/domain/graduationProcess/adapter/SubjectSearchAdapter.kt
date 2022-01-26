@@ -39,4 +39,6 @@ class SubjectSearchAdapter(private val subjectSearchPort: SubjectSearchPort) :
             SubjectStatus.RESERVED
         )
     }
+
+    override fun getSubjectById(subjectId: Long): Subject = subjectSearchPort.getById(subjectId, true)
 }

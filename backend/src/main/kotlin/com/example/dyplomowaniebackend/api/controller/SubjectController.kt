@@ -14,6 +14,10 @@ class SubjectController(
     private val candidatureServicePort: CandidatureServicePort
 ) {
 
+    @GetMapping("{subject_id}")
+    fun getSubjectById(@PathVariable(name = "subject_id") subjectId: Long): Subject =
+        subjectSearchPort.getSubjectById(subjectId)
+
     @GetMapping("student/{student_id}")
     fun getSubjectsForStudent(@PathVariable(name = "student_id") studentId: Long,
                               @RequestParam(required = false)  searchPhrase: String?,
