@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {User} from "../../shared/model";
 import {LinkConfig} from "../../components/sidenav/sidenav.component";
-import {GraduationProcessServiceService} from "../../shared/graduation-process-service.service";
+import {GraduationProcessService} from "../../shared/graduation-process.service";
 
 
 const user_: User = {
@@ -35,6 +35,6 @@ export class StudentViewComponent {
   readonly user = user_
 
   constructor(
-    readonly gpService: GraduationProcessServiceService
+    readonly gpService: GraduationProcessService
   ) { }
 }

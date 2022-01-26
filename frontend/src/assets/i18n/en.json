@@ -46,5 +46,11 @@
     "table_student_third_label": "Candidatures",
     "to_accept_by_supervisor_students_status": "To be accepted by co-realisers",
     "to_accept_by_supervisor_status": "To be accepted by supervisor",
-    "accepted_status": "Accepted"
+    "accepted_status": "Accepted",
+    "verifications": "Verifications",
+    "in_verification": "In verification",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "reject_all": "Accept all",
+    "accept_all": "Reject all"
 }

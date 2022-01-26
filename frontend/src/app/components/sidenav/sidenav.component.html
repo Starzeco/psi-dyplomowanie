@@ -27,7 +27,7 @@
             <mat-divider></mat-divider>
             <div class="sidenav-elem">
                 <ng-container *ngIf="graduationProcess">
-                    <a *ngFor="let linkConfig of linksConfig" mat-button class="link" href="{{linkConfig.href}}">
+                    <a *ngFor="let linkConfig of linksConfig" mat-button class="link" [routerLink]="[linkConfig.href]">
                         <mat-icon *ngIf="linkConfig.iconName!!" inline="true">
                             {{linkConfig.iconName}}
                         </mat-icon>

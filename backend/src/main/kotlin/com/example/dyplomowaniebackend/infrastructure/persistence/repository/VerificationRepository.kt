@@ -10,10 +10,24 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface VerificationRepository : JpaRepository<VerificationEntity, Long> {
+    fun findByVerifierIdAndVerifiedAndSubjectTopicLikeAndSubjectRealiseresNumberGreaterThan(
+        verifierId: Long,
+        verified: Boolean?,
+        title: String,
+        realisersNumber: Int
+    ): List<VerificationEntity>
+
+    fun findByVerifierIdAndVerifiedAndSubjectTopicLikeAndSubjectRealiseresNumberEquals(
+        verifierId: Long,
+        verified: Boolean?,
+        title: String,
+        realisersNumber: Int
+    ): List<VerificationEntity>
+
     fun findByVerifierIdAndVerifiedAndSubjectTopicLike(
         verifierId: Long,
         verified: Boolean?,
-        title: String
+        title: String,
     ): List<VerificationEntity>
 
     fun findByVerifierVerifierId(verifierId: Long): List<VerificationEntity>
@@ -22,6 +36,7 @@ interface VerificationRepository : JpaRepository<VerificationEntity, Long> {
     @Query(
         "UPDATE VerificationEntity VE " +
                 "SET VE.verified = :decision, " +
+                "VE.updateDate = current_timestamp, " +
                 "VE.justification = :justification " +
                 "WHERE VE.verificationId = :verificationId"
     )
