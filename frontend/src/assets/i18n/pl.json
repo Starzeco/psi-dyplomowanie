@@ -52,5 +52,9 @@
     "accepted": "Zaakceptowane",
     "rejected": "Odrzucone",
     "reject_all": "Odrzuć wszystkie",
-    "accept_all": "Zaakceptuj wszystkie"
+    "accept_all": "Zaakceptuj wszystkie",
+    "apply": "Zatwierdź",
+    "close": "Zamknij",
+    "justification": "Uzasadnienie",
+    "required_justification": "Uzasadnienie jest wymagane"
 }

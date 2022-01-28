@@ -51,6 +51,10 @@
     "in_verification": "In verification",
     "accepted": "Accepted",
     "rejected": "Rejected",
-    "reject_all": "Accept all",
-    "accept_all": "Reject all"
+    "reject_all": "Reject all",
+    "accept_all": "Accept all",
+    "apply": "Apply",
+    "close": "Close",
+    "justification": "Justification",
+    "required_justification": "Justification is required"
 }

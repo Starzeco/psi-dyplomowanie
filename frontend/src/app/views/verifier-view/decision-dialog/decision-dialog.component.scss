@@ -1,0 +1,10 @@
+app-decision-dialog {
+    .decision-dialog-container {
+        width: 40vw;
+        min-width: 30vw;
+
+        mat-form-field {
+            min-width: 100%;
+        }
+    }
+}

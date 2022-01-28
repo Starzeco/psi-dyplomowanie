@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { FilterConfig, FiltersEvent } from 'src/app/components/filters/filters.component';
 import { ToolbarConfig } from 'src/app/components/toolbar/toolbar.component';
 import { ToolbarService } from 'src/app/components/toolbar/toolbar.service';
 import { SubjectType, Verification } from 'src/app/shared/model';
 import { RestService } from 'src/app/shared/rest.service';
+import { DecisionDialogComponent, DecisionDialogResult } from '../../decision-dialog/decision-dialog.component';
 
 const filtersConfig_: FilterConfig[] = [
   {
@@ -45,16 +47,17 @@ export class InVerificationComponent implements OnInit {
     buttonsConfig: [
       {
         textKey: 'accept_all',
-        click: () => console.log('sru')
+        click: () => this.openAcceptAllDialog()
       },
       {
         textKey: 'reject_all',
-        click: () => console.log('sru')
+        click: () => this.openRejectAllDialog()
       }
     ]
   }
 
   constructor(
+    private readonly matDialog: MatDialog,
     private readonly restService: RestService,
     private readonly toolbarService: ToolbarService,
   ) { }
@@ -62,6 +65,24 @@ export class InVerificationComponent implements OnInit {
   ngOnInit(): void {
     this.toolbarService.updateToolbarConfig(this.toolbarConfig)
     this.fetchVerifications(null, null)
+  }
+
+  openAcceptAllDialog() {
+    const dialogRef = this.matDialog.open(DecisionDialogComponent, { data: { titleKey: 'accept_all', role: 'apply' } })
+    dialogRef.afterClosed().subscribe((result?: DecisionDialogResult) => {
+      if (result) {
+        console.log(result)
+      }
+    })
+  }
+
+  openRejectAllDialog() {
+    const dialogRef = this.matDialog.open(DecisionDialogComponent, { data: { titleKey: 'reject_all', role: 'reject' } })
+    dialogRef.afterClosed().subscribe((result?: DecisionDialogResult) => {
+      if (result) {
+        console.log(result)
+      }
+    })
   }
 
   refetchVerificationsOnFiltersEvent(event: FiltersEvent) {

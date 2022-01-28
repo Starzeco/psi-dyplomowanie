@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VerifierViewComponent } from "./verifier-view.component";
 import { MatButtonModule } from "@angular/material/button";
+import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ComponentsModule } from "../../components/components.module";
 import { GraduationProcessesComponent } from './graduation-processes/graduation-processes.component';
 import { SubjectsComponent } from './subjects/subjects.component';
@@ -12,12 +14,16 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterModule } from '@angular/router';
 import { VERIFIER_VIEW_ROUTES } from './verifier-view.routes';
+import { DecisionDialogComponent } from './decision-dialog/decision-dialog.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 const MAT_MODULES = [
   MatButtonModule,
   MatCardModule,
-  MatTabsModule
+  MatTabsModule,
+  MatInputModule,
+  MatDialogModule
 ];
 
 @NgModule({
@@ -28,10 +34,12 @@ const MAT_MODULES = [
     InVerificationComponent,
     AcceptedComponent,
     RejectedComponent,
+    DecisionDialogComponent,
   ],
   imports: [
     CommonModule,
     ComponentsModule,
+    ReactiveFormsModule,
     RouterModule.forChild(VERIFIER_VIEW_ROUTES),
     RouterModule,
     ...MAT_MODULES,
