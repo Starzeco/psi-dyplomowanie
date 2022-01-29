@@ -6,7 +6,7 @@ data class Candidature(
     val candidatureId: Long? = null,
     val accepted: Boolean? = null,
     val student: Student,
-//    val candidatureAcceptances: Set<CandidatureAcceptance>,
+    val candidatureAcceptances: Set<CandidatureAcceptance>,
     val subject: Subject,
     val creationDate: Instant,
 )

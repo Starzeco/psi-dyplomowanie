@@ -22,6 +22,7 @@ class Bootstrap(
     val subjectRepository: SubjectRepository,
     val candidatureRepository: CandidatureRepository,
     val propositionAcceptanceRepository: PropositionAcceptanceRepository,
+    val candidatureAcceptanceRepository: CandidatureAcceptanceRepository,
 ) :
     ApplicationListener<ContextRefreshedEvent> {
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
@@ -173,14 +174,48 @@ class Bootstrap(
             studentId = null,
             realiser = setOf()
         )
-        subjectRepository.saveAll(listOf(verifiedSubject, verifiedSubject2))
+        val verifiedSubject3 = SubjectEntity(
+            topic = "temat3",
+            topicInEnglish = "tematAngielsk3",
+            objective = "cel3",
+            objectiveInEnglish = "celPoAngielsku3",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 3,
+            status = SubjectStatus.VERIFIED,
+            staffMemberId = 3,
+            graduationProcessId = 1,
+            studentId = null,
+            realiser = setOf()
+        )
+        subjectRepository.saveAll(listOf(verifiedSubject, verifiedSubject2, verifiedSubject3))
 
         val candidature = CandidatureEntity(
             studentId = 1,
-            subjectId = verifiedSubject.subjectId!!
+            subjectId = verifiedSubject.subjectId!!,
+            candidatureAcceptances = setOf()
         )
 
-        candidatureRepository.save(candidature)
+        val candidature2 = CandidatureEntity(
+            studentId = 2,
+            subjectId = verifiedSubject3.subjectId!!,
+            candidatureAcceptances = setOf()
+        )
+
+        candidatureRepository.saveAll(listOf(candidature, candidature2))
+
+
+        val candidatureAcceptance0 = CandidatureAcceptanceEntity(
+            accepted = null,
+            studentId = 1,
+            candidatureId = candidature2.candidatureId!!
+        )
+        val candidatureAcceptance1 = CandidatureAcceptanceEntity(
+            accepted = null,
+            studentId = 3,
+            candidatureId = candidature2.candidatureId
+        )
+
+        candidatureAcceptanceRepository.saveAll(listOf(candidatureAcceptance0, candidatureAcceptance1))
 
         val subjectToAccept1 = SubjectEntity(
             topic = "temat2",

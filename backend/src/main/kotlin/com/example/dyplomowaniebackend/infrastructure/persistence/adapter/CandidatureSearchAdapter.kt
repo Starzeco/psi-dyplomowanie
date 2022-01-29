@@ -63,7 +63,7 @@ class CandidatureSearchAdapter(
 
     override fun getCandidatureById(candidatureId: Long): Candidature =
         candidatureRepository.findById(candidatureId)
-            .map { it.mapToDomain() }
+            .map { it.mapToDomain(getProposition = true) }
             .orElseThrow { throw EntityNotFoundException(Candidature::class, candidatureId) }
 
 }

@@ -11,16 +11,18 @@ fun Candidature.mapToEntity(): CandidatureEntity =
         accepted = this.accepted,
         studentId = this.student.studentId!!,
         subjectId = this.subject.subjectId!!,
-        creationDate = this.creationDate
+        creationDate = this.creationDate,
+        candidatureAcceptances = setOf()
     )
 
-fun CandidatureEntity.mapToDomain(cut: Boolean = false): Candidature =
+fun CandidatureEntity.mapToDomain(cut: Boolean = false, getProposition: Boolean = false): Candidature =
     Candidature(
         candidatureId = this.candidatureId,
         accepted = this.accepted,
         student = this.student!!.mapToDomain(cut),
         subject = this.subject!!.mapToDomain(cut),
         creationDate = this.creationDate,
+        candidatureAcceptances = if(getProposition) this.candidatureAcceptances.map { it.mapToDomain(getProposition) }.toSet() else setOf()
     )
 
 fun CandidatureAcceptance.mapToEntity(): CandidatureAcceptanceEntity =

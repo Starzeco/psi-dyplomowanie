@@ -50,7 +50,8 @@ class CandidatureServiceAdapter(
         val candidature = Candidature(
             student = studentSearchPort.getById(candidatureCreation.studentId),
             subject = subject,
-            creationDate = Instant.now(clock)
+            creationDate = Instant.now(clock),
+            candidatureAcceptances = setOf()
         )
         val insertedCandidature = candidatureMutationPort.insert(candidature)
         val candidatureAcceptances = candidatureCreation.coauthors.map {
@@ -156,5 +157,7 @@ class CandidatureServiceAdapter(
     ).map {
         Pair(it, candidatureSearchPort.getCandidatureAcceptanceByCandidatureId(it.candidatureId!!))
     }.toSet()
+
+    override fun getCandidatureById(candidatureId: Long): Candidature = candidatureSearchPort.getCandidatureById(candidatureId)
 
 }

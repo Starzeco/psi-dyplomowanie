@@ -21,6 +21,7 @@ import {MatRadioModule} from "@angular/material/radio";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { AppliedDetailsComponent } from './subject/applied-details/applied-details.component';
 import { MatIconModule } from "@angular/material/icon";
+import { CandidatureDetailsComponent } from './subject/candidature-details/candidature-details.component';
 
 const MAT_MODULES = [
   MatCardModule,
@@ -44,6 +45,7 @@ const MAT_MODULES = [
     CandidatureTableComponent,
     DetailsComponent,
     AppliedDetailsComponent,
+    CandidatureDetailsComponent,
   ],
   imports: [
     CommonModule,

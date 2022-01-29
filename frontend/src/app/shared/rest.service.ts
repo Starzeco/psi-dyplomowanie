@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import { CandidaturePartialInfo, Subject, StaffMember, Student, SubjectType, Verification } from "./model";
+import { CandidaturePartialInfo, Subject, StaffMember, Student, SubjectType, Verification, Candidature } from "./model";
 import { Dictionary } from "./dictionary";
 
 @Injectable({
@@ -61,6 +61,10 @@ export class RestService {
     return this.http.get<Subject>(`${environment.apiUrl}/subject/${subjectId}`);
   }
 
+  getCandidatureById(candidatureId: number) {
+    return this.http.get<Candidature>(`${environment.apiUrl}/candidature/${candidatureId}`);
+  }
+
   getSupervisorsByGraduationProcessId(graduationProcessId: number) {
     return this.http.get<StaffMember[]>(`${environment.apiUrl}/supervisor`, {
       params: {
@@ -111,5 +115,9 @@ export class RestService {
 
   reject(subjectId: number) {
     return this.http.put(`${environment.apiUrl}/subject/status/reject/${subjectId}`, null);
+  }
+
+  updateCandidateAcceptance(decision: boolean, candidatureAcceptanceId: number) {
+    return this.http.put(`${environment.apiUrl}/subject/candidature_acceptance/${candidatureAcceptanceId}`, decision);
   }
 }

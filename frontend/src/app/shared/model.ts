@@ -48,7 +48,24 @@ export type Verification = {
 }
 
 
+export type Candidature = {
+  candidatureId: number,
+  accepted: boolean | null,
+  student: Student,
+  subject: Subject,
+  creationDate: Date
+  candidatureAcceptances: CandidatureAcceptance[]
+}
+
+export type CandidatureAcceptance = {
+  candidatureAcceptanceId: number,
+  accepted: boolean | null,
+  student: Student
+}
+
 export type CandidaturePartialInfo = {
+  subjectId: number,
+  candidatureId: number,
   subjectTopic: string,
   subjectTopicEnglish: string,
   supervisorName: string,

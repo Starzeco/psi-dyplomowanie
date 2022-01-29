@@ -83,5 +83,6 @@
     "accept_proposition_hedaer": "Accept application",
     "accept": "Accept",
     "decline": "Decline",
-    "accept_by_initiator_header": "Initiator acceptation"
+    "accept_by_initiator_header": "Initiator acceptation",
+    "candidature_header_details": "Candidature details"
 }

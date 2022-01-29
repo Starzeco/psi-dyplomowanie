@@ -81,6 +81,7 @@
     "accept_proposition_hedaer": "Akceptacja zgłoszenia",
     "accept": "Akceptuj",
     "decline": "Odrzuć",
-    "accept_by_initiator_header": "Akceptacja inicjatora"
+    "accept_by_initiator_header": "Akceptacja inicjatora",
+    "candidature_header_details": "Szczegóły kandydatury"
 
 }
