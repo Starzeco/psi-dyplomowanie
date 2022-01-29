@@ -56,7 +56,7 @@ export class RestService {
     });
   }
 
-  fetchVerificationsForVerifier(
+  fetchAllVerificationsForVerifier(
     verifierId: number,
     phrase: string | null,
     verified: boolean | null,
@@ -79,7 +79,11 @@ export class RestService {
     return this.http.put<Verification[]>(`${environment.apiUrl}/verifier/${verifierId}/verifications`, verificationDecision);
   }
 
-  findAllVerifiersOfStaffMember(staffMemberId: number) {
+  fetchAllVerifiersOfStaffMember(staffMemberId: number) {
     return this.http.get<VerifierPartialInfo[]>(`${environment.apiUrl}/verifier/${staffMemberId}`);
+  }
+
+  fetchVerificationAsVerifier(verifierId: number, verificationId: number) {
+    return this.http.get<Verification>(`${environment.apiUrl}/verifier/${verifierId}/verifications/${verificationId}`);
   }
 }

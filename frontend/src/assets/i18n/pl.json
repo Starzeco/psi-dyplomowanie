@@ -6,6 +6,8 @@
     "language": "Język",
     "en": "Angielski",
     "pl": "Polski",
+    "ENGLISH": "Angielski",
+    "POLISH": "Polski",
     "applied_computer_science": "Informatyka Stosowana",
     "master": "Studia magisterskie",
     "loading_state_message": "Ładowanie...",
@@ -73,5 +75,10 @@
     "DOCTOR": "dr",
     "PROFESSOR": "prof.",
     "MASTER": "mgr",
-    "topic": "Temat"
+    "topic": "Temat",
+    "topic_in_polish": "Temat po polsku",
+    "topic_in_english": "Temat po angielsku",
+    "objective_in_polish": "Cel po polsku",
+    "objective_in_english": "Cel po angielsku",
+    "realization_language": "Język realizacji"
 }

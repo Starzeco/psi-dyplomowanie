@@ -48,14 +48,14 @@ export class GraduationProcessesComponent implements OnInit {
     this.verifierService.setVerifier(verifier)
     this.graduationProcessService.setGraduationProcess(graduationProcess)
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this.router.navigate(['verifier', verifier.verifierId, 'graduation_process', graduationProcess.graduationProcessId, 'subject'])
+    this.router.navigate(['verifier', verifier.verifierId, 'graduation_process', graduationProcess.graduationProcessId, 'verifications'])
   }
 
   private fetchGraduationProcesses(): void {
     this.loading = true
     this.error = false
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-extra-non-null-assertion
-    this.restService.findAllVerifiersOfStaffMember(this.user!!.userId).subscribe({
+    this.restService.fetchAllVerifiersOfStaffMember(this.user!!.userId).subscribe({
       next: (result) => {
         this.verifiersPartialInfo = result
         this.graduationProcesses = result.map(r => this.mapToGraduationProcess(r.graduationProcessPartialInfo))

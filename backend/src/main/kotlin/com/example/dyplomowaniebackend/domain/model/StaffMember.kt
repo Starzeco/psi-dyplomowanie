@@ -16,8 +16,8 @@ data class StaffMember(
 }
 
 enum class Title(val shorthand: String) {
-    PROFESSOR("prof."),
-    DOCTOR("dr"),
-    MASTER("mgr"),
-    BATCHELOR("inż")
+    PROFESSOR("professor"),
+    DOCTOR("doctor"),
+    MASTER("master"),
+    BACHELOR("bachelor")
 }

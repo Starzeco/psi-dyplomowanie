@@ -23,6 +23,13 @@ class VerifierController(
             VerifierPartialInfoResponse.fromDomain(it)
         }
 
+    @GetMapping("{verifier_id}/verifications/{verification_id}")
+    fun findAllVerifications(
+        @PathVariable(name = "verifier_id") verifierId: Long,
+        @PathVariable(name = "verification_id") verificationId: Long,
+    ): Verification = verificationSearchPort.findVerificationAsVerifier(verifierId, verificationId)
+
+
     @GetMapping("{verifier_id}/verifications")
     fun findAllVerifications(
         @PathVariable(name = "verifier_id") verifierId: Long,

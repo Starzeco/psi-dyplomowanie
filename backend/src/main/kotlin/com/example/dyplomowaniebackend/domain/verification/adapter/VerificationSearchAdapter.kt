@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service
 
 @Service("verificationSearchAdapterApi")
 class VerificationSearchAdapter(val verificationSearchPort: com.example.dyplomowaniebackend.domain.verification.port.persistence.VerificationSearchPort) : com.example.dyplomowaniebackend.domain.verification.port.api.VerificationSearchPort {
+    override fun findVerificationAsVerifier(verifierId: Long, verificationId: Long): Verification =
+        verificationSearchPort.findAllVerificationAsVerifier(verifierId, verificationId)
+
     override fun findAllVerifiersOfStaffMember(staffMemberId: Long): List<Verifier> =
         verificationSearchPort.findAllVerifiersOfStaffMember(staffMemberId)
 

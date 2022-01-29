@@ -1,5 +1,6 @@
 package com.example.dyplomowaniebackend.infrastructure.persistence.repository
 
+import com.example.dyplomowaniebackend.domain.model.Verification
 import com.example.dyplomowaniebackend.infrastructure.persistence.entity.VerificationEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
@@ -15,6 +16,8 @@ interface VerificationRepository : JpaRepository<VerificationEntity, Long> {
         verified: Boolean?,
         title: String,
     ): List<VerificationEntity>
+
+    fun findByVerificationIdAndVerifierId(verificationId: Long, verifierId: Long): VerificationEntity?
 
     fun findByVerifierVerifierId(verifierId: Long): List<VerificationEntity>
     fun findBySubjectSubjectId(subjectId: Long): List<VerificationEntity>

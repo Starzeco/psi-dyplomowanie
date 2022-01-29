@@ -3,6 +3,6 @@
     </app-filters>
     <app-state [loading]="loading" [error]="error" [empty]="verifications.length === 0"
         (refetch)="this.refetchVerifications()" (tryAgain)="this.refetchVerifications()">
-        <app-subjects-table [verifications]="this.verifications"></app-subjects-table>
+        <app-subjects-table [verifications]="this.verifications" (verificationSelection)="this.redirectToDetails($event)"></app-subjects-table>
     </app-state>
 </div>

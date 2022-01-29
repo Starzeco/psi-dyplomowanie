@@ -18,6 +18,8 @@ import { VERIFIER_VIEW_ROUTES } from './verifier-view.routes';
 import { DecisionDialogComponent } from './decision-dialog/decision-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SubjectsTableComponent } from './subjects/subjects-table/subjects-table.component';
+import { SubjectDetailsComponent } from './subjects/subject-details/subject-details.component';
+import { MatOptionModule } from '@angular/material/core';
 
 
 const MAT_MODULES = [
@@ -27,6 +29,7 @@ const MAT_MODULES = [
   MatInputModule,
   MatDialogModule,
   MatTableModule,
+  MatOptionModule,
 ];
 
 @NgModule({
@@ -39,6 +42,7 @@ const MAT_MODULES = [
     RejectedComponent,
     DecisionDialogComponent,
     SubjectsTableComponent,
+    SubjectDetailsComponent,
   ],
   imports: [
     CommonModule,
