@@ -1,9 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FilterConfig, FiltersEvent } from 'src/app/components/filters/filters.component';
 import { ToolbarConfig } from 'src/app/components/toolbar/toolbar.component';
 import { ToolbarService } from 'src/app/components/toolbar/toolbar.service';
 import { SubjectType, Verification } from 'src/app/shared/model';
 import { RestService } from 'src/app/shared/rest.service';
+import { DecisionDialogComponent, DecisionDialogResult } from '../../decision-dialog/decision-dialog.component';
 
 const filtersConfig_: FilterConfig[] = [
   {
@@ -45,16 +48,19 @@ export class InVerificationComponent implements OnInit {
     buttonsConfig: [
       {
         textKey: 'accept_all',
-        click: () => console.log('sru')
+        click: () => this.openAcceptAllDialog()
       },
       {
         textKey: 'reject_all',
-        click: () => console.log('sru')
+        click: () => this.openRejectAllDialog()
       }
     ]
   }
 
   constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly matDialog: MatDialog,
     private readonly restService: RestService,
     private readonly toolbarService: ToolbarService,
   ) { }
@@ -62,6 +68,26 @@ export class InVerificationComponent implements OnInit {
   ngOnInit(): void {
     this.toolbarService.updateToolbarConfig(this.toolbarConfig)
     this.fetchVerifications(null, null)
+  }
+
+  openAcceptAllDialog() {
+    const dialogRef = this.matDialog.open(DecisionDialogComponent, { data: { titleKey: 'accept_all' } })
+    dialogRef.afterClosed().subscribe((result?: DecisionDialogResult) => {
+      if (result) {
+        this.restService.verifyAllVerifications(this.verifierId, { decision: true, justification: result.justification })
+          .subscribe(() => this.refetchVerifications())
+      }
+    })
+  }
+
+  openRejectAllDialog() {
+    const dialogRef = this.matDialog.open(DecisionDialogComponent, { data: { titleKey: 'reject_all' } })
+    dialogRef.afterClosed().subscribe((result?: DecisionDialogResult) => {
+      if (result) {
+        this.restService.verifyAllVerifications(this.verifierId, { decision: false, justification: result.justification })
+          .subscribe(() => this.refetchVerifications())
+      }
+    })
   }
 
   refetchVerificationsOnFiltersEvent(event: FiltersEvent) {
@@ -85,7 +111,7 @@ export class InVerificationComponent implements OnInit {
   ) {
     this.loading = true
     this.error = false
-    this.restService.fetchVerificationsForVerifier(this.verifierId, phrase, null, type).subscribe({
+    this.restService.fetchAllVerificationsForVerifier(this.verifierId, phrase, null, type).subscribe({
       next: result => {
         this.verifications = result
         this.loading = false
@@ -98,4 +124,13 @@ export class InVerificationComponent implements OnInit {
     })
   }
 
+  redirectToDetails(verification: Verification) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const verifierId = this.route.snapshot.paramMap.get('verifier_id')!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const graduationProcessId = this.route.snapshot.paramMap.get('graduation_process_id')!;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['verifier', verifierId, 'graduation_process', graduationProcessId, 'verifications', verification.verificationId])
+  }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/shared/model';
-import { UserService } from 'src/app/shared/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-subjects',
@@ -9,12 +8,12 @@ import { UserService } from 'src/app/shared/user.service';
 })
 export class SubjectsComponent implements OnInit {
 
-  user!: User
+  verifierId!: number
 
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.user = this.userService.getUser()
+    this.verifierId = Number(this.route.snapshot.paramMap.get('verifier_id'))
   }
 
 }

@@ -6,3 +6,5 @@ class CandidatureConstraintViolationException(override val message: String) : Ru
 class CandidatureAcceptanceConstraintViolationException(override val message: String) : RuntimeException(message)
 
 class PropositionAcceptanceConstraintViolationException(override val message: String) : RuntimeException(message)
+
+class VerificationConstraintViolationException(override val message: String) : RuntimeException(message)

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import { CandidaturePartialInfo, Subject, SubjectType, Verification } from "./model";
+import { CandidaturePartialInfo, Subject, SubjectType, Verification, VerificationDecision, VerifierPartialInfo } from "./model";
 
 @Injectable({
   providedIn: 'root'
@@ -56,19 +56,34 @@ export class RestService {
     });
   }
 
-  fetchVerificationsForVerifier(
+  fetchAllVerificationsForVerifier(
     verifierId: number,
     phrase: string | null,
     verified: boolean | null,
-    type: SubjectType | null,
+    subjectType: SubjectType | null,
   ) {
     const params = new HttpParams()
     const p1 = phrase ? params.set('phrase', phrase) : params
-    const p2 = verified ? p1.set('verified', verified) : p1
-    const p3 = type ? p2.set('type', type) : p2
+    const p2 = verified || verified === false ? p1.set('verified', verified) : p1
+    const p3 = subjectType ? p2.set('subject_type', subjectType) : p2
 
     return this.http.get<Verification[]>(`${environment.apiUrl}/verifier/${verifierId}/verifications`, {
       params: p3
     });
+  }
+
+  verifyAllVerifications(
+    verifierId: number,
+    verificationDecision: VerificationDecision
+  ) {
+    return this.http.put<Verification[]>(`${environment.apiUrl}/verifier/${verifierId}/verifications`, verificationDecision);
+  }
+
+  fetchAllVerifiersOfStaffMember(staffMemberId: number) {
+    return this.http.get<VerifierPartialInfo[]>(`${environment.apiUrl}/verifier/${staffMemberId}`);
+  }
+
+  fetchVerificationAsVerifier(verifierId: number, verificationId: number) {
+    return this.http.get<Verification>(`${environment.apiUrl}/verifier/${verifierId}/verifications/${verificationId}`);
   }
 }

@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface VerifierRepository : JpaRepository<VerifierEntity, Long> {
+    fun findAllByStaffMemberId(staffMemberId: Long): List<VerifierEntity>
     fun findByGraduationProcessId(graduationProcessId: Long): List<VerifierEntity>
 }
