@@ -1,6 +1,6 @@
 package com.example.dyplomowaniebackend.api.dto
 
-data class VerificationDecision(
+data class VerificationDecisionRequest(
     val decision: Boolean,
     val justification: String
 )

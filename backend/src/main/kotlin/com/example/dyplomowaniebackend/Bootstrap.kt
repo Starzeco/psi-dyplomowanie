@@ -20,7 +20,8 @@ class Bootstrap(
     val facultyRepository: FacultyRepository,
     val verifierRepository: VerifierRepository,
     val subjectRepository: SubjectRepository,
-    val candidatureRepository: CandidatureRepository
+    val candidatureRepository: CandidatureRepository,
+    val verificationRepository: VerificationRepository
 ) :
     ApplicationListener<ContextRefreshedEvent> {
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
@@ -157,7 +158,23 @@ class Bootstrap(
             graduationProcessId = 1,
             studentId = null,
         )
+
+        val subject = SubjectEntity(
+            topic = "temat1Weryfikacja",
+            topicInEnglish = "tematAngielskiWeryfikacja",
+            objective = "celWeryfikacja",
+            objectiveInEnglish = "celPoAngielskuWeryfikacja",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 1,
+            status = SubjectStatus.IN_VERIFICATION,
+            staffMemberId = 1,
+            graduationProcessId = 1,
+            studentId = student0.studentId,
+        )
+
+
         subjectRepository.save(verifiedSubject)
+        subjectRepository.save(subject)
 
         val candidature = CandidatureEntity(
             studentId = 1,
@@ -165,5 +182,31 @@ class Bootstrap(
         )
 
         candidatureRepository.save(candidature)
+        candidatureRepository.save(candidature)
+
+        val verificationEntity = VerificationEntity(
+            subjectId = subject.subjectId!!,
+            verifierId = verifier0.verifierId!!
+        )
+
+        val acceptedVerificationEntity = VerificationEntity(
+            subjectId = subject.subjectId!!,
+            verifierId = verifier0.verifierId!!,
+            verified = true,
+            justification = "zaakceptowana bo tak",
+            updateDate = Instant.now(),
+        )
+
+        val rejectedVerificationEntity = VerificationEntity(
+            subjectId = subject.subjectId!!,
+            verifierId = verifier0.verifierId!!,
+            verified = false,
+            justification = "odrzucaona bo tak",
+            updateDate = Instant.now(),
+        )
+
+        verificationRepository.save(verificationEntity)
+        verificationRepository.save(acceptedVerificationEntity)
+        verificationRepository.save(rejectedVerificationEntity)
     }
 }

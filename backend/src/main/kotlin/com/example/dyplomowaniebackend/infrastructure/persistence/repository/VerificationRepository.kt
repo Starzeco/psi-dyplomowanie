@@ -10,20 +10,6 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface VerificationRepository : JpaRepository<VerificationEntity, Long> {
-    fun findByVerifierIdAndVerifiedAndSubjectTopicLikeAndSubjectRealiseresNumberGreaterThan(
-        verifierId: Long,
-        verified: Boolean?,
-        title: String,
-        realisersNumber: Int
-    ): List<VerificationEntity>
-
-    fun findByVerifierIdAndVerifiedAndSubjectTopicLikeAndSubjectRealiseresNumberEquals(
-        verifierId: Long,
-        verified: Boolean?,
-        title: String,
-        realisersNumber: Int
-    ): List<VerificationEntity>
-
     fun findByVerifierIdAndVerifiedAndSubjectTopicLike(
         verifierId: Long,
         verified: Boolean?,
