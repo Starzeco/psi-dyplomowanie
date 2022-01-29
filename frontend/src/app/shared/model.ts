@@ -7,9 +7,30 @@ export type Subject = {
   realizationLanguage: string,
   realiseresNumber: number,
   accepted: boolean,
+  initiator: Student | null,
   status: string,
   creationDate: Date,
-  supervisor: StaffMember
+  supervisor: StaffMember,
+  propositionAcceptances: PropositionAcceptance[],
+  realiser: Student[]
+}
+
+export enum Status {
+  DRAFT = "DRAFT",
+  ACCEPTED_BY_SUPERVISOR = "ACCEPTED_BY_SUPERVISOR",
+  ACCEPTED_BY_INITIATOR = "ACCEPTED_BY_INITIATOR",
+  IN_VERIFICATION = "IN_VERIFICATION",
+  IN_CORRECTION = "IN_CORRECTION",
+  VERIFIED = "VERIFIED",
+  REJECTED = "REJECTED",
+  RESERVED = "RESERVED"
+}
+
+export type PropositionAcceptance = {
+  propositionAcceptanceId: number | null,
+  accepted: boolean | null,
+  student: Student,
+  subject: Subject,
 }
 
 export enum SubjectType {

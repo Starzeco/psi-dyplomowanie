@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { StaffMember, Subject } from "../../../../shared/model";
 import { RestService } from "../../../../shared/rest.service";
 import { ToolbarConfig } from "../../../../components/toolbar/toolbar.component";
@@ -32,20 +32,25 @@ export class DetailsComponent implements OnInit {
     ]
   }
 
-  /*private toolbarCandidate: ToolbarConfig = {
-    titleKey: 'subjects_header',
+  private toolbarCandidate: ToolbarConfig = {
+    titleKey: 'candidate_header',
     iconName: 'note',
     buttonsConfig: [
       {
-        textKey: 'create_subject',
-        click: () => this.router.navigate(['student', 'graduation_process', '1', 'subject', 'create'])
+        textKey: 'candidate_button_header',
+        click: () => this.candidate()
       }
     ]
-  }*/
+  }
+
+  showRealisersForm = true;
+  showIsGroup = true;
+  supervisorPresentation = false;
 
   constructor(private readonly route: ActivatedRoute,
               private readonly toolbarService: ToolbarService,
               private readonly fb: FormBuilder,
+              private readonly router: Router,
               private readonly restService: RestService) {
     this.subjectForm = this.fb.group({
       /*eslint-disable */
@@ -55,6 +60,10 @@ export class DetailsComponent implements OnInit {
       objectiveInEnglish: new FormControl('', Validators.required),
       realizationLanguage: new FormControl('', Validators.required),
       supervisor: new FormControl('', Validators.required),
+      supervisorPresentation: new FormControl({
+        disabled: true,
+        value: ''
+      }),
       isGroup: new FormControl(''),
       firstCoRealiser: new FormControl({
         disabled: true,
@@ -73,7 +82,6 @@ export class DetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.getSubject();
   }
 
@@ -86,12 +94,150 @@ export class DetailsComponent implements OnInit {
         this.loading = false;
       });
     } else {
+      this.toolbarService.updateToolbarConfig(this.toolbarCandidate);
       this.restService.getSubjectById(+subjectId).subscribe(sub => {
         this.subject = sub;
         console.log(this.subject);
+        this.fillAndDisableForm();
         this.loading = false;
-        this.decideWhichToolbar();
       });
+    }
+  }
+
+  private fillAndDisableForm() {
+    const controls = this.subjectForm.controls;
+    const subject = this.subject;
+    if(subject != null) {
+      this.showIsGroup = false;
+      const topic = controls.topic;
+      topic.setValue(subject.topic);
+      topic.disable();
+      const topicInEnglish = controls.topicInEnglish;
+      topicInEnglish.setValue(subject.topicInEnglish);
+      topicInEnglish.disable();
+      const objective = controls.objective;
+      objective.setValue(subject.objective);
+      objective.disable();
+      const objectiveInEnglish = controls.objectiveInEnglish;
+      objectiveInEnglish.setValue(subject.objectiveInEnglish);
+      objectiveInEnglish.disable();
+      const realizationLanguage = controls.realizationLanguage;
+      realizationLanguage.setValue(subject.realizationLanguage);
+      realizationLanguage.disable();
+      const supervisor = controls.supervisorPresentation;
+      this.supervisorPresentation = true;
+      supervisor.setValue(subject.supervisor.fullName);
+      supervisor.disable();
+      if(subject.realiseresNumber > 1) {
+        this.showRealisersForm = true;
+        if(subject.realiseresNumber == 2) {
+          controls.firstCoRealiser.enable();
+        } else if(subject.realiseresNumber == 3) {
+          controls.firstCoRealiser.enable();
+          controls.secondCoRealiser.enable();
+        } else {
+          controls.firstCoRealiser.enable();
+          controls.secondCoRealiser.enable();
+          controls.thirdCoRealiser.enable();
+        }
+      } else {
+        this.showRealisersForm = false;
+      }
+    }
+  }
+
+  private candidate() {
+    if(this.subject != null) {
+      this.loading = true;
+      const controls = this.subjectForm.controls;
+      const realiseresNumber = this.subject.realiseresNumber;
+      const realisersArr = [];
+      if(realiseresNumber == 2) {
+        const firstCoRealiser = controls.firstCoRealiser;
+        if(!firstCoRealiser.value) {
+          firstCoRealiser.setErrors({
+            'required': true
+          });
+          firstCoRealiser.markAsTouched();
+          this.loading = false;
+          return
+        }
+        realisersArr.push(firstCoRealiser.value);
+      } else if(realiseresNumber == 3) {
+        const firstCoRealiser = controls.firstCoRealiser;
+        if(!firstCoRealiser.value) {
+          firstCoRealiser.setErrors({
+            'required': true
+          });
+          firstCoRealiser.markAsTouched();
+          this.loading = false;
+          return
+        }
+        const secondCoRealiser = controls.secondCoRealiser;
+        if(!secondCoRealiser.value) {
+          secondCoRealiser.setErrors({
+            'required': true
+          });
+          secondCoRealiser.markAsTouched();
+          this.loading = false;
+          return
+        }
+
+        realisersArr.push(firstCoRealiser.value);
+        realisersArr.push(secondCoRealiser.value);
+      } else if(realiseresNumber == 4) {
+        const firstCoRealiser = controls.firstCoRealiser;
+        if(!firstCoRealiser.value) {
+          firstCoRealiser.setErrors({
+            'required': true
+          });
+          firstCoRealiser.markAsTouched();
+          this.loading = false;
+          return
+        }
+        const secondCoRealiser = controls.secondCoRealiser;
+        if(!secondCoRealiser.value) {
+          secondCoRealiser.setErrors({
+            'required': true
+          });
+          secondCoRealiser.markAsTouched();
+          this.loading = false;
+          return
+        }
+        const thirdCoRealiser = controls.thirdCoRealiser;
+        if(!thirdCoRealiser.value) {
+          thirdCoRealiser.setErrors({
+            'required': true
+          });
+          thirdCoRealiser.markAsTouched();
+          this.loading = false;
+          return
+        }
+        realisersArr.push(firstCoRealiser.value);
+        realisersArr.push(secondCoRealiser.value);
+        realisersArr.push(thirdCoRealiser.value);
+      }
+
+      this.restService.getStudentsByIndexes(realisersArr as string[]).subscribe(
+        students => {
+          const studentsIds = students.map(s => s.studentId);
+          this.restService.candidate({
+            "studentId": 1,
+            "subjectId": this.subject!.subjectId,
+            "coauthors": studentsIds
+          }).subscribe(resp => {
+            console.log(resp);
+            this.loading = false;
+            void this.router.navigate(['student', 'graduation_process', '1', 'subject']);
+          }, err => {
+            console.log(err);
+            this.loading = false;
+          });
+        }, error => {
+          console.log(error);
+          this.loading = false;
+        }
+      );
     }
   }
 
@@ -107,6 +253,7 @@ export class DetailsComponent implements OnInit {
       this.restService.createSubject(collectedData).subscribe(resp => {
         console.log(resp);
         this.loading = false;
+        void this.router.navigate(['student', 'graduation_process', '1', 'subject']);
       }, error => {
         console.log(error);
         this.loading = false;
@@ -131,10 +278,6 @@ export class DetailsComponent implements OnInit {
       supervisorId: controls.supervisor.value.staffMemberId,
       /*eslint-enable */
     }
-  }
-
-  private decideWhichToolbar() {
-    console.log();
   }
 
   groupChange(event: MatCheckboxChange) {

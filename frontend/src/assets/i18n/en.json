@@ -34,11 +34,16 @@
     "group_type_label": "Group",
     "individual_type_label": "Individual",
     "draft_status": "Draft",
+
+    "draft_waiting": "Waiting for supervisor acceptance",
+    "draft_waiting_co-realisers": "Waiting for co-realisers to acceptance",
+    "draft_waiting_for_you": "Waiting for your decision",
+
     "accepted_by_supervisor_status": "Accepted by supervisor",
     "accepted_by_initiator_status": "Accepted by initiator",
     "in_verification_status": "In verification",
     "in_correction_status": "In correction",
-    "verified_status": "Verified",
+    "verified_status": "Available",
     "rejected_status": "Rejected",
     "reserved_status": "Reserved",
     "graduation_processes": "Graduation processes",
@@ -68,5 +73,15 @@
     "accepted": "Accepted",
     "rejected": "Rejected",
     "reject_all": "Accept all",
-    "accept_all": "Reject all"
+    "accept_all": "Reject all",
+    "candidate_header": "Application for candidacy",
+    "candidate_button_header": "Candidate",
+    "co-realisers-required": "Co-realisers is required",
+    "details_subject_header": "Subject details",
+    "applicant": "Applicant",
+    "main-realiser": "Main realiser",
+    "accept_proposition_hedaer": "Accept application",
+    "accept": "Accept",
+    "decline": "Decline",
+    "accept_by_initiator_header": "Initiator acceptation"
 }

@@ -42,8 +42,8 @@ class SubjectEntity(
     @JoinColumn(name = "student_id", insertable = false, updatable = false)
     val initiator: StudentEntity? = null,
 
-//    @OneToMany(mappedBy = "subject")
-//    val realiser: Set<StudentEntity>,
+    @OneToMany(mappedBy = "subject")
+    val realiser: Set<StudentEntity>,
 
 //    @OneToMany(mappedBy = "subject")
 //    val propositionAcceptances: Set<PropositionAcceptanceEntity>,

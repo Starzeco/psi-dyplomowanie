@@ -1,5 +1,6 @@
 package com.example.dyplomowaniebackend.domain.graduationProcess.adapter
 
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.PropositionAcceptanceSearchPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.SubjectSearchPort
 import com.example.dyplomowaniebackend.domain.model.Subject
 import com.example.dyplomowaniebackend.domain.model.SubjectStatus
@@ -7,7 +8,8 @@ import com.example.dyplomowaniebackend.domain.model.SubjectType
 import org.springframework.stereotype.Service
 
 @Service("subjectSearchAdapterApi")
-class SubjectSearchAdapter(private val subjectSearchPort: SubjectSearchPort) :
+class SubjectSearchAdapter(private val subjectSearchPort: SubjectSearchPort,
+                           private val propositionAcceptanceSearchPort: PropositionAcceptanceSearchPort) :
     com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectSearchPort {
     override fun getSubjectsForStudent(
         studentId: Long,
@@ -17,14 +19,19 @@ class SubjectSearchAdapter(private val subjectSearchPort: SubjectSearchPort) :
         subjectStatus: SubjectStatus?
     ): Set<Subject> {
         val statuses = if(availableSubjects) listOf(SubjectStatus.VERIFIED) else getSearchedStatuses(subjectStatus)
-        val subjects = subjectSearchPort.getSubjectsInStatus(statuses)
+        val subjects = subjectSearchPort.getSubjectsInStatus(statuses).map {
+                sub -> sub.copy(propositionAcceptances = propositionAcceptanceSearchPort.getAllBySubjectId(sub.subjectId!!))
+        }
         val phrase = searchPhrase.orEmpty()
         val filteredSubjects = subjects
             .filter { it.topic.contains(phrase, ignoreCase = true) || it.supervisor.name.contains(phrase, ignoreCase = true) }
             .filter { subjectType == null || (subjectType == SubjectType.GROUP && it.realiseresNumber > 1) || (subjectType == SubjectType.INDIVIDUAL && it.realiseresNumber <= 1) }
             .toSet()
         return if(availableSubjects) filteredSubjects
-        else filteredSubjects.filter { it.initiator != null && it.initiator.studentId == studentId }.toSet()
+        else filteredSubjects.filter { (it.initiator != null && it.initiator.studentId == studentId)
+                || it.propositionAcceptances.map { a -> a.student.studentId }.contains(studentId)
+                || (it.status == SubjectStatus.RESERVED && it.realiser.map { s -> s.studentId }.contains(studentId))}
+            .toSet()
     }
 
     private fun getSearchedStatuses(subjectStatus: SubjectStatus?): List<SubjectStatus> {
@@ -40,5 +47,5 @@ class SubjectSearchAdapter(private val subjectSearchPort: SubjectSearchPort) :
         )
     }
 
-    override fun getSubjectById(subjectId: Long): Subject = subjectSearchPort.getById(subjectId, true)
+    override fun getSubjectById(subjectId: Long): Subject = subjectSearchPort.getById(subjectId, true).copy(propositionAcceptances = propositionAcceptanceSearchPort.getAllBySubjectId(subjectId))
 }

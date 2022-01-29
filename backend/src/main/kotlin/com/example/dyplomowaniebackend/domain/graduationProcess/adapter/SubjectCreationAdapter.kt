@@ -45,7 +45,9 @@ class SubjectCreationAdapter(
             initiator = initiator,
             supervisor = supervisor,
             graduationProcess = graduationProcess,
-            creationDate = Instant.now(clock)
+            creationDate = Instant.now(clock),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val insertedSubject: Subject = subjectMutationPort.insert(subject)
         createPropositionAcceptances(insertedSubject, subjectCreation.proposedRealiserIds)

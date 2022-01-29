@@ -96,4 +96,20 @@ export class RestService {
       params: p3
     });
   }
+
+  candidate(candidature: Dictionary<any>) {
+    return this.http.post(`${environment.apiUrl}/subject/candidature`, candidature);
+  }
+
+  updateProposition(decision: boolean, propositionId: number) {
+    return this.http.put(`${environment.apiUrl}/propositions/${propositionId}`, decision);
+  }
+
+  acceptInitiator(subjectId: number) {
+    return this.http.put(`${environment.apiUrl}/subject/status/accept-initiator/${subjectId}`, null);
+  }
+
+  reject(subjectId: number) {
+    return this.http.put(`${environment.apiUrl}/subject/status/reject/${subjectId}`, null);
+  }
 }

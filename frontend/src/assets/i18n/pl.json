@@ -33,12 +33,17 @@
     "table_student_second_label": "Zgłoszone",
     "group_type_label": "Grupowy",
     "individual_type_label": "Indywidualny",
+
     "draft_status": "Roboczy",
+    "draft_waiting": "Oczekiwanie na akceptacje promotora",
+    "draft_waiting_co-realisers": "Oczekiwanie na akceptacje współrealizatorów",
+    "draft_waiting_for_you": "Oczekiwanie na podjęcie przez Ciebie decyzji",
+
     "accepted_by_supervisor_status": "Zaakceptowane przez promotora",
     "accepted_by_initiator_status": "Zaakceptowane przez inicjatora",
     "in_verification_status": "W weryfikacji",
     "in_correction_status": "W poprawie",
-    "verified_status": "Zweryfikowany",
+    "verified_status": "Dostępny",
     "rejected_status": "Odrzucony",
     "reserved_status": "Zarezerwowany",
     "graduation_processes": "Procesy dyplomowania",
@@ -66,5 +71,16 @@
     "accepted": "Zaakceptowane",
     "rejected": "Odrzucone",
     "reject_all": "Odrzuć wszystkie",
-    "accept_all": "Zaakceptuj wszystkie"
+    "accept_all": "Zaakceptuj wszystkie",
+    "candidate_header": "Zgłoszenie kandydatury",
+    "candidate_button_header": "Kandyduj",
+    "co-realisers-required": "Współrealizator jest wymagany",
+    "details_subject_header": "Szczegóły tematu",
+    "applicant": "Zgłaszający",
+    "main-realiser": "Główny realizator",
+    "accept_proposition_hedaer": "Akceptacja zgłoszenia",
+    "accept": "Akceptuj",
+    "decline": "Odrzuć",
+    "accept_by_initiator_header": "Akceptacja inicjatora"
+
 }

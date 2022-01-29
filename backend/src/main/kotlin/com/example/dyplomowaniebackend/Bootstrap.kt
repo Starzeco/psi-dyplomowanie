@@ -20,7 +20,8 @@ class Bootstrap(
     val facultyRepository: FacultyRepository,
     val verifierRepository: VerifierRepository,
     val subjectRepository: SubjectRepository,
-    val candidatureRepository: CandidatureRepository
+    val candidatureRepository: CandidatureRepository,
+    val propositionAcceptanceRepository: PropositionAcceptanceRepository,
 ) :
     ApplicationListener<ContextRefreshedEvent> {
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
@@ -54,7 +55,7 @@ class Bootstrap(
 
         val savedDegreeCourse = degreeCourseRepository.save(degreeCourse)
 
-        val student0 = StudentEntity(
+        val student0 = StudentEntity(  // WARN: ON MUSI BYC PEIRWSZY STWORZONY I MIEC ID 1 i indeks 242422 !!!!!!!!!!!!!!!!!!!
             index = "242422",
             email = "242422@student.pwr.edu.pl",
             name = "Marcel",
@@ -157,8 +158,22 @@ class Bootstrap(
             staffMemberId = 1,
             graduationProcessId = 1,
             studentId = null,
+            realiser = setOf()
         )
-        subjectRepository.save(verifiedSubject)
+        val verifiedSubject2 = SubjectEntity(
+            topic = "temat2",
+            topicInEnglish = "tematAngielski2",
+            objective = "cel2",
+            objectiveInEnglish = "celPoAngielsku2",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 3,
+            status = SubjectStatus.VERIFIED,
+            staffMemberId = 2,
+            graduationProcessId = 1,
+            studentId = null,
+            realiser = setOf()
+        )
+        subjectRepository.saveAll(listOf(verifiedSubject, verifiedSubject2))
 
         val candidature = CandidatureEntity(
             studentId = 1,
@@ -166,5 +181,61 @@ class Bootstrap(
         )
 
         candidatureRepository.save(candidature)
+
+        val subjectToAccept1 = SubjectEntity(
+            topic = "temat2",
+            topicInEnglish = "tematAngielski2",
+            objective = "cel2",
+            objectiveInEnglish = "celPoAngielsku2",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 3,
+            status = SubjectStatus.DRAFT,
+            staffMemberId = 2,
+            graduationProcessId = 1,
+            studentId = 2,
+            realiser = setOf()
+        )
+
+        val subjectToAccept2 = SubjectEntity(
+            topic = "temat2",
+            topicInEnglish = "tematAngielski2",
+            objective = "cel2",
+            objectiveInEnglish = "celPoAngielsku2",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 3,
+            status = SubjectStatus.DRAFT,
+            staffMemberId = 2,
+            graduationProcessId = 1,
+            studentId = 3,
+            realiser = setOf()
+        )
+
+        subjectRepository.saveAll(listOf(subjectToAccept1, subjectToAccept2))
+
+        val proposition1 = PropositionAcceptanceEntity(
+            accepted = null,
+            studentId = 1,
+            subjectId = subjectToAccept1.subjectId!!,
+        )
+
+        val proposition2 = PropositionAcceptanceEntity(
+            accepted = true,
+            studentId = 3,
+            subjectId = subjectToAccept1.subjectId,
+        )
+
+        val proposition3 = PropositionAcceptanceEntity(
+            accepted = null,
+            studentId = 1,
+            subjectId = subjectToAccept2.subjectId!!,
+        )
+
+        val proposition4 = PropositionAcceptanceEntity(
+            accepted = false,
+            studentId = 2,
+            subjectId = subjectToAccept2.subjectId,
+        )
+
+        propositionAcceptanceRepository.saveAll(listOf(proposition1, proposition2, proposition3, proposition4))
     }
 }

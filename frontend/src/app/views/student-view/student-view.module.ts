@@ -19,6 +19,8 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import { AppliedDetailsComponent } from './subject/applied-details/applied-details.component';
+import { MatIconModule } from "@angular/material/icon";
 
 const MAT_MODULES = [
   MatCardModule,
@@ -30,6 +32,7 @@ const MAT_MODULES = [
   MatSelectModule,
   MatRadioModule,
   MatCheckboxModule,
+  MatIconModule,
 ];
 
 @NgModule({
@@ -40,6 +43,7 @@ const MAT_MODULES = [
     GraduationProcessComponent,
     CandidatureTableComponent,
     DetailsComponent,
+    AppliedDetailsComponent,
   ],
   imports: [
     CommonModule,

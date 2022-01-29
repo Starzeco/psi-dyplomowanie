@@ -26,7 +26,7 @@ class CandidatureSearchAdapter(
 
     override fun getCandidatureAcceptanceByCandidatureId(candidatureId: Long): Set<CandidatureAcceptance> =
         candidatureAcceptanceRepository.findAllByCandidatureId(candidatureId)
-            .map { it.mapToDomain() }
+            .map { it.mapToDomain(true) }
             .toSet()
 
     override fun getAllCandidatureAsSupervisor(
@@ -58,7 +58,7 @@ class CandidatureSearchAdapter(
             phrase,
             type,
             status
-        ).map { it.mapToDomain() }
+        ).map { it.mapToDomain(true) }
             .toSet()
 
     override fun getCandidatureById(candidatureId: Long): Candidature =

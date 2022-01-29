@@ -181,7 +181,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = now
+            creationDate = now,
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { studentSearchPort.findById(any()) } returns initiator
         every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
@@ -236,7 +238,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = now
+            creationDate = now,
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { studentSearchPort.findById(any()) } returns initiator
         every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
@@ -292,7 +296,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = now
+            creationDate = now,
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
         every { graduationProcessSearchPort.getGraduationProcessById(any()) } returns graduationProcess
@@ -346,7 +352,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = now
+            creationDate = now,
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { staffSearchPort.getStaffMemberById(any()) } returns supervisor
         every { graduationProcessSearchPort.getGraduationProcessById(any()) } returns graduationProcess
@@ -431,7 +439,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
@@ -462,7 +472,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
@@ -493,7 +505,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
@@ -523,7 +537,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.ACCEPTED_BY_INITIATOR,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
 
@@ -554,7 +570,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { subjectSearchPort.getById(any(), false) } returns subjectToUpdate
         every { propositionAcceptanceSearchPort.getAllBySubjectId(any()) } returns setOf()
@@ -587,7 +605,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val propositionsAcceptances: Set<PropositionAcceptance> = setOf(
             PropositionAcceptance(
@@ -633,7 +653,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val propositionsAcceptances: Set<PropositionAcceptance> = setOf(
             PropositionAcceptance(
@@ -677,7 +699,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.RESERVED,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val propositionsAcceptances: Set<PropositionAcceptance> = setOf(
             PropositionAcceptance(
@@ -722,7 +746,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val propositionsAcceptances: Set<PropositionAcceptance> = setOf(
             PropositionAcceptance(
@@ -770,7 +796,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.IN_VERIFICATION,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val subjectToUpdate = Subject(
             subjectId = subjectId,
@@ -784,7 +812,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val propositionsAcceptances: Set<PropositionAcceptance> = setOf(
             PropositionAcceptance(
@@ -829,7 +859,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.IN_VERIFICATION,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val subjectToUpdate = Subject(
             subjectId = subjectId,
@@ -843,7 +875,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val propositionsAcceptances: Set<PropositionAcceptance> = setOf(
             PropositionAcceptance(
@@ -888,7 +922,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val propositionsAcceptances: Set<PropositionAcceptance> = setOf(
             PropositionAcceptance(
@@ -934,7 +970,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { subjectSearchPort.getById(any(), true) } returns subjectToUpdate
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
@@ -972,7 +1010,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.ACCEPTED_BY_INITIATOR,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { subjectSearchPort.getById(any(), true) } returns subjectToUpdate
         every { subjectMutationPort.updateStatus(any()) } answers { it.invocation.args[0] as SubjectStatusUpdate }
@@ -1009,7 +1049,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         every { subjectSearchPort.getById(any(), true) } returns subjectToUpdate
 
@@ -1036,7 +1078,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val expectedResult = SubjectUpdate(
             subjectId = 1,
@@ -1074,7 +1118,9 @@ internal class SubjectCreationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.ACCEPTED_BY_SUPERVISOR,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
         val expectedResult = SubjectUpdate(
             subjectId = 1,
