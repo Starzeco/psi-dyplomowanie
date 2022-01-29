@@ -6,12 +6,10 @@ export type DecisionDialogRole = 'accept' | 'reject'
 
 export type DecisionDialogConfig = {
   titleKey: string
-  role: DecisionDialogRole
 }
 
 export type DecisionDialogResult = {
   justification: string,
-  role: DecisionDialogRole
 
 }
 
@@ -39,7 +37,6 @@ export class DecisionDialogComponent {
     if (this.justificationControl.valid) {
       const result: DecisionDialogResult = {
         justification: this.justificationControl.value as string,
-        role: this.config.role
       }
       this.dialogRef.close(result)
     }

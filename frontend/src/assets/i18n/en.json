@@ -8,6 +8,8 @@
     "pl": "Polish",
     "applied_computer_science": "Applied Computer Science",
     "master": "Master's degree",
+    "MASTER": "Master's degree",
+    "BATCHELOR": "Batchelor's degree",
     "loading_state_message": "Loading...",
     "error_state_message": "Some error occured!",
     "error_state_try_again": "Try again",
@@ -72,6 +74,5 @@
     "details": "Details",
     "DOCTOR": "dr",
     "PROFESSOR": "prof.",
-    "MASTER": "mgr",
     "topic": "Topic"
 }

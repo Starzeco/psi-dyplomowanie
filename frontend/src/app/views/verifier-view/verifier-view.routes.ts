@@ -14,7 +14,7 @@ export const VERIFIER_VIEW_ROUTES: Route[] = [
         path: '', component: GraduationProcessesComponent,
       },
       {
-        path: 'graduation_process/:graduation_process_id/subject', component: SubjectsComponent
+        path: ':verifier_id/graduation_process/:graduation_process_id/subject', component: SubjectsComponent
       }
     ]
   },

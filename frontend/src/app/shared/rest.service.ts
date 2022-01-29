@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import { CandidaturePartialInfo, Subject, SubjectType, Verification, VerificationDecision } from "./model";
+import { CandidaturePartialInfo, Subject, SubjectType, Verification, VerificationDecision, VerifierPartialInfo } from "./model";
 
 @Injectable({
   providedIn: 'root'
@@ -77,5 +77,9 @@ export class RestService {
     verificationDecision: VerificationDecision
   ) {
     return this.http.put<Verification[]>(`${environment.apiUrl}/verifier/${verifierId}/verifications`, verificationDecision);
+  }
+
+  findAllVerifiersOfStaffMember(staffMemberId: number) {
+    return this.http.get<VerifierPartialInfo[]>(`${environment.apiUrl}/verifier/${staffMemberId}`);
   }
 }

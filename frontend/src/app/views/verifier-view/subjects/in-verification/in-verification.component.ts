@@ -68,7 +68,7 @@ export class InVerificationComponent implements OnInit {
   }
 
   openAcceptAllDialog() {
-    const dialogRef = this.matDialog.open(DecisionDialogComponent, { data: { titleKey: 'accept_all', role: 'apply' } })
+    const dialogRef = this.matDialog.open(DecisionDialogComponent, { data: { titleKey: 'accept_all' } })
     dialogRef.afterClosed().subscribe((result?: DecisionDialogResult) => {
       if (result) {
         this.restService.verifyAllVerifications(this.verifierId, { decision: true, justification: result.justification })
@@ -78,7 +78,7 @@ export class InVerificationComponent implements OnInit {
   }
 
   openRejectAllDialog() {
-    const dialogRef = this.matDialog.open(DecisionDialogComponent, { data: { titleKey: 'reject_all', role: 'reject' } })
+    const dialogRef = this.matDialog.open(DecisionDialogComponent, { data: { titleKey: 'reject_all' } })
     dialogRef.afterClosed().subscribe((result?: DecisionDialogResult) => {
       if (result) {
         this.restService.verifyAllVerifications(this.verifierId, { decision: false, justification: result.justification })

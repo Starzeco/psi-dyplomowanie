@@ -5,7 +5,7 @@ import { User } from 'src/app/shared/model';
 import { UserService } from 'src/app/shared/user.service';
 
 const user_: User = {
-  userId: 1,
+  userId: 2,
   type: "verifier",
   userFullName: "Jakub Garstka",
 }
@@ -35,11 +35,10 @@ export class VerifierViewComponent implements OnInit {
 
   constructor(
     readonly gpService: GraduationProcessService,
-    readonly userService: UserService
+    private readonly userService: UserService
   ) { }
 
   ngOnInit(): void {
-    console.log(this.user)
     this.userService.setUser(this.user)
   }
 }
