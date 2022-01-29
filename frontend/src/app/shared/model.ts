@@ -62,3 +62,7 @@ export type GraduationProcess = {
   degreeNameKey: string,
 }
 
+export type VerificationDecision = {
+  decision: boolean,
+  justification: string,
+}

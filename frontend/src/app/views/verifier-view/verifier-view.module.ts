@@ -12,10 +12,12 @@ import { AcceptedComponent } from './subjects/accepted/accepted.component';
 import { RejectedComponent } from './subjects/rejected/rejected.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { VERIFIER_VIEW_ROUTES } from './verifier-view.routes';
 import { DecisionDialogComponent } from './decision-dialog/decision-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SubjectsTableComponent } from './subjects/subjects-table/subjects-table.component';
 
 
 const MAT_MODULES = [
@@ -23,7 +25,8 @@ const MAT_MODULES = [
   MatCardModule,
   MatTabsModule,
   MatInputModule,
-  MatDialogModule
+  MatDialogModule,
+  MatTableModule,
 ];
 
 @NgModule({
@@ -35,6 +38,7 @@ const MAT_MODULES = [
     AcceptedComponent,
     RejectedComponent,
     DecisionDialogComponent,
+    SubjectsTableComponent,
   ],
   imports: [
     CommonModule,

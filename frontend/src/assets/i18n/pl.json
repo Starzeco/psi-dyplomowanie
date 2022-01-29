@@ -56,5 +56,22 @@
     "apply": "Zatwierdź",
     "close": "Zamknij",
     "justification": "Uzasadnienie",
-    "required_justification": "Uzasadnienie jest wymagane"
+    "required_justification": "Uzasadnienie jest wymagane",
+    "decision_date": "Data decyzji",
+    "decision": "Decyzja",
+    "group": "Grupowy",
+    "individual": "Indywidualny",
+    "DRAFT": "Roboczy",
+    "ACCEPTED_BY_SUPERVISOR": "Zaakceptowany przez promotora",
+    "ACCEPTED_BY_INITIATOR": "Zaakceptowany przez iniciatora",
+    "IN_VERIFICATION": "W weryfikacji",
+    "IN_CORRECTION": "W poprawie",
+    "VERIFIED": "Zweryfikowany",
+    "REJECTED": "Odrzucony",
+    "RESERVED": "Zarezerwowany",
+    "details": "Szczegóły",
+    "DOCTOR": "dr",
+    "PROFESSOR": "prof.",
+    "MASTER": "mgr",
+    "topic": "Temat"
 }

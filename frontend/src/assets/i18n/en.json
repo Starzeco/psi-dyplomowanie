@@ -56,5 +56,22 @@
     "apply": "Apply",
     "close": "Close",
     "justification": "Justification",
-    "required_justification": "Justification is required"
+    "required_justification": "Justification is required",
+    "decision_date": "Decison date",
+    "decision": "Decision",
+    "group": "Group",
+    "individual": "Individual",
+    "DRAFT": "Draft",
+    "ACCEPTED_BY_SUPERVISOR": "Accepted by supervisor",
+    "ACCEPTED_BY_INITIATOR": "Accepted by initiator",
+    "IN_VERIFICATION": "In verification",
+    "IN_CORRECTION": "In correction",
+    "VERIFIED": "Verified",
+    "REJECTED": "Rejected",
+    "RESERVED": "Reserved",
+    "details": "Details",
+    "DOCTOR": "dr",
+    "PROFESSOR": "prof.",
+    "MASTER": "mgr",
+    "topic": "Topic"
 }
