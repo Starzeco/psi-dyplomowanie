@@ -1,0 +1,67 @@
+<app-state [loading]="loading" [error]="error" [empty]="false">
+    <div class="details-container column">
+        <span>
+            <mat-card>
+                <mat-card-content>
+
+                    <div class="details-field">
+                        <p class="mat-caption"> {{'topic_in_polish' | translate}} </p>
+                        <p class="mat-body"> {{verification?.subject?.topic}} </p>
+                    </div>
+
+                    <div class="details-field">
+                        <p class="mat-caption"> {{'topic_in_english' | translate}} </p>
+                        <p class="mat-body"> {{verification?.subject?.topicInEnglish}} </p>
+                    </div>
+
+                    <div class="details-field">
+                        <p class="mat-caption"> {{'objective_in_polish' | translate}} </p>
+                        <p class="mat-body"> {{verification?.subject?.objective}} </p>
+                    </div>
+
+                    <div class="details-field">
+                        <p class="mat-caption"> {{'objective_in_english' | translate}} </p>
+                        <p class="mat-body"> {{verification?.subject?.objectiveInEnglish}} </p>
+                    </div>
+
+                    <div class="details-field">
+                        <p class="mat-caption"> {{'realization_language' | translate}} </p>
+                        <p class="mat-body"> {{verification?.subject?.realizationLanguage || "" | translate }} </p>
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+        </span>
+
+        <div class="column">
+            <mat-card>
+                <mat-card-content>
+
+                    <div class="details-field">
+                        <p class="mat-caption"> {{'supervisor' | translate}} </p>
+                        <p class="mat-body"> {{this.getSupervisorFullName(verification?.subject?.supervisor)}} </p>
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card *ngIf="verification?.verified">
+                <mat-card-content>
+
+                    <div class="details-field">
+                        <p class="mat-caption"> {{'decision' | translate}} </p>
+                        <p class="mat-body"> {{verification && (this.getDecisionTranslationKey(verification) |
+                            translate)}} </p>
+                    </div>
+
+                    <div class="details-field">
+                        <p class="mat-caption"> {{'justification' | translate}} </p>
+                        <p class="mat-body"> {{verification?.justification}} </p>
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+
+</app-state>

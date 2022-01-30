@@ -2,17 +2,17 @@
   <mat-tab-group>
     <mat-tab label="{{'in_verification' | translate}}">
       <ng-template matTabContent>
-        <app-in-verification [verifierId]="this.user.userId"></app-in-verification>
+        <app-in-verification [verifierId]="this.verifierId"></app-in-verification>
       </ng-template>
     </mat-tab>
     <mat-tab label="{{'accepted' | translate}}">
       <ng-template matTabContent>
-        <app-accepted [verifierId]="this.user.userId"></app-accepted>
+        <app-accepted [verifierId]="this.verifierId"></app-accepted>
       </ng-template>
     </mat-tab>
     <mat-tab label="{{'rejected' | translate}}">
       <ng-template matTabContent>
-        <app-rejected [verifierId]="this.user.userId"></app-rejected>
+        <app-rejected [verifierId]="this.verifierId"></app-rejected>
       </ng-template>
     </mat-tab>
   </mat-tab-group>

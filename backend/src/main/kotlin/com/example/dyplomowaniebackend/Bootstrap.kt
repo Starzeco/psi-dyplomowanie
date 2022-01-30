@@ -23,6 +23,7 @@ class Bootstrap(
     val candidatureRepository: CandidatureRepository,
     val propositionAcceptanceRepository: PropositionAcceptanceRepository,
     val candidatureAcceptanceRepository: CandidatureAcceptanceRepository,
+    val verificationRepository: VerificationRepository
 ) :
     ApplicationListener<ContextRefreshedEvent> {
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
@@ -189,6 +190,23 @@ class Bootstrap(
         )
         subjectRepository.saveAll(listOf(verifiedSubject, verifiedSubject2, verifiedSubject3))
 
+        val subject = SubjectEntity(
+            topic = "temat1Weryfikacja",
+            topicInEnglish = "tematAngielskiWeryfikacja",
+            objective = "celWeryfikacja",
+            objectiveInEnglish = "celPoAngielskuWeryfikacja",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 1,
+            status = SubjectStatus.IN_VERIFICATION,
+            staffMemberId = 1,
+            graduationProcessId = 1,
+            studentId = student0.studentId,
+            realiser = setOf()
+        )
+
+        subjectRepository.save(verifiedSubject)
+        subjectRepository.save(subject)
+
         val candidature = CandidatureEntity(
             studentId = 1,
             subjectId = verifiedSubject.subjectId!!,
@@ -272,5 +290,33 @@ class Bootstrap(
         )
 
         propositionAcceptanceRepository.saveAll(listOf(proposition1, proposition2, proposition3, proposition4))
+
+        candidatureRepository.save(candidature)
+        candidatureRepository.save(candidature)
+
+        val verificationEntity = VerificationEntity(
+            subjectId = subject.subjectId!!,
+            verifierId = verifier0.verifierId!!
+        )
+
+        val acceptedVerificationEntity = VerificationEntity(
+            subjectId = subject.subjectId!!,
+            verifierId = verifier0.verifierId!!,
+            verified = true,
+            justification = "zaakceptowana bo tak",
+            updateDate = Instant.now(),
+        )
+
+        val rejectedVerificationEntity = VerificationEntity(
+            subjectId = subject.subjectId!!,
+            verifierId = verifier0.verifierId!!,
+            verified = false,
+            justification = "odrzucaona bo tak",
+            updateDate = Instant.now(),
+        )
+
+        verificationRepository.save(verificationEntity)
+        verificationRepository.save(acceptedVerificationEntity)
+        verificationRepository.save(rejectedVerificationEntity)
     }
 }

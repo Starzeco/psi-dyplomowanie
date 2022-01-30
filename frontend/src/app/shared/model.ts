@@ -109,3 +109,39 @@ export type GraduationProcess = {
   degreeNameKey: string,
 }
 
+export type VerificationDecision = {
+  decision: boolean,
+  justification: string,
+}
+
+enum Degree {
+  MASTER = 'MASTER',
+  BATCHELOR = 'BATCHELOR'
+}
+
+export type Verifier = {
+  verifierId: number,
+  name: string,
+  verificationsDeadline: Date,
+}
+
+export type VerifierPartialInfo = {
+  verifierId: number,
+  name: string,
+  verificationsDeadline: Date,
+  graduationProcessPartialInfo: GraduationProcessPartialInfo
+}
+
+export type GraduationProcessPartialInfo = {
+  graduationProcessId: number,
+  cSDeadline: Date, //candidatures submitting deadline
+  vFDeadline: Date, //verification forwarding
+  cADeadline: Date, //candidatures approving deadline
+  sPDeadline: Date, //subjects publication deadline
+  initialSemester: string,
+  finalSemester: string,
+  degree: Degree,
+  degreeCourseName: string,
+  facultyName: string,
+  facultyShortName: string,
+}

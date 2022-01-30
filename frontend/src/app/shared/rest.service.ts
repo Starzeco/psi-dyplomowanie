@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import { CandidaturePartialInfo, Subject, StaffMember, Student, SubjectType, Verification, Candidature } from "./model";
+import { CandidaturePartialInfo, Subject, StaffMember, Student, SubjectType, Verification, Candidature, VerificationDecision, VerifierPartialInfo } from "./model";
 import { Dictionary } from "./dictionary";
 
 @Injectable({
@@ -85,16 +85,16 @@ export class RestService {
     return this.http.post(`${environment.apiUrl}/subject`, subject);
   }
 
-  fetchVerificationsForVerifier(
+  fetchAllVerificationsForVerifier(
     verifierId: number,
     phrase: string | null,
     verified: boolean | null,
-    type: SubjectType | null,
+    subjectType: SubjectType | null,
   ) {
     const params = new HttpParams()
     const p1 = phrase ? params.set('phrase', phrase) : params
-    const p2 = verified ? p1.set('verified', verified) : p1
-    const p3 = type ? p2.set('type', type) : p2
+    const p2 = verified || verified === false ? p1.set('verified', verified) : p1
+    const p3 = subjectType ? p2.set('subject_type', subjectType) : p2
 
     return this.http.get<Verification[]>(`${environment.apiUrl}/verifier/${verifierId}/verifications`, {
       params: p3
@@ -119,5 +119,20 @@ export class RestService {
 
   updateCandidateAcceptance(decision: boolean, candidatureAcceptanceId: number) {
     return this.http.put(`${environment.apiUrl}/subject/candidature_acceptance/${candidatureAcceptanceId}`, decision);
+  }
+
+  verifyAllVerifications(
+    verifierId: number,
+    verificationDecision: VerificationDecision
+  ) {
+    return this.http.put<Verification[]>(`${environment.apiUrl}/verifier/${verifierId}/verifications`, verificationDecision);
+  }
+
+  fetchAllVerifiersOfStaffMember(staffMemberId: number) {
+    return this.http.get<VerifierPartialInfo[]>(`${environment.apiUrl}/verifier/${staffMemberId}`);
+  }
+
+  fetchVerificationAsVerifier(verifierId: number, verificationId: number) {
+    return this.http.get<Verification>(`${environment.apiUrl}/verifier/${verifierId}/verifications/${verificationId}`);
   }
 }

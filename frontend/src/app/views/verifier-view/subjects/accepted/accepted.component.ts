@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FilterConfig, FiltersEvent } from 'src/app/components/filters/filters.component';
 import { ToolbarConfig } from 'src/app/components/toolbar/toolbar.component';
 import { ToolbarService } from 'src/app/components/toolbar/toolbar.service';
@@ -48,6 +49,8 @@ export class AcceptedComponent implements OnInit {
   verifications: Verification[] = []
 
   constructor(
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly restService: RestService,
     private readonly toolbarService: ToolbarService,
   ) { }
@@ -78,7 +81,7 @@ export class AcceptedComponent implements OnInit {
   ) {
     this.loading = true
     this.error = false
-    this.restService.fetchVerificationsForVerifier(this.verifierId, phrase, true, type).subscribe({
+    this.restService.fetchAllVerificationsForVerifier(this.verifierId, phrase, true, type).subscribe({
       next: result => {
         this.verifications = result
         this.loading = false
@@ -89,6 +92,16 @@ export class AcceptedComponent implements OnInit {
         this.error = true
       }
     })
+  }
+
+  redirectToDetails(verification: Verification) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const verifierId = this.route.snapshot.paramMap.get('verifier_id')!;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const graduationProcessId = this.route.snapshot.paramMap.get('graduation_process_id')!;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    this.router.navigate(['verifier', verifierId, 'graduation_process', graduationProcessId, 'verifications', verification.verificationId])
   }
 
 }
