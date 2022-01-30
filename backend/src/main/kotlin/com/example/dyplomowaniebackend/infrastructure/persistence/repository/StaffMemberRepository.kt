@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface StaffMemberRepository : JpaRepository<StaffMemberEntity, Long> {
+    fun findAllByFacultyId(facultyId: Long): Set<StaffMemberEntity>
 }

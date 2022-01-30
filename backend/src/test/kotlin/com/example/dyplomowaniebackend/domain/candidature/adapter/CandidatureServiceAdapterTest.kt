@@ -88,7 +88,9 @@ internal class CandidatureServiceAdapterTest {
         supervisor = supervisor,
         graduationProcess = graduationProcess,
         status = SubjectStatus.VERIFIED,
-        creationDate = now
+        creationDate = now,
+        propositionAcceptances = setOf(),
+        realiser = setOf()
     )
 
     private val draftSubject = Subject(
@@ -102,7 +104,9 @@ internal class CandidatureServiceAdapterTest {
         supervisor = supervisor,
         graduationProcess = graduationProcess,
         status = SubjectStatus.DRAFT,
-        creationDate = now
+        creationDate = now,
+        propositionAcceptances = setOf(),
+        realiser = setOf()
     )
 
     private val candidatureOwner: Student = Student(
@@ -145,7 +149,9 @@ internal class CandidatureServiceAdapterTest {
         supervisor = supervisor,
         graduationProcess = graduationProcess,
         status = SubjectStatus.VERIFIED,
-        creationDate = now
+        creationDate = now,
+        propositionAcceptances = setOf(),
+        realiser = setOf()
     )
 
     private val candidatureToVerifiedSubject = Candidature(
@@ -153,7 +159,8 @@ internal class CandidatureServiceAdapterTest {
         accepted = null,
         student = candidatureOwner,
         subject = verifiedSubject,
-        creationDate = now
+        creationDate = now,
+        candidatureAcceptances = setOf()
     )
 
     private val candidatureToNotVerifiedSubject = Candidature(
@@ -161,7 +168,8 @@ internal class CandidatureServiceAdapterTest {
         accepted = null,
         student = candidatureOwner,
         subject = draftSubject,
-        creationDate = now
+        creationDate = now,
+        candidatureAcceptances = setOf()
     )
 
     private val candidatureToVerifiedSubjectWithInitiator = Candidature(
@@ -169,7 +177,8 @@ internal class CandidatureServiceAdapterTest {
         accepted = null,
         student = candidatureOwner,
         subject = verifiedSubjectWithInitiator,
-        creationDate = now
+        creationDate = now,
+        candidatureAcceptances = setOf()
     )
 
 
@@ -186,7 +195,8 @@ internal class CandidatureServiceAdapterTest {
         val candidature = Candidature(
             student = candidatureOwner,
             subject = verifiedSubject,
-            creationDate = now
+            creationDate = now,
+            candidatureAcceptances = setOf()
         )
 
         val expectedResult = candidature.copy(candidatureId = 1L)
@@ -232,7 +242,8 @@ internal class CandidatureServiceAdapterTest {
         val candidature = Candidature(
             student = candidatureOwner,
             subject = verifiedSubject,
-            creationDate = now
+            creationDate = now,
+            candidatureAcceptances = setOf()
         )
 
         val expectedResult = candidature.copy(candidatureId = 1L)
@@ -545,7 +556,8 @@ internal class CandidatureServiceAdapterTest {
             candidatureId = 1,
             student = candidatureOwner,
             subject = verifiedSubject,
-            creationDate = now
+            creationDate = now,
+            candidatureAcceptances = setOf()
         )
 
         val candidatureAcceptance = CandidatureAcceptance(
@@ -586,7 +598,8 @@ internal class CandidatureServiceAdapterTest {
             candidatureId = 1,
             student = candidatureOwner,
             subject = verifiedSubject,
-            creationDate = now
+            creationDate = now,
+            candidatureAcceptances = setOf()
         )
 
         val candidatureAcceptance = CandidatureAcceptance(
@@ -632,7 +645,8 @@ internal class CandidatureServiceAdapterTest {
             candidatureId = 1,
             student = candidatureOwner,
             subject = verifiedSubject,
-            creationDate = now
+            creationDate = now,
+            candidatureAcceptances = setOf()
         )
 
         val candidatureAcceptance = CandidatureAcceptance(

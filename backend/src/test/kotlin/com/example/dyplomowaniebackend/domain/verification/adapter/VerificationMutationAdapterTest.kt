@@ -153,7 +153,9 @@ internal class VerificationMutationAdapterTest {
             supervisor = supervisor,
             graduationProcess = graduationProcess,
             status = SubjectStatus.DRAFT,
-            creationDate = Instant.now()
+            creationDate = Instant.now(),
+            propositionAcceptances = setOf(),
+            realiser = setOf()
         )
 
         verifications = listOf(

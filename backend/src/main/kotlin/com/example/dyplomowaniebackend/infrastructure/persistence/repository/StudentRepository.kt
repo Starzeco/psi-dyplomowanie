@@ -21,4 +21,6 @@ interface StudentRepository : JpaRepository<StudentEntity, Long> {
     @Modifying
     @Transactional
     fun updateSubjectIdByStudentIdIn(@Param("studentIds") studentIds: Set<Long>, @Param("subjectId") subjectId: Long)
+
+    fun findAllByIndexIn(indexes: List<String>): Set<StudentEntity>
 }

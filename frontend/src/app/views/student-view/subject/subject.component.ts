@@ -105,7 +105,7 @@ export class SubjectComponent {
     buttonsConfig: [
       {
         textKey: 'create_subject',
-        click: () => this.router.navigate(['student', 'subject'])
+        click: () => this.router.navigate(['student', 'graduation_process', '1', 'subject', 'create'])
       }
     ]
   }

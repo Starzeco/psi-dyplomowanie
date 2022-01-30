@@ -8,4 +8,5 @@ interface StudentSearchPort {
     fun findAllByStudentIdInAndSubjectIdNotNull(studentIds: Set<Long>): Set<Student>
     fun existsByStudentIdAndSubjectIdNotNull(studentId: Long): Boolean
     fun existsAllBySubjectId(subjectId: Long) : Boolean
+    fun getAllStudentsIndexIn(indexes: List<String>): Set<Student>
 }

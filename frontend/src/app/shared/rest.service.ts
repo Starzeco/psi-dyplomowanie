@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { environment } from "../../environments/environment";
-import { CandidaturePartialInfo, Subject, SubjectType, Verification, VerificationDecision, VerifierPartialInfo } from "./model";
+import { CandidaturePartialInfo, Subject, StaffMember, Student, SubjectType, Verification, Candidature, VerificationDecision, VerifierPartialInfo } from "./model";
+import { Dictionary } from "./dictionary";
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,34 @@ export class RestService {
     });
   }
 
+  getSubjectById(subjectId: number) {
+    return this.http.get<Subject>(`${environment.apiUrl}/subject/${subjectId}`);
+  }
+
+  getCandidatureById(candidatureId: number) {
+    return this.http.get<Candidature>(`${environment.apiUrl}/candidature/${candidatureId}`);
+  }
+
+  getSupervisorsByGraduationProcessId(graduationProcessId: number) {
+    return this.http.get<StaffMember[]>(`${environment.apiUrl}/supervisor`, {
+      params: {
+        graduation_process_id: graduationProcessId
+      }
+    });
+  }
+
+  getStudentsByIndexes(indexes: string[]) {
+    return this.http.get<Student[]>(`${environment.apiUrl}/student`, {
+      params: {
+        indexes: indexes.join(',')
+      }
+    });
+  }
+
+  createSubject(subject: Dictionary<any>) {
+    return this.http.post(`${environment.apiUrl}/subject`, subject);
+  }
+
   fetchAllVerificationsForVerifier(
     verifierId: number,
     phrase: string | null,
@@ -70,6 +99,26 @@ export class RestService {
     return this.http.get<Verification[]>(`${environment.apiUrl}/verifier/${verifierId}/verifications`, {
       params: p3
     });
+  }
+
+  candidate(candidature: Dictionary<any>) {
+    return this.http.post(`${environment.apiUrl}/subject/candidature`, candidature);
+  }
+
+  updateProposition(decision: boolean, propositionId: number) {
+    return this.http.put(`${environment.apiUrl}/propositions/${propositionId}`, decision);
+  }
+
+  acceptInitiator(subjectId: number) {
+    return this.http.put(`${environment.apiUrl}/subject/status/accept-initiator/${subjectId}`, null);
+  }
+
+  reject(subjectId: number) {
+    return this.http.put(`${environment.apiUrl}/subject/status/reject/${subjectId}`, null);
+  }
+
+  updateCandidateAcceptance(decision: boolean, candidatureAcceptanceId: number) {
+    return this.http.put(`${environment.apiUrl}/subject/candidature_acceptance/${candidatureAcceptanceId}`, decision);
   }
 
   verifyAllVerifications(

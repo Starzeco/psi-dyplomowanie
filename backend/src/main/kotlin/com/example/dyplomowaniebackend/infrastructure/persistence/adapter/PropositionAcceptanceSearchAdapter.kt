@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class PropositionAcceptanceSearchAdapter(
     private val propositionAcceptanceRepository: PropositionAcceptanceRepository
-) : PropositionAcceptanceSearchPort {
+) : PropositionAcceptanceSearchPort, com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.PropositionAcceptanceSearchPort {
 
     override fun getAllByStudentIdAndGraduationProcessId(
         studentId: Long,
@@ -21,6 +21,6 @@ class PropositionAcceptanceSearchAdapter(
 
     override fun getAllBySubjectId(subjectId: Long): Set<PropositionAcceptance> =
         propositionAcceptanceRepository.findBySubjectSubjectId(subjectId)
-            .map { it.mapToDomain() }
+            .map { it.mapToDomain(true) }
             .toSet()
 }

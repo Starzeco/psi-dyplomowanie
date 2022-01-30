@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 class StudentSearchAdapter(val studentRepository: StudentRepository) : StudentSearchPort {
     override fun findById(studentId: Long): Student? =
         studentRepository.findById(studentId)
-            .map { student -> student.mapToDomain() }
+            .map { student -> student.mapToDomain(true) }
             .orElse(null)
 
     override fun getById(studentId: Long): Student =
@@ -21,7 +21,7 @@ class StudentSearchAdapter(val studentRepository: StudentRepository) : StudentSe
 
     override fun findAllByStudentIdInAndSubjectIdNotNull(studentIds: Set<Long>): Set<Student> =
         studentRepository.findAllByStudentIdInAndSubjectIdNotNull(studentIds)
-            .map { it.mapToDomain() }
+            .map { it.mapToDomain(cutDeep = true) }
             .toSet()
 
     override fun existsByStudentIdAndSubjectIdNotNull(studentId: Long): Boolean =
@@ -29,4 +29,9 @@ class StudentSearchAdapter(val studentRepository: StudentRepository) : StudentSe
 
     override fun existsAllBySubjectId(subjectId: Long): Boolean =
         studentRepository.existsAllBySubjectId(subjectId)
+
+    override fun getAllStudentsIndexIn(indexes: List<String>): Set<Student> =
+        studentRepository.findAllByIndexIn(indexes)
+            .map { it.mapToDomain(true) }
+            .toSet()
 }

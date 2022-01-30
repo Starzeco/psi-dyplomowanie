@@ -19,6 +19,8 @@ fun SubjectEntity.mapToDomain(cut: Boolean = false): Subject =
         initiator = if(cut) this.initiator?.mapToDomain(true) else this.initiator?.mapToDomain(false),
         supervisor = this.supervisor!!.mapToDomain(),
         graduationProcess = this.graduationProcess!!.mapToDomain(),
+        propositionAcceptances = setOf(),
+        realiser = this.realiser.map { it.mapToDomain(cut) }.toSet()
     )
 
 fun Subject.mapToEntity(): SubjectEntity =
@@ -35,5 +37,6 @@ fun Subject.mapToEntity(): SubjectEntity =
         creationDate = this.creationDate,
         studentId = this.initiator?.studentId,
         staffMemberId = this.supervisor.staffMemberId!!,
-        graduationProcessId = this.graduationProcess.graduationProcessId!!
+        graduationProcessId = this.graduationProcess.graduationProcessId!!,
+        realiser = setOf()
     )

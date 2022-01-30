@@ -8,6 +8,7 @@ import {
   SUBJECT_TYPE,
   SUBJECT_TYPE_POLISH
 } from "../../../../shared/dictionary";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-candidature-table',
@@ -20,7 +21,8 @@ export class CandidatureTableComponent {
   candidatures: CandidaturePartialInfo[] = [];
   displayedColumns: string[] = ['topic', 'supervisor', 'type', 'status', 'details'];
 
-  constructor(private readonly translateService: TranslateService) { }
+  constructor(private readonly translateService: TranslateService,
+              private readonly router: Router) { }
 
   getTopic(candidature: CandidaturePartialInfo): string {
     if(this.translateService.currentLang == Language.EN) return candidature.subjectTopicEnglish;
@@ -39,5 +41,9 @@ export class CandidatureTableComponent {
   getStatus(candidature: CandidaturePartialInfo): string {
     if(this.translateService.currentLang == Language.EN) return CANDIDATURE_STATUS[candidature.status];
     else return CANDIDATURE_STATUS_POLISH[candidature.status];
+  }
+
+  toDetails(candidature: CandidaturePartialInfo) {
+    void this.router.navigate(['student', 'graduation_process', '1', 'subject', 'candidature', candidature.candidatureId]);
   }
 }

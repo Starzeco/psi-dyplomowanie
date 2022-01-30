@@ -6,6 +6,8 @@ import com.example.dyplomowaniebackend.domain.model.CandidatureStatus
 import com.example.dyplomowaniebackend.domain.model.CandidatureType
 
 data class CandidaturePartialInfoResponse(
+    val subjectId: Long,
+    val candidatureId: Long,
     val subjectTopic: String,
     val subjectTopicEnglish: String,
     val supervisorName: String,
@@ -20,7 +22,7 @@ data class CandidaturePartialInfoResponse(
                 false -> CandidatureStatus.REJECTED
                 else -> {
                     if (allCandidatureAcceptances.all { it.accepted == true }) CandidatureStatus.TO_ACCEPT_BY_SUPERVISOR
-                    else if (allCandidatureAcceptances.all { it.accepted == false }) CandidatureStatus.REJECTED
+                    else if (allCandidatureAcceptances.any { it.accepted == false }) CandidatureStatus.REJECTED
                     else CandidatureStatus.TO_ACCEPT_BY_STUDENTS
                 }
 
@@ -28,6 +30,8 @@ data class CandidaturePartialInfoResponse(
 
         fun fromDomain(candidature: Candidature, candidatureAcceptances: Set<CandidatureAcceptance>): CandidaturePartialInfoResponse =
             CandidaturePartialInfoResponse(
+                subjectId = candidature.subject.subjectId!!,
+                candidatureId = candidature.candidatureId!!,
                 subjectTopic = candidature.subject.topic,
                 subjectTopicEnglish = candidature.subject.topicInEnglish,
                 supervisorName = candidature.subject.supervisor.fullName,

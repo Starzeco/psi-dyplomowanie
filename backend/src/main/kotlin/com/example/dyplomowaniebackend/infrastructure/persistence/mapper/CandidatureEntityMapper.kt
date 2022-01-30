@@ -11,16 +11,18 @@ fun Candidature.mapToEntity(): CandidatureEntity =
         accepted = this.accepted,
         studentId = this.student.studentId!!,
         subjectId = this.subject.subjectId!!,
-        creationDate = this.creationDate
+        creationDate = this.creationDate,
+        candidatureAcceptances = setOf()
     )
 
-fun CandidatureEntity.mapToDomain(): Candidature =
+fun CandidatureEntity.mapToDomain(cut: Boolean = false, getProposition: Boolean = false): Candidature =
     Candidature(
         candidatureId = this.candidatureId,
         accepted = this.accepted,
-        student = this.student!!.mapToDomain(),
-        subject = this.subject!!.mapToDomain(),
+        student = this.student!!.mapToDomain(cut),
+        subject = this.subject!!.mapToDomain(cut),
         creationDate = this.creationDate,
+        candidatureAcceptances = if(getProposition) this.candidatureAcceptances.map { it.mapToDomain(getProposition) }.toSet() else setOf()
     )
 
 fun CandidatureAcceptance.mapToEntity(): CandidatureAcceptanceEntity =
@@ -30,10 +32,10 @@ fun CandidatureAcceptance.mapToEntity(): CandidatureAcceptanceEntity =
         candidatureId = this.candidature.candidatureId!!,
     )
 
-fun CandidatureAcceptanceEntity.mapToDomain(): CandidatureAcceptance =
+fun CandidatureAcceptanceEntity.mapToDomain(cut: Boolean = false): CandidatureAcceptance =
     CandidatureAcceptance(
         candidatureAcceptanceId = this.candidatureAcceptanceId,
         accepted = this.accepted,
-        student = this.student!!.mapToDomain(),
-        candidature = this.candidature!!.mapToDomain(),
+        student = this.student!!.mapToDomain(cut),
+        candidature = this.candidature!!.mapToDomain(cut),
     )

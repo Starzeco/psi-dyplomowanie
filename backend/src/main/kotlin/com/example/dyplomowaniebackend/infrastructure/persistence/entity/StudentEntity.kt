@@ -39,7 +39,7 @@ class StudentEntity(
 //    @OneToMany(mappedBy = "student")
 //    val candidatureAcceptances: Set<CandidatureAcceptanceEntity>,
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "students")
     val graduationProcesses: Set<GraduationProcessEntity>
 )
 
