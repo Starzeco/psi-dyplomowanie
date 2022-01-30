@@ -113,5 +113,12 @@
     "topic_in_english": "Topic in english",
     "objective_in_polish": "Objective in polish",
     "objective_in_english": "Objective in english",
-    "realization_language": "Realization language"
+    "realization_language": "Realization language",
+    "table_supervisor_first_label": "Processed",
+    "table_supervisor_second_label": "Draft",
+    "table_author": "Author",
+    "student_author": "Student",
+    "supervisor_author": "You",
+    "accepted_by_supervisor_supervisor_view": "Accepted",
+    "accepted_by_initiator_supervisor_view": "Initiator accepted"
 }

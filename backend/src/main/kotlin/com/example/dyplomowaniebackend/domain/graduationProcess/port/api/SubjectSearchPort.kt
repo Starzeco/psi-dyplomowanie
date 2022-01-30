@@ -13,5 +13,13 @@ interface SubjectSearchPort {
         subjectStatus: SubjectStatus?
     ): Set<Subject>
 
+    fun getSubjectsForSupervisor(
+        supervisorId: Long,
+        searchPhrase: String?,
+        subjectType: SubjectType?,
+        processingSubjects: Boolean,
+        subjectStatus: SubjectStatus?
+    ): Set<Subject>
+
     fun getSubjectById(subjectId: Long): Subject
 }

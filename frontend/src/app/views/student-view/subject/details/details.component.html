@@ -54,7 +54,7 @@
               <mat-label>{{'supervisors_label' | translate}}</mat-label>
               <mat-select formControlName="supervisor">
                 <mat-option *ngFor="let supervisor of this.supervisors" [value]="supervisor">
-                  {{ supervisor.fullName }}
+                  {{ getSupervisorFullName(supervisor) }}
                 </mat-option>
               </mat-select>
             </mat-form-field>

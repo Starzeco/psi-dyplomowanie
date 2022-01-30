@@ -36,6 +36,27 @@ export class RestService {
     });
   }
 
+  getSubjectsForSupervisor(supervisorId: number,
+                           searchPhrase: string | null,
+                           subjectType: string | null,
+                           processingSubjects: boolean,
+                           subjectStatus: string | null) {
+    let params = new HttpParams();
+    if (searchPhrase != null) {
+      params = params.set('searchPhrase', searchPhrase);
+    }
+    if (subjectType != null) {
+      params = params.set('subjectType', subjectType);
+    }
+    if (subjectStatus != null) {
+      params = params.set('subjectStatus', subjectStatus);
+    }
+    params = params.set('processingSubjects', processingSubjects);
+    return this.http.get<Subject[]>(`${environment.apiUrl}/supervisor/subject/${supervisorId}`, {
+      params: params
+    });
+  }
+
   getCandidaturesForStudent(studentId: number,
     graduationProcessId: number,
     phrase: string | null,

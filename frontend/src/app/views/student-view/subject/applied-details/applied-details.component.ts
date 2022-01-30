@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Status, Subject } from "../../../../shared/model";
+import { StaffMember, Status, Subject } from "../../../../shared/model";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToolbarService } from "../../../../components/toolbar/toolbar.service";
 import { ToolbarConfig } from "../../../../components/toolbar/toolbar.component";
 import { RestService } from "../../../../shared/rest.service";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-applied-details',
@@ -62,6 +63,7 @@ export class AppliedDetailsComponent implements OnInit {
   constructor(private readonly route: ActivatedRoute,
               private readonly toolbarService: ToolbarService,
               private readonly fb: FormBuilder,
+              private readonly translateService: TranslateService,
               private readonly router: Router,
               private readonly restService: RestService) {
     this.subjectForm = this.fb.group({
@@ -165,7 +167,7 @@ export class AppliedDetailsComponent implements OnInit {
       const realizationLanguage = controls.realizationLanguage;
       realizationLanguage.setValue(subject.realizationLanguage);
       const supervisor = controls.supervisorPresentation;
-      supervisor.setValue(subject.supervisor.fullName);
+      supervisor.setValue(this.getSupervisorFullName(subject.supervisor));
       if(subject.status != Status.RESERVED || subject.initiator != null) {
         const mainRealiser = controls.mainRealiser;
         mainRealiser.setValue(subject.initiator!.index); // TU MUSI BYC INICJATOR
@@ -297,5 +299,12 @@ export class AppliedDetailsComponent implements OnInit {
       }
     }
     return '';
+  }
+
+  getSupervisorFullName(supervisor?: StaffMember) {
+    if (supervisor) {
+      const title = this.translateService.instant(supervisor.title) as string
+      return `${title} ${supervisor.name} ${supervisor.surname}`;
+    } else return ""
   }
 }

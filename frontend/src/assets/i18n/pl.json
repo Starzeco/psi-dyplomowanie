@@ -110,7 +110,14 @@
     "topic_in_english": "Temat po angielsku",
     "objective_in_polish": "Cel po polsku",
     "objective_in_english": "Cel po angielsku",
-    "realization_language": "Język realizacji"
+    "realization_language": "Język realizacji",
+    "table_supervisor_first_label": "Procesowane",
+    "table_supervisor_second_label": "Robocze",
+    "table_author": "Autor",
+    "student_author": "Student",
+    "supervisor_author": "Ty",
+    "accepted_by_supervisor_supervisor_view": "Zaakceptowany",
+    "accepted_by_initiator_supervisor_view": "Inicjator zaakceptował"
 
 }
 
