@@ -153,6 +153,14 @@ export class RestService {
     return this.http.put<Verification[]>(`${environment.apiUrl}/verifier/${verifierId}/verifications`, verificationDecision);
   }
 
+  verifyVerification(
+    verifierId: number,
+    verificationId: number,
+    verificationDecision: VerificationDecision
+  ) {
+    return this.http.put<Verification[]>(`${environment.apiUrl}/verifier/${verifierId}/verifications/${verificationId}`, verificationDecision);
+  }
+
   fetchAllVerifiersOfStaffMember(staffMemberId: number) {
     return this.http.get<VerifierPartialInfo[]>(`${environment.apiUrl}/verifier/${staffMemberId}`);
   }

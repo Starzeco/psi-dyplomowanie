@@ -39,13 +39,16 @@ class VerifierController(
     ): List<Verification> =
         verificationSearchPort.findAllVerifications(verifierId, phrase, verified, subjectType)
 
-    @PutMapping
+    @PutMapping("{verifier_id}/verifications/{verification_id}")
     fun verifyVerification(
-        @RequestParam verificationId: Long,
-        @RequestParam decision: Boolean,
-        @RequestParam justification: String
+        @PathVariable(name = "verifier_id") verifierId: Long,
+        @PathVariable(name = "verification_id") verificationId: Long,
+        @RequestBody verificationDecisionRequest: VerificationDecisionRequest
     ): Verification =
-        verificationMutationPort.verifyVerification(verificationId, decision, justification)
+        verificationMutationPort.verifyVerification(
+            verificationId, verificationDecisionRequest.decision,
+            verificationDecisionRequest.justification
+        )
 
     @PutMapping("{verifier_id}/verifications")
     fun verifyAllVerifications(
