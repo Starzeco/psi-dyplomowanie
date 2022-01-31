@@ -134,6 +134,10 @@ export class RestService {
     return this.http.put(`${environment.apiUrl}/subject/status/accept-initiator/${subjectId}`, null);
   }
 
+  acceptSupervisor(subjectId: number) {
+    return this.http.put(`${environment.apiUrl}/subject/status/accept-supervisor/${subjectId}`, null);
+  }
+
   reject(subjectId: number) {
     return this.http.put(`${environment.apiUrl}/subject/status/reject/${subjectId}`, null);
   }
@@ -155,5 +159,13 @@ export class RestService {
 
   fetchVerificationAsVerifier(verifierId: number, verificationId: number) {
     return this.http.get<Verification>(`${environment.apiUrl}/verifier/${verifierId}/verifications/${verificationId}`);
+  }
+
+  updateSubject(subject: Dictionary<any>) {
+    return this.http.put(`${environment.apiUrl}/subject/`, subject);
+  }
+
+  sendToVerification(subjectId: number) {
+    return this.http.put(`${environment.apiUrl}/subject/status/send-verification/${subjectId}`, null);
   }
 }

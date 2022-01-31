@@ -72,6 +72,7 @@
     "co-realisers-first": "First co-realiser",
     "co-realisers-second": "Second co-realiser",
     "co-realisers-third": "Third co-realiser",
+    "realiser": "Realiser",
     "verifications": "Verifications",
     "in_verification": "In verification",
     "accepted": "Accepted",
@@ -120,5 +121,10 @@
     "student_author": "Student",
     "supervisor_author": "You",
     "accepted_by_supervisor_supervisor_view": "Accepted",
-    "accepted_by_initiator_supervisor_view": "Initiator accepted"
+    "accepted_by_initiator_supervisor_view": "Initiator accepted",
+    "number_of_co-realisers": "Number of co-realisers",
+    "number_of_co-realisers_req": "Number of co-realisers is required",
+    "supervisor_update_header": "Subject correction",
+    "update": "Update",
+    "to_verification": "Send to verification"
 }

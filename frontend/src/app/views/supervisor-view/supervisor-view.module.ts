@@ -17,6 +17,10 @@ import { MatRadioModule } from "@angular/material/radio";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatIconModule } from "@angular/material/icon";
 import { SubjectTableComponent } from './supervisor-subjects/subject-table/subject-table.component';
+import { CreateSubjectComponent } from './supervisor-subjects/create-subject/create-subject.component';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { UpdateSubjectComponent } from './supervisor-subjects/update-subject/update-subject.component';
+import { DraftSubjectComponent } from './supervisor-subjects/draft-subject/draft-subject.component';
 
 
 const MAT_MODULES = [
@@ -38,11 +42,16 @@ const MAT_MODULES = [
     SupervisorViewComponent,
     SupervisorGraduationProcessesComponent,
     SupervisorSubjectsComponent,
-    SubjectTableComponent
+    SubjectTableComponent,
+    CreateSubjectComponent,
+    UpdateSubjectComponent,
+    DraftSubjectComponent
   ],
   imports: [
     CommonModule,
     ComponentsModule,
+    ReactiveFormsModule,
+    FormsModule,
     RouterModule.forChild(SUPERVISOR_VIEW_ROUTES),
     ...MAT_MODULES,
   ]

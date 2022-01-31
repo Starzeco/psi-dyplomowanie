@@ -60,9 +60,11 @@ class SubjectSearchAdapter(private val subjectSearchPort: SubjectSearchPort,
         }
         val phrase = searchPhrase.orEmpty()
         val filteredSubjects = subjects
+            .asSequence()
             .filter { it.topic.contains(phrase, ignoreCase = true) || it.supervisor.name.contains(phrase, ignoreCase = true) }
             .filter { subjectType == null || (subjectType == SubjectType.GROUP && it.realiseresNumber > 1) || (subjectType == SubjectType.INDIVIDUAL && it.realiseresNumber <= 1) }
             .filter { it.supervisor.staffMemberId == supervisorId }
+            .filter { subjectStatus == null || subjectStatus == it.status }
             .toSet()
         return if(processingSubjects) filteredSubjects
         else filteredSubjects.filter { it.initiator == null

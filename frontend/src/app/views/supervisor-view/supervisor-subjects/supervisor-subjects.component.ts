@@ -79,7 +79,7 @@ export class SupervisorSubjectsComponent implements OnInit {
     buttonsConfig: [
       {
         textKey: 'create_subject',
-        click: () => console.log("dsvc")
+        click: () => void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', 'create'])
       }
     ]
   }
