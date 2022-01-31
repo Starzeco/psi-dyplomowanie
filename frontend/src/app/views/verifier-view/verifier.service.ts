@@ -12,7 +12,7 @@ export class VerifierService {
     this.verifier = verifier
   }
 
-  getUser(): Verifier {
+  getVerifier(): Verifier {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.verifier!
   }

@@ -18,6 +18,7 @@
     "status": "Status",
     "type": "Typ",
     "search_by_topic_and_supervison": "Szukaj po temacie oraz promotorze",
+    "search_by_topic": "Szukaj po temacie",
     "create_subject": "Zgłoś temat",
     "subjects_header": "Tematy Prac Dyplomowych",
     "graduation_process_header": "Twoje procesy dyplomowania",
@@ -35,12 +36,10 @@
     "table_student_second_label": "Zgłoszone",
     "group_type_label": "Grupowy",
     "individual_type_label": "Indywidualny",
-
     "draft_status": "Roboczy",
     "draft_waiting": "Oczekiwanie na akceptacje promotora",
     "draft_waiting_co-realisers": "Oczekiwanie na akceptacje współrealizatorów",
     "draft_waiting_for_you": "Oczekiwanie na podjęcie przez Ciebie decyzji",
-
     "accepted_by_supervisor_status": "Zaakceptowane przez promotora",
     "accepted_by_initiator_status": "Zaakceptowane przez inicjatora",
     "in_verification_status": "W weryfikacji",
@@ -110,7 +109,8 @@
     "topic_in_english": "Temat po angielsku",
     "objective_in_polish": "Cel po polsku",
     "objective_in_english": "Cel po angielsku",
-    "realization_language": "Język realizacji"
-
+    "realization_language": "Język realizacji",
+    "reject": "Odrzuć",
+    "operation_cannot_be_undone": "Operacja nie będzię mogła zostać cofnięta!"
 }
 
