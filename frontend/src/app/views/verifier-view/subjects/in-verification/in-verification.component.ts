@@ -11,7 +11,7 @@ import { DecisionDialogComponent, DecisionDialogResult } from '../../decision-di
 const filtersConfig_: FilterConfig[] = [
   {
     name: 'text_search',
-    labelKey: 'search_by_topic_and_supervison',
+    labelKey: 'search_by_topic',
     type: 'TEXT_SEARCH'
   },
   {

@@ -37,7 +37,6 @@ export default class SidenavComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subsription = this.graduationProcessObservable.subscribe(gp => {
-      console.log(gp)
       this.graduationProcess = gp
     })
   }

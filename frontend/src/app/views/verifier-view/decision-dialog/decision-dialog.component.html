@@ -1,5 +1,6 @@
 <h1 mat-dialog-title>{{ config.titleKey| translate }}</h1>
 <div mat-dialog-content class="decision-dialog-container">
+    <p>{{ 'operation_cannot_be_undone' | translate }}</p>
     <mat-form-field appearance="fill">
         <mat-label>{{ 'justification' | translate }}</mat-label>
         <textarea matInput rows="10" maxlength="500" [formControl]="justificationControl"></textarea>
