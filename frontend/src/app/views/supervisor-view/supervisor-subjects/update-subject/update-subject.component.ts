@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { StaffMember, Status, Subject } from "../../../../shared/model";
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToolbarService } from "../../../../components/toolbar/toolbar.service";
-import { ToolbarConfig } from "../../../../components/toolbar/toolbar.component";
-import { RestService } from "../../../../shared/rest.service";
+import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
+import { RestService } from "../../../../shared/rest.service";
+import { Status, Subject } from "../../../../shared/model";
+import { ToolbarConfig } from "../../../../components/toolbar/toolbar.component";
+import { Dictionary } from "../../../../shared/dictionary";
 
 @Component({
-  selector: 'app-applied-details',
-  templateUrl: './applied-details.component.html',
-  styleUrls: ['./applied-details.component.scss']
+  selector: 'app-update-subject',
+  templateUrl: './update-subject.component.html',
+  styleUrls: ['./update-subject.component.scss']
 })
-export class AppliedDetailsComponent implements OnInit {
+export class UpdateSubjectComponent implements OnInit {
   error = false;
   loading = true;
   subject!: Subject;
@@ -21,43 +22,29 @@ export class AppliedDetailsComponent implements OnInit {
   showRealisersForm1 = false;
   showRealisersForm2 = false;
   showRealisersForm3 = false;
-  mainRealiserKey = 'main-realiser';
-  showRealisersReserved = false;
+  mainRealiserKey = 'applicant';
+  showRealisers = false;
+  showSidePanel = false;
+
+  private toolbarUpdate: ToolbarConfig = {
+    titleKey: 'supervisor_update_header',
+    iconName: 'note',
+    buttonsConfig: [
+      {
+        textKey: 'update',
+        click: () => this.updateSubject()
+      },
+      {
+        textKey: 'to_verification',
+        click: () => this.sendToVerification()
+      }
+    ]
+  }
 
   private toolbarEmpty: ToolbarConfig = {
     titleKey: 'details_subject_header',
     iconName: 'note',
     buttonsConfig: []
-  }
-
-  private toolbarDecision: ToolbarConfig = {
-    titleKey: 'accept_proposition_hedaer',
-    iconName: 'note',
-    buttonsConfig: [
-      {
-        textKey: 'accept',
-        click: () => this.updateProposition(true)
-      },
-      {
-        textKey: 'decline',
-        click: () => this.updateProposition(false)
-      }
-    ]
-  }
-
-  private toolbalAcceptInitiator: ToolbarConfig = {
-    titleKey: 'accept_by_initiator_header',
-    iconName: 'note',
-    buttonsConfig: [
-      {
-        textKey: 'accept',
-        click: () => this.acceptInitiator(true)
-      },
-      {
-        textKey: 'decline',
-        click: () => this.acceptInitiator(false)
-      }
-    ]
   }
 
   constructor(private readonly route: ActivatedRoute,
@@ -92,10 +79,6 @@ export class AppliedDetailsComponent implements OnInit {
         disabled: true,
         value: ''
       }),
-      supervisorPresentation: new FormControl({
-        disabled: true,
-        value: ''
-      }),
       firstCoRealiser: new FormControl({
         disabled: true,
         value: ''
@@ -124,31 +107,13 @@ export class AppliedDetailsComponent implements OnInit {
       this.restService.getSubjectById(+subjectId).subscribe(sub => {
         this.subject = sub;
         this.fillAndDisableForm();
-        this.chooseToolbar(this.subject);
+        if(this.subject.status == Status.IN_CORRECTION) {
+          this.toolbarService.updateToolbarConfig(this.toolbarUpdate);
+        } else {
+          this.toolbarService.updateToolbarConfig(this.toolbarEmpty);
+        }
         this.loading = false;
       });
-    }
-  }
-
-  private chooseToolbar(subject: Subject) {
-    if(subject.status == Status.DRAFT) {
-      if(subject.initiator != null) { // W DRAFT i w tym komponencie nigdy inicjator nie jest nullem
-        const acceptances = subject.propositionAcceptances;
-        if(acceptances.length == 0 || subject.initiator.index == '242422') {
-          this.toolbarService.updateToolbarConfig(this.toolbarEmpty);
-          return;
-        }
-        const acceptance = acceptances.find(a => a.student.index == '242422');
-        if(acceptance != null && acceptance.accepted !== null) {
-          this.toolbarService.updateToolbarConfig(this.toolbarEmpty);
-        } else {
-          this.toolbarService.updateToolbarConfig(this.toolbarDecision);
-        }
-      }
-    } else if(subject.status == Status.ACCEPTED_BY_SUPERVISOR && subject.initiator != null && subject.initiator.index == '242422') {
-      this.toolbarService.updateToolbarConfig(this.toolbalAcceptInitiator);
-    } else {
-      this.toolbarService.updateToolbarConfig(this.toolbarEmpty);
     }
   }
 
@@ -166,12 +131,11 @@ export class AppliedDetailsComponent implements OnInit {
       objectiveInEnglish.setValue(subject.objectiveInEnglish);
       const realizationLanguage = controls.realizationLanguage;
       realizationLanguage.setValue(subject.realizationLanguage);
-      const supervisor = controls.supervisorPresentation;
-      supervisor.setValue(this.getSupervisorFullName(subject.supervisor));
-      if(subject.status != Status.RESERVED || subject.initiator != null) {
+
+      if(subject.initiator != null) {
+        this.showSidePanel = true;
         const mainRealiser = controls.mainRealiser;
-        mainRealiser.setValue(subject.initiator!.index); // TU MUSI BYC INICJATOR
-        this.mainRealiserKey = 'applicant';
+        mainRealiser.setValue(subject.initiator.index); // TU MUSI BYC INICJATOR
         if(subject.realiseresNumber > 1) {
           const acceptances = subject.propositionAcceptances;
           if(subject.realiseresNumber == 2) {
@@ -195,9 +159,10 @@ export class AppliedDetailsComponent implements OnInit {
           this.showRealisersForm2 = false;
           this.showRealisersForm3 = false;
         }
-      } else { // TU JEST RESERVED i nie ma inicjatora - temat wzięty poprzez kandydature
-        this.mainRealiserKey = 'main-realiser';
-        this.showRealisersReserved = true;
+      } else if(subject.status == Status.RESERVED) {
+        this.showSidePanel = true;
+        this.showRealisers = true;
+        this.mainRealiserKey = 'realiser';
         const realisers = subject.realiser;
         if(realisers.length == 1) {
           const mainRealiser = controls.mainRealiser;
@@ -215,7 +180,7 @@ export class AppliedDetailsComponent implements OnInit {
           controls.firstCoRealiser.setValue(realisers[1].index);
           this.showRealisersForm2 = true;
           controls.secondCoRealiser.setValue(realisers[2].index);
-        } else if(realisers.length == 4){
+        } else if(realisers.length > 3){
           const mainRealiser = controls.mainRealiser;
           mainRealiser.setValue(realisers[0].index);
 
@@ -226,85 +191,63 @@ export class AppliedDetailsComponent implements OnInit {
           this.showRealisersForm3 = true;
           controls.thirdCoRealiser.setValue(realisers[3].index);
         }
+
+      }
+
+      if(subject.status == Status.IN_CORRECTION) {
+        const topic = controls.topic;
+        topic.enable();
+        const topicInEnglish = controls.topicInEnglish;
+        topicInEnglish.enable();
+        const objective = controls.objective;
+        objective.enable();
+        const objectiveInEnglish = controls.objectiveInEnglish;
+        objectiveInEnglish.enable();
       }
     }
   }
 
-  private updateProposition(decision: boolean) {
+  private updateSubject() {
     this.loading = true;
-    if(this.subject != null) {
-      const proposition = this.subject.propositionAcceptances.find(a => a.student.index == '242422');
-      if(proposition != null) {
-        const propositionId = proposition.propositionAcceptanceId;
-        this.restService.updateProposition(decision, propositionId!).subscribe(
-          resp => {
-            console.log(resp);
-            void this.router.navigate(['student', 'graduation_process', '1', 'subject']);
-            this.loading = false;
-          },
-          err => {
-            console.log(err);
-            this.loading = false;
-          }
-        );
-      }
-    } else {
+
+    const sub = this.collectData();
+    this.restService.updateSubject(sub).subscribe(resp => {
+      console.log(resp);
       this.loading = false;
-    }
+      void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject']);
+    }, err => {
+      console.log(err);
+      this.loading = false;
+    });
   }
 
-  private acceptInitiator(decision: boolean) {
+  private sendToVerification() {
     this.loading = true;
-    if(this.subject != null) {
-      if(decision) {
-        this.restService.acceptInitiator(this.subject.subjectId).subscribe(
-          resp => {
-            console.log(resp);
-            void this.router.navigate(['student', 'graduation_process', '1', 'subject']);
-            this.loading = false;
-          },
-          err => {
-            console.log(err);
-            this.loading = false;
-          }
-        );
-      } else {
-        this.restService.reject(this.subject.subjectId).subscribe(
-          resp => {
-            console.log(resp);
-            void this.router.navigate(['student', 'graduation_process', '1', 'subject']);
-            this.loading = false;
-          },
-          err => {
-            console.log(err);
-            this.loading = false;
-          }
-        );
+    this.restService.sendToVerification(this.subject.subjectId).subscribe(
+      resp => {
+        console.log(resp)
+        this.loading = false;
+        void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject']);
+      },
+      err => {
+        console.log(err)
+        this.loading = false;
       }
-    } else {
-      this.loading = false;
-    }
+    );
   }
 
-  getIcon(index: number): string {
-    if(this.subject != null) {
-      if(this.showRealisersReserved) {
-        return 'done';
-      } else if(index != -1) {
-        const acceptance = this.subject.propositionAcceptances[index];
-        if(acceptance.accepted === null) {
-          return 'help_outline';
-        }
-        return acceptance.accepted ? 'done' : 'close';
-      }
-    }
-    return '';
-  }
+  private collectData(): Dictionary<any> {
+    const controls = this.subjectForm.controls;
 
-  getSupervisorFullName(supervisor?: StaffMember) {
-    if (supervisor) {
-      const title = this.translateService.instant(supervisor.title) as string
-      return `${title} ${supervisor.name} ${supervisor.surname}`;
-    } else return ""
+    return {
+      /*eslint-disable */
+      subjectId: this.subject.subjectId,
+      topic: controls.topic.value,
+      topicInEnglish: controls.topicInEnglish.value,
+      objective: controls.objective.value,
+      objectiveInEnglish: controls.objectiveInEnglish.value,
+      realiseresNumber: this.subject.realiseresNumber
+      /*eslint-enable */
+    }
   }
 }

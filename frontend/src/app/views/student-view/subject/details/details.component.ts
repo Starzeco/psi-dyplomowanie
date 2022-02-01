@@ -7,6 +7,7 @@ import { ToolbarService } from "../../../../components/toolbar/toolbar.service";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatCheckboxChange } from "@angular/material/checkbox";
 import { Dictionary } from 'src/app/shared/dictionary';
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-details',
@@ -49,6 +50,7 @@ export class DetailsComponent implements OnInit {
 
   constructor(private readonly route: ActivatedRoute,
               private readonly toolbarService: ToolbarService,
+              private readonly translateService: TranslateService,
               private readonly fb: FormBuilder,
               private readonly router: Router,
               private readonly restService: RestService) {
@@ -126,7 +128,7 @@ export class DetailsComponent implements OnInit {
       realizationLanguage.disable();
       const supervisor = controls.supervisorPresentation;
       this.supervisorPresentation = true;
-      supervisor.setValue(subject.supervisor.fullName);
+      supervisor.setValue(this.getSupervisorFullName(subject.supervisor));
       supervisor.disable();
       if(subject.realiseresNumber > 1) {
         this.showRealisersForm = true;
@@ -294,5 +296,12 @@ export class DetailsComponent implements OnInit {
       controls.secondCoRealiser.disable();
       controls.thirdCoRealiser.disable();
     }
+  }
+
+  getSupervisorFullName(supervisor?: StaffMember) {
+    if (supervisor) {
+      const title = this.translateService.instant(supervisor.title) as string
+      return `${title} ${supervisor.name} ${supervisor.surname}`;
+    } else return ""
   }
 }

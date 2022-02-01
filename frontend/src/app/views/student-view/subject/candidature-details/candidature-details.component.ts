@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ToolbarService } from "../../../../components/toolbar/toolbar.service";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { RestService } from "../../../../shared/rest.service";
-import { Candidature } from "../../../../shared/model";
+import { Candidature, StaffMember } from "../../../../shared/model";
 import { ToolbarConfig } from "../../../../components/toolbar/toolbar.component";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-candidature-details',
@@ -47,6 +48,7 @@ export class CandidatureDetailsComponent implements OnInit {
   constructor(private readonly route: ActivatedRoute,
               private readonly toolbarService: ToolbarService,
               private readonly fb: FormBuilder,
+              private readonly translateService: TranslateService,
               private readonly router: Router,
               private readonly restService: RestService) {
     this.subjectForm = this.fb.group({
@@ -142,7 +144,7 @@ error => {
     const realizationLanguage = controls.realizationLanguage;
     realizationLanguage.setValue(subject.realizationLanguage);
     const supervisor = controls.supervisorPresentation;
-    supervisor.setValue(subject.supervisor.fullName);
+    supervisor.setValue(this.getSupervisorFullName(subject.supervisor));
     const mainRealiser = controls.mainRealiser;
     mainRealiser.setValue(this.candidature.student.index);
     const acceptances = this.candidature.candidatureAcceptances;
@@ -196,5 +198,12 @@ error => {
       }
     }
     return '';
+  }
+
+  getSupervisorFullName(supervisor?: StaffMember) {
+    if (supervisor) {
+      const title = this.translateService.instant(supervisor.title) as string
+      return `${title} ${supervisor.name} ${supervisor.surname}`;
+    } else return ""
   }
 }
