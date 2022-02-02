@@ -13,8 +13,8 @@
                 </app-co-realisers>
             </ng-container>
 
-            <ng-container *ngIf="this.subject.realiseresNumber - 1 > 0">
-                <app-realizers-number [realizersNumber]="this.subject.realiseresNumber - 1"></app-realizers-number>
+            <ng-container *ngIf="this.subject.initiator === null">
+                <app-realizers-number [realizersNumber]="this.subject.realiseresNumber"></app-realizers-number>
             </ng-container>
         </div>
     </div>

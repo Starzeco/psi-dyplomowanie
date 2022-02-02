@@ -42,10 +42,6 @@ export class ProcessedSubjectUpdateComponent implements OnInit {
       {
         textKey: 'update',
         click: () => this.updateSubject()
-      },
-      {
-        textKey: 'to_verification',
-        click: () => this.sendToVerification()
       }
     ]
   }
@@ -132,21 +128,14 @@ export class ProcessedSubjectUpdateComponent implements OnInit {
     const controls = this.subjectForm.controls;
     const subject = this.subject;
     if (subject != null) {
-      const topic = controls.topic;
-      topic.setValue(subject.topic);
-      const topicInEnglish = controls.topicInEnglish;
-      topicInEnglish.setValue(subject.topicInEnglish);
-      const objective = controls.objective;
-      objective.setValue(subject.objective);
-      const objectiveInEnglish = controls.objectiveInEnglish;
-      objectiveInEnglish.setValue(subject.objectiveInEnglish);
-      const realizationLanguage = controls.realizationLanguage;
-      realizationLanguage.setValue(subject.realizationLanguage);
-
+      controls.topic.setValue(subject.topic);
+      controls.topicInEnglish.setValue(subject.topicInEnglish);
+      controls.objective.setValue(subject.objective);
+      controls.objectiveInEnglish.setValue(subject.objectiveInEnglish);
+      controls.realizationLanguage.setValue(subject.realizationLanguage);
       if (subject.initiator != null) {
         this.showSidePanel = true;
-        const mainRealiser = controls.mainRealiser;
-        mainRealiser.setValue(subject.initiator.index); // TU MUSI BYC INICJATOR
+        controls.mainRealiser.setValue(subject.initiator.index); // TU MUSI BYC INICJATOR
         if (subject.realiseresNumber > 1) {
           const acceptances = subject.propositionAcceptances;
           if (subject.realiseresNumber == 2) {
@@ -176,24 +165,19 @@ export class ProcessedSubjectUpdateComponent implements OnInit {
         this.mainRealiserKey = 'realiser';
         const realisers = subject.realiser;
         if (realisers.length == 1) {
-          const mainRealiser = controls.mainRealiser;
-          mainRealiser.setValue(realisers[0].index);
+          controls.mainRealiser.setValue(realisers[0].index);
         } else if (realisers.length == 2) {
-          const mainRealiser = controls.mainRealiser;
-          mainRealiser.setValue(realisers[0].index);
+          controls.mainRealiser.setValue(realisers[0].index);
           this.showRealisersForm1 = true;
           controls.firstCoRealiser.setValue(realisers[1].index);
         } else if (realisers.length == 3) {
-          const mainRealiser = controls.mainRealiser;
-          mainRealiser.setValue(realisers[0].index);
-
+          controls.mainRealiser.setValue(realisers[0].index);
           this.showRealisersForm1 = true;
           controls.firstCoRealiser.setValue(realisers[1].index);
           this.showRealisersForm2 = true;
           controls.secondCoRealiser.setValue(realisers[2].index);
         } else if (realisers.length > 3) {
-          const mainRealiser = controls.mainRealiser;
-          mainRealiser.setValue(realisers[0].index);
+          controls.mainRealiser.setValue(realisers[0].index);
 
           this.showRealisersForm1 = true;
           controls.firstCoRealiser.setValue(realisers[1].index);
@@ -206,12 +190,10 @@ export class ProcessedSubjectUpdateComponent implements OnInit {
       }
 
       if (subject.status == Status.IN_CORRECTION) {
-        const topic = controls.topic;
-        topic.enable();
-        const topicInEnglish = controls.topicInEnglish;
-        topicInEnglish.enable();
-        const objective = controls.objective;
-        objective.enable();
+        controls.topic.enable();
+        controls.topicInEnglish.enable();
+        controls.objective.enable();
+        controls.objectiveInEnglish.enable();
       }
     }
   }
@@ -229,21 +211,6 @@ export class ProcessedSubjectUpdateComponent implements OnInit {
       }, error: () => {
         this.loading = false;
         this.error = false;
-      }
-    });
-  }
-
-  private sendToVerification() {
-    this.loading = true;
-    this.error = false;
-    this.restService.sendToVerification(this.subject.subjectId).subscribe({
-      next: () => {
-        this.loading = false;
-        this.error = false; void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject']);
-      },
-      error: () => {
-        this.loading = false;
-        this.error = true;
       }
     });
   }
