@@ -177,7 +177,7 @@ export class RestService {
     return this.http.put(`${environment.apiUrl}/subject/status/send-verification/${subjectId}`, null);
   }
 
-  getAllCandidaturesBySubjectId(subjectId: number) {
+  fetchAllCandidaturesBySubjectId(subjectId: number) {
     return this.http.get<Candidature[]>(`${environment.apiUrl}/candidature`, {
       params: {
         subject_id: subjectId

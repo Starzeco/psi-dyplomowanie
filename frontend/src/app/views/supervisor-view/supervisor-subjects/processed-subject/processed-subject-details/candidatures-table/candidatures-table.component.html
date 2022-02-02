@@ -19,10 +19,10 @@
           <ng-container matColumnDef="buttons">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element" class="align-right">
-              <button mat-raised-button color="primary" (click)="this.accept(element.candidatureId)">
+              <button mat-raised-button color="primary" (click)="this.accept.emit(element.candidatureId)">
                 {{'accept' | translate}}
               </button>
-              <button mat-raised-button color="primary" (click)="this.decline(element.candidatureId)">
+              <button mat-raised-button color="accent" (click)="this.decline.emit(element.candidatureId)">
                 {{'decline' | translate}}
               </button>
             </td>

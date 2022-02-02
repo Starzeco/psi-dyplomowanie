@@ -21,7 +21,6 @@ import { CreateSubjectComponent } from './supervisor-subjects/create-subject/cre
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DraftSubjectUpdateComponent } from './supervisor-subjects/draft-subject/draft-subject-update/draft-subject-update.component';
 import { DraftSubjectDetailsComponent } from './supervisor-subjects/draft-subject/draft-subject-details/draft-subject-details.component';
-import { CandidatureTableComponent } from './supervisor-subjects/update-subject/candidature-table/candidature-table.component';
 import { ProcessedSubjectDetailsComponent } from './supervisor-subjects/processed-subject/processed-subject-details/processed-subject-details.component';
 import { ProcessedSubjectUpdateComponent } from './supervisor-subjects/processed-subject/processed-subject-update/processed-subject-update.component';
 import { CandidaturesTableComponent } from './supervisor-subjects/processed-subject/processed-subject-details/candidatures-table/candidatures-table.component';
@@ -49,7 +48,6 @@ const MAT_MODULES = [
     CreateSubjectComponent,
     DraftSubjectUpdateComponent,
     DraftSubjectDetailsComponent,
-    CandidatureTableComponent,
     ProcessedSubjectDetailsComponent,
     ProcessedSubjectUpdateComponent,
     CandidaturesTableComponent,

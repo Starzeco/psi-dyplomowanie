@@ -139,9 +139,9 @@
     "subject_update": "Aktualizacja tematu",
     "save_changes": "Zapisz zmiany",
     "candidatures": "Kandydatury",
-    "processed_subject_details" : "Processed subject details",
-    "draft_subject_details" : "Draft subject details",
-    "processed_subject_update" : "Processed subject update",
-    "draft_subject_update" : "Draft subject update"
+    "processed_subject_details" : "Detale procesowange tematu",
+    "draft_subject_details" : "Detale roboczego tematu",
+    "processed_subject_update" : "Aktualizacja procesowanego tematu",
+    "draft_subject_update" : "Aktualizacja roboczego tematu"
 }
 

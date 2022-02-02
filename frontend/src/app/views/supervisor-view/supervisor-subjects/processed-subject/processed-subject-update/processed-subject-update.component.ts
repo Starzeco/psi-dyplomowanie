@@ -7,6 +7,12 @@ import { Dictionary } from 'src/app/shared/dictionary';
 import { Subject, Status } from 'src/app/shared/model';
 import { RestService } from 'src/app/shared/rest.service';
 
+const toolbarEmpty_: ToolbarConfig = {
+  titleKey: 'processed_subject_update',
+  iconName: 'note',
+  buttonsConfig: []
+}
+
 @Component({
   selector: 'app-processed-subject-update',
   templateUrl: './processed-subject-update.component.html',
@@ -16,7 +22,7 @@ export class ProcessedSubjectUpdateComponent implements OnInit {
 
   error = false;
   loading = true;
-  
+
   subject!: Subject;
   subjectForm: FormGroup;
 
@@ -29,8 +35,8 @@ export class ProcessedSubjectUpdateComponent implements OnInit {
 
   statuses = Status;
 
-  private toolbarUpdate: ToolbarConfig = {
-    titleKey: 'supervisor_update_header',
+  private toolbarUpdateConfig: ToolbarConfig = {
+    titleKey: 'processed_subject_update',
     iconName: 'note',
     buttonsConfig: [
       {
@@ -42,12 +48,6 @@ export class ProcessedSubjectUpdateComponent implements OnInit {
         click: () => this.sendToVerification()
       }
     ]
-  }
-
-  private toolbarEmpty: ToolbarConfig = {
-    titleKey: 'details_subject_header',
-    iconName: 'note',
-    buttonsConfig: []
   }
 
   constructor(private readonly route: ActivatedRoute,
@@ -98,23 +98,32 @@ export class ProcessedSubjectUpdateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getSubject();
+    this.fetchSubject();
   }
 
-  private getSubject() {
+  private fetchSubject() {
     const subjectId = this.route.snapshot.paramMap.get('subject_id');
     if (subjectId == null) {
+      this.loading = false;
       this.error = true;
     } else {
-      this.restService.fetchSubjectById(+subjectId).subscribe(sub => {
-        this.subject = sub;
-        this.fillAndDisableForm();
-        if (this.subject.status == Status.IN_CORRECTION) {
-          this.toolbarService.updateToolbarConfig(this.toolbarUpdate);
-        } else {
-          this.toolbarService.updateToolbarConfig(this.toolbarEmpty);
+      this.loading = true;
+      this.error = false;
+      this.restService.fetchSubjectById(+subjectId).subscribe({
+        next: result => {
+          this.subject = result;
+          this.fillAndDisableForm();
+
+          if (this.subject.status == Status.IN_CORRECTION) this.toolbarService.updateToolbarConfig(this.toolbarUpdateConfig);
+          else this.toolbarService.updateToolbarConfig(toolbarEmpty_);
+
+          this.loading = false;
+          this.error = false;
+        },
+        error: () => {
+          this.loading = false;
+          this.error = true;
         }
-        this.loading = false;
       });
     }
   }
@@ -209,31 +218,34 @@ export class ProcessedSubjectUpdateComponent implements OnInit {
 
   private updateSubject() {
     this.loading = true;
+    this.error = false;
 
     const sub = this.collectData();
-    this.restService.updateSubject(sub).subscribe(resp => {
-      console.log(resp);
-      this.loading = false;
-      void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject']);
-    }, err => {
-      console.log(err);
-      this.loading = false;
+    this.restService.updateSubject(sub).subscribe({
+      next: () => {
+        this.loading = true;
+        this.error = false;
+        void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject']);
+      }, error: () => {
+        this.loading = false;
+        this.error = false;
+      }
     });
   }
 
   private sendToVerification() {
     this.loading = true;
-    this.restService.sendToVerification(this.subject.subjectId).subscribe(
-      resp => {
-        console.log(resp)
+    this.error = false;
+    this.restService.sendToVerification(this.subject.subjectId).subscribe({
+      next: () => {
         this.loading = false;
-        void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject']);
+        this.error = false; void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject']);
       },
-      err => {
-        console.log(err)
+      error: () => {
         this.loading = false;
+        this.error = true;
       }
-    );
+    });
   }
 
   private collectData(): Dictionary<any> {
