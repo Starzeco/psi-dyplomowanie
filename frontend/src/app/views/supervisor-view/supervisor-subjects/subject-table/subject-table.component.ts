@@ -17,26 +17,26 @@ export class SubjectTableComponent {
   displayedColumns: string[] = ['topic', 'author', 'type', 'status', 'details'];
 
   constructor(private readonly translateService: TranslateService,
-              private readonly router: Router) { }
+    private readonly router: Router) { }
 
 
   getTopic(subject: Subject): string {
-    if(this.translateService.currentLang == Language.EN) return subject.topicInEnglish;
+    if (this.translateService.currentLang == Language.EN) return subject.topicInEnglish;
     else return subject.topic;
   }
 
   getType(subject: Subject): string {
-    if(this.translateService.currentLang == Language.EN) {
-      if(subject.realiseresNumber > 1) return SUBJECT_TYPE.GROUP;
+    if (this.translateService.currentLang == Language.EN) {
+      if (subject.realiseresNumber > 1) return SUBJECT_TYPE.GROUP;
       else return SUBJECT_TYPE.INDIVIDUAL;
     } else {
-      if(subject.realiseresNumber > 1) return SUBJECT_TYPE_POLISH.GROUP;
+      if (subject.realiseresNumber > 1) return SUBJECT_TYPE_POLISH.GROUP;
       else return SUBJECT_TYPE_POLISH.INDIVIDUAL;
     }
   }
 
   getAuthor(subject: Subject): string {
-    if(subject.initiator != null) {
+    if (subject.initiator != null) {
       return 'student_author';
     } else {
       return 'supervisor_author';
@@ -47,7 +47,7 @@ export class SubjectTableComponent {
     const status = subject.status;
     switch (status) {
       case Status.DRAFT: {
-        if(subject.initiator != null) {
+        if (subject.initiator != null) {
           return 'draft_waiting_for_you';
         } else {
           return 'DRAFT';
@@ -81,10 +81,10 @@ export class SubjectTableComponent {
   }
 
   toDetails(subject: Subject) {
-    if([Status.IN_CORRECTION.toString(), Status.IN_VERIFICATION.toString(), Status.RESERVED.toString(), Status.VERIFIED.toString()].includes(subject.status)){
-      void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', 'update', subject.subjectId]);
+    if ([Status.IN_CORRECTION.toString(), Status.IN_VERIFICATION.toString(), Status.RESERVED.toString(), Status.VERIFIED.toString()].includes(subject.status)) {
+      void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', subject.subjectId, 'update']);
     } else {
-      void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', 'details', subject.subjectId]);
+      void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', subject.subjectId, 'details']);
     }
   }
 }

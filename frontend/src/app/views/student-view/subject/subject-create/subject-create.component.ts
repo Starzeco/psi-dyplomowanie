@@ -10,7 +10,7 @@ import { MatCheckboxChange } from "@angular/material/checkbox";
 import { Dictionary } from 'src/app/shared/dictionary';
 import { TranslateService } from "@ngx-translate/core";
 
-const indexValidators = [Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(6), Validators.maxLength(6)]
+const indexValidators = [Validators.pattern("^[0-9]*$"), Validators.minLength(6), Validators.maxLength(6)]
 
 @Component({
   selector: 'app-subject-create',

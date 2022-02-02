@@ -147,7 +147,7 @@ export class AppliedDetailsComponent implements OnInit {
           }
         });
       } else {
-        this.restService.reject(this.subject.subjectId).subscribe({
+        this.restService.rejectAsSupervisor(this.subject.subjectId).subscribe({
           next: () => {
             void this.router.navigate(['student', 'graduation_process', '1', 'subject']);
             this.loading = false;

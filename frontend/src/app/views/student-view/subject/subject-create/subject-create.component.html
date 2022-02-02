@@ -76,9 +76,9 @@
 
         <mat-card *ngIf="this.showRealisersForm">
           <mat-card-content class="forms-container">
+            
             <mat-label *ngIf="this.showIsGroup">{{'type' | translate}}</mat-label>
             <br *ngIf="this.showIsGroup">
-
             <mat-checkbox formControlName="isGroup" (change)="groupChange($event)" class="group-text"
               *ngIf="this.showIsGroup">
               {{'group_type_label' | translate}}
@@ -86,7 +86,7 @@
             <br *ngIf="this.showIsGroup">
 
             <span>{{'co-realisers-label' | translate}}</span>
-
+            <br>
             <mat-form-field appearance="outline">
               <input matInput placeholder="{{'co-realisers-first' | translate}}" type="text"
                 formControlName="firstCoRealiser">
@@ -126,14 +126,9 @@
 
 
 <ng-template #test let-control='control'>
-  
-  <span *ngIf="control.hasError('required'); else pattern">{{'co-realisers-required' | translate}}
-  </span>
 
-  <ng-template #pattern>
-    <span *ngIf="control.hasError('pattern'); else minLength">{{'index_patter_error' | translate}}
-    </span>
-  </ng-template>
+  <span *ngIf="control.hasError('pattern'); else minLength">{{'index_patter_error' | translate}}
+  </span>
 
   <ng-template #minLength>
     <span *ngIf="control.hasError('minlength'); else maxLength">{{'index_length_error' | translate}}

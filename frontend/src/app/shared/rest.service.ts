@@ -134,11 +134,11 @@ export class RestService {
     return this.http.put(`${environment.apiUrl}/subject/status/accept-initiator/${subjectId}`, null);
   }
 
-  acceptSupervisor(subjectId: number) {
+  acceptAsSupervisor(subjectId: number) {
     return this.http.put(`${environment.apiUrl}/subject/status/accept-supervisor/${subjectId}`, null);
   }
 
-  reject(subjectId: number) {
+  rejectAsSupervisor(subjectId: number) {
     return this.http.put(`${environment.apiUrl}/subject/status/reject/${subjectId}`, null);
   }
 

@@ -138,5 +138,8 @@
     "co_realisers_2": "Second co-realiser",
     "co_realisers_3": "Third co-realiser",
     "index_patter_error": "The student index should consist of numbers only!",
-    "index_length_error": "The student index should consist of exactly 6 characters!"
+    "index_length_error": "The student index should consist of exactly 6 characters!",
+    "subject_update": "Update subject",
+    "save_changes": "Save changes"
+
 }
