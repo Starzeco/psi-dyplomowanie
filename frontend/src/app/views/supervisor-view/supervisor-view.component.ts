@@ -6,18 +6,18 @@ import {LinkConfig} from "../../components/sidenav/sidenav.component";
 const user_: User = {
   userId: 1,
   type: "supervisor",
-  userFullName: "Marcel Krakowiak",
+  userFullName: "Marcin Nowak",
 }
 
 const linksConfig_: LinkConfig[] = [
   {
     textKey: 'graduation_processes',
-    href: '',
+    href: '/supervisor',
     iconName: 'view_module'
   },
   {
     textKey: 'subjects',
-    href: '',
+    href: '/supervisor/graduation_process/1/subject',
     iconName: 'note'
   }
 ]

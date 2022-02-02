@@ -57,7 +57,7 @@ export class CreateSubjectComponent implements OnInit {
   private createSubject() {
     this.loading = true;
     const controls = this.subjectForm.controls;
-    if(controls.isGroup && !controls.coRealisersNumber.value) {
+    if(controls.isGroup.value && !controls.coRealisersNumber.value) {
       controls.coRealisersNumber.setErrors({
         'required': true
       });
