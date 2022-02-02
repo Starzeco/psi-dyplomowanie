@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Status, Subject } from "../../../../shared/model";
+import { PropositionAcceptance, Status, Subject, Verification } from "../../../../shared/model";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToolbarService } from "../../../../components/toolbar/toolbar.service";
 import { ToolbarConfig } from "../../../../components/toolbar/toolbar.component";
 import { RestService } from "../../../../shared/rest.service";
+import { Content, objectvieContent, topicContent } from 'src/app/components/details/topic-objective/topic-objective.component';
+import { MainRealizer, Realizer } from 'src/app/components/details/co-realisers/co-realisers.component';
+import { getSubjectStatusTranslation } from '../subject.common';
 
 const toolbarEmpty_: ToolbarConfig = {
   titleKey: 'details_subject_header',
@@ -157,5 +160,69 @@ export class AppliedDetailsComponent implements OnInit {
         });
       }
     }
+  }
+  
+  prepareMainRealizer(): MainRealizer {
+    if (this.checkIfSubjectIsNotReservedButHasInitiator(this.subject))
+      return {
+        iconName: 'done',
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        name: this.subject.initiator!.index,
+        labelKey: 'applicant',
+      }
+    else
+      return {
+        iconName: 'done',
+        name: this.subject.realiser[0].index,
+        labelKey: 'main-realiser',
+      }
+  }
+
+  prepareCoorealizers(): Realizer[] {
+    if (this.checkIfSubjectIsNotReservedButHasInitiator(this.subject)) {
+      return this.subject.propositionAcceptances.map(pa => ({
+        name: pa.student.index,
+        iconName: this.getIconForAcceptanceAccepted(pa)
+      }))
+    } else {
+      return this.subject.realiser.map(r => ({
+        name: r.index,
+        iconName: 'done'
+      }))
+    }
+  }
+
+  private checkIfSubjectIsNotReservedButHasInitiator(subject: Subject) {
+    return subject.status != Status.RESERVED || subject.initiator;
+  }
+
+  prepareTopic(): Content {
+    return topicContent(this.subject)
+  }
+
+  prepareObjective(): Content {
+    return objectvieContent(this.subject)
+  }
+
+
+  getIconForAcceptanceAccepted(pa: PropositionAcceptance): string {
+    if (pa.accepted == true) return 'done'
+    else if (pa.accepted == false) return 'close';
+    else return 'help_outline';
+  }
+
+  getDecisionTranslationKey(verification: Verification): string {
+    const verified = verification.verified
+    if (verified === true) {
+      return 'accepted'
+    } else if (verified === false) {
+      return 'rejected'
+    } else {
+      return ''
+    }
+  }
+
+  getStatus(): string {
+    return getSubjectStatusTranslation(this.subject)
   }
 }

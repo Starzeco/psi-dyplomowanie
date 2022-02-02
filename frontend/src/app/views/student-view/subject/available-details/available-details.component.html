@@ -1,0 +1,14 @@
+<app-state [loading]="loading" [error]="false" [empty]="false">
+    <div class="details-container column" *ngIf="this.subject">
+        <div class="column">
+            <app-topic-objective [topic]="this.prepareTopic()" [objective]="this.prepareObjective()"
+                [realizationLanguage]="this.subject.realizationLanguage"></app-topic-objective>
+        </div>
+
+        <div class="column">
+            <app-status [statusKey]="this.getStatus()"></app-status>
+            <app-supervisor [supervisor]="this.subject.supervisor"></app-supervisor>
+            <app-realizers-number [realizersNumber]="this.subject.realiseresNumber"></app-realizers-number>
+        </div>
+    </div>
+</app-state>

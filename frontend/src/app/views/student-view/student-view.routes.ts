@@ -5,6 +5,7 @@ import {GraduationProcessComponent} from "./graduation-process/graduation-proces
 import {DetailsComponent} from "./subject/details/details.component";
 import { AppliedDetailsComponent } from "./subject/applied-details/applied-details.component";
 import { CandidatureDetailsComponent } from "./subject/candidature-details/candidature-details.component";
+import { AvailableDetailsComponent } from "./subject/available-details/available-details.component";
 
 export const STUDENT_VIEW_ROUTES: Route[] = [
   {
@@ -23,7 +24,7 @@ export const STUDENT_VIEW_ROUTES: Route[] = [
         path: 'graduation_process/:graduation_process_id/subject/create', component: DetailsComponent
       },
       {
-        path: 'graduation_process/:graduation_process_id/subject/:subject_id', component: DetailsComponent
+        path: 'graduation_process/:graduation_process_id/subject/:subject_id', component: AvailableDetailsComponent
       },
       {
         path: 'graduation_process/:graduation_process_id/subject/applied/:subject_id', component: AppliedDetailsComponent

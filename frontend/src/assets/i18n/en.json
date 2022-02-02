@@ -127,5 +127,10 @@
     "update": "Update",
     "to_verification": "Send to verification",
     "reject": "Reject",
-    "operation_cannot_be_undone": "The operation can not be undone!"
+    "operation_cannot_be_undone": "The operation can not be undone!",
+    "realizers_number": "Number of realizers",
+    "to_accept_by_students": "To be accepted by the co-realisers",
+    "to_accept_by_supervisor": "To be accepted by the supervisor",
+    "subject_status": "Subject status",
+    "candidature_status": "Candidature status"
 }

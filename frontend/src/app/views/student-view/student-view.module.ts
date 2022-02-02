@@ -14,15 +14,15 @@ import { GraduationProcessComponent } from './graduation-process/graduation-proc
 import { CandidatureTableComponent } from './subject/candidature-table/candidature-table.component';
 import { DetailsComponent } from './subject/details/details.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
-import {MatSelectModule} from "@angular/material/select";
-import {MatRadioModule} from "@angular/material/radio";
-import {MatCheckboxModule} from "@angular/material/checkbox";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { MatRadioModule } from "@angular/material/radio";
+import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AppliedDetailsComponent } from './subject/applied-details/applied-details.component';
 import { MatIconModule } from "@angular/material/icon";
 import { CandidatureDetailsComponent } from './subject/candidature-details/candidature-details.component';
-import { SubjectDetailsComponent } from './subject/subject-details/subject-details.component';
+import { AvailableDetailsComponent } from './subject/available-details/available-details.component';
 
 const MAT_MODULES = [
   MatCardModule,
@@ -47,7 +47,7 @@ const MAT_MODULES = [
     DetailsComponent,
     AppliedDetailsComponent,
     CandidatureDetailsComponent,
-    SubjectDetailsComponent,
+    AvailableDetailsComponent,
   ],
   imports: [
     CommonModule,

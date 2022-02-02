@@ -82,7 +82,7 @@ export class RestService {
     return this.http.get<Subject>(`${environment.apiUrl}/subject/${subjectId}`);
   }
 
-  getCandidatureById(candidatureId: number) {
+  fetchCandidatureById(candidatureId: number) {
     return this.http.get<Candidature>(`${environment.apiUrl}/candidature/${candidatureId}`);
   }
 

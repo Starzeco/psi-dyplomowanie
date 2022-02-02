@@ -124,6 +124,11 @@
     "realiser": "Realizator",
     "to_verification": "Wyślij do weryfikacji",
     "reject": "Odrzuć",
-    "operation_cannot_be_undone": "Operacja nie będzię mogła zostać cofnięta!"
+    "operation_cannot_be_undone": "Operacja nie będzię mogła zostać cofnięta!",
+    "realizers_number": "Liczba realizatorów",
+    "to_accept_by_students": "Do zaakcpetowania przez współrealizatorów",
+    "to_accept_by_supervisor": "Do zaakcpetowania przez promotora",
+    "subject_status": "Status tematu",
+    "candidature_status": "Status kandydatury"
 }
 
