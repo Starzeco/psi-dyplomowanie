@@ -10,7 +10,6 @@ export type DecisionDialogConfig = {
 
 export type DecisionDialogResult = {
   justification: string,
-
 }
 
 @Component({

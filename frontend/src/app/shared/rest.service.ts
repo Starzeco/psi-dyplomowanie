@@ -86,7 +86,7 @@ export class RestService {
     return this.http.get<Candidature>(`${environment.apiUrl}/candidature/${candidatureId}`);
   }
 
-  getSupervisorsByGraduationProcessId(graduationProcessId: number) {
+  fetchSupervisorsByGraduationProcessId(graduationProcessId: number) {
     return this.http.get<StaffMember[]>(`${environment.apiUrl}/supervisor`, {
       params: {
         graduation_process_id: graduationProcessId

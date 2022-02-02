@@ -132,5 +132,11 @@
     "to_accept_by_students": "To be accepted by the co-realisers",
     "to_accept_by_supervisor": "To be accepted by the supervisor",
     "subject_status": "Subject status",
-    "candidature_status": "Candidature status"
+    "candidature_status": "Candidature status",
+    "candidate": "Candidate",
+    "co_realisers_1": "First co-realiser",
+    "co_realisers_2": "Second co-realiser",
+    "co_realisers_3": "Third co-realiser",
+    "index_patter_error": "The student index should consist of numbers only!",
+    "index_length_error": "The student index should consist of exactly 6 characters!"
 }

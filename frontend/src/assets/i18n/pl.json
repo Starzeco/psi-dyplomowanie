@@ -129,6 +129,11 @@
     "to_accept_by_students": "Do zaakcpetowania przez współrealizatorów",
     "to_accept_by_supervisor": "Do zaakcpetowania przez promotora",
     "subject_status": "Status tematu",
-    "candidature_status": "Status kandydatury"
+    "candidature_status": "Status kandydatury",
+    "candidate": "Kandyduj",
+    "co_realisers_1": "Pierwszy współrealizator",
+    "co_realisers_2": "Drugi współrealizator",
+    "co_realisers_3": "Trzeci współrealizator",
+    "index_patter_error": "Indeks studenta powinien składać się tylko z cyfr!",
+    "index_length_error": "Indeks studenta powinien składać się dokładnie z 6 znaków!"
 }
-

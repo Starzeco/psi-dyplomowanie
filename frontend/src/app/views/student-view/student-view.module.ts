@@ -12,7 +12,7 @@ import { STUDENT_VIEW_ROUTES } from './student-view.routes';
 import { SubjectTableComponent } from './subject/subject-table/subject-table.component';
 import { GraduationProcessComponent } from './graduation-process/graduation-process.component';
 import { CandidatureTableComponent } from './subject/candidature-table/candidature-table.component';
-import { DetailsComponent } from './subject/details/details.component';
+import { SubjectCreateComponent } from './subject/subject-create/subject-create.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -23,6 +23,7 @@ import { AppliedDetailsComponent } from './subject/applied-details/applied-detai
 import { MatIconModule } from "@angular/material/icon";
 import { CandidatureDetailsComponent } from './subject/candidature-details/candidature-details.component';
 import { AvailableDetailsComponent } from './subject/available-details/available-details.component';
+import { CandidateDialogComponent } from './subject/available-details/candidate-dialog/candidate-dialog.component';
 
 const MAT_MODULES = [
   MatCardModule,
@@ -44,10 +45,11 @@ const MAT_MODULES = [
     SubjectTableComponent,
     GraduationProcessComponent,
     CandidatureTableComponent,
-    DetailsComponent,
+    SubjectCreateComponent,
     AppliedDetailsComponent,
     CandidatureDetailsComponent,
     AvailableDetailsComponent,
+    CandidateDialogComponent,
   ],
   imports: [
     CommonModule,
