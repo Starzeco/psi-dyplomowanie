@@ -138,6 +138,10 @@
     "index_length_error": "Indeks studenta powinien składać się dokładnie z 6 znaków!",
     "subject_update": "Aktualizacja tematu",
     "save_changes": "Zapisz zmiany",
-    "candidatures": "Kandydatury"
+    "candidatures": "Kandydatury",
+    "processed_subject_details" : "Processed subject details",
+    "draft_subject_details" : "Draft subject details",
+    "processed_subject_update" : "Processed subject update",
+    "draft_subject_update" : "Draft subject update"
 }
 

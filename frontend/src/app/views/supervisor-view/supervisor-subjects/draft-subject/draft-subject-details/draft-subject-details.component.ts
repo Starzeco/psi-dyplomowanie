@@ -9,7 +9,7 @@ import { RestService } from 'src/app/shared/rest.service';
 import { getSubjectStatusTranslation } from 'src/app/views/student-view/subject/subject.common';
 
 const toolbarEmpty_: ToolbarConfig = {
-  titleKey: 'details_subject_header',
+  titleKey: 'draft_subject_details',
   iconName: 'note',
   buttonsConfig: []
 }
@@ -163,7 +163,7 @@ export class DraftSubjectDetailsComponent implements OnInit {
   }
 
   private updateSubject() {
-    void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', this.subject.subjectId, 'details', 'update']);
+    void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', 'draft', this.subject.subjectId, 'update']);
   }
 
   prepareTopic(): Content {

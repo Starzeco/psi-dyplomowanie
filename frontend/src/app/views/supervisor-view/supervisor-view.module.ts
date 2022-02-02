@@ -19,11 +19,12 @@ import { MatIconModule } from "@angular/material/icon";
 import { SubjectTableComponent } from './supervisor-subjects/subject-table/subject-table.component';
 import { CreateSubjectComponent } from './supervisor-subjects/create-subject/create-subject.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { UpdateSubjectComponent } from './supervisor-subjects/update-subject/update-subject.component';
 import { DraftSubjectUpdateComponent } from './supervisor-subjects/draft-subject/draft-subject-update/draft-subject-update.component';
 import { DraftSubjectDetailsComponent } from './supervisor-subjects/draft-subject/draft-subject-details/draft-subject-details.component';
 import { CandidatureTableComponent } from './supervisor-subjects/update-subject/candidature-table/candidature-table.component';
-
+import { ProcessedSubjectDetailsComponent } from './supervisor-subjects/processed-subject/processed-subject-details/processed-subject-details.component';
+import { ProcessedSubjectUpdateComponent } from './supervisor-subjects/processed-subject/processed-subject-update/processed-subject-update.component';
+import { CandidaturesTableComponent } from './supervisor-subjects/processed-subject/processed-subject-details/candidatures-table/candidatures-table.component';
 
 const MAT_MODULES = [
   MatCardModule,
@@ -46,10 +47,12 @@ const MAT_MODULES = [
     SupervisorSubjectsComponent,
     SubjectTableComponent,
     CreateSubjectComponent,
-    UpdateSubjectComponent,
     DraftSubjectUpdateComponent,
     DraftSubjectDetailsComponent,
     CandidatureTableComponent,
+    ProcessedSubjectDetailsComponent,
+    ProcessedSubjectUpdateComponent,
+    CandidaturesTableComponent,
   ],
   imports: [
     CommonModule,

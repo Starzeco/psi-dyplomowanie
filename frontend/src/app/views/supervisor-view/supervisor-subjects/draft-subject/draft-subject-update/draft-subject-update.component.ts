@@ -29,7 +29,7 @@ export class DraftSubjectUpdateComponent implements OnInit {
   showRealisersForm3 = false;
 
   private toolbarConfig: ToolbarConfig = {
-    titleKey: 'subject_update',
+    titleKey: 'draft_subject_update',
     iconName: 'note',
     buttonsConfig: [
       {

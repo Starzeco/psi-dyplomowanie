@@ -82,9 +82,9 @@ export class SubjectTableComponent {
 
   toDetails(subject: Subject) {
     if ([Status.IN_CORRECTION.toString(), Status.IN_VERIFICATION.toString(), Status.RESERVED.toString(), Status.VERIFIED.toString()].includes(subject.status)) {
-      void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', subject.subjectId, 'update']);
+      void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', 'processed', subject.subjectId, 'details']);
     } else {
-      void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', subject.subjectId, 'details']);
+      void this.router.navigate(['supervisor', 'graduation_process', '1', 'subject', 'draft', subject.subjectId, 'details']);
     }
   }
 }
