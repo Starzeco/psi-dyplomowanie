@@ -1,5 +1,6 @@
 package com.example.dyplomowaniebackend.infrastructure.persistence.repository
 
+import com.example.dyplomowaniebackend.domain.model.Candidature
 import com.example.dyplomowaniebackend.domain.model.CandidatureStatus
 import com.example.dyplomowaniebackend.domain.model.CandidatureType
 import com.example.dyplomowaniebackend.infrastructure.persistence.entity.CandidatureAcceptanceEntity
@@ -42,6 +43,8 @@ interface CandidatureRepository : JpaRepository<CandidatureEntity, Long>, Candid
         @Param("subjectId") subjectId: Long,
         @Param("candidatureId") candidatureId: Long
     ): Int
+
+    fun findAllBySubjectSubjectId(subjectId: Long): Set<CandidatureEntity>
 }
 
 interface CandidatureRepositoryCustom {
@@ -281,8 +284,6 @@ interface CandidatureAcceptanceRepository : JpaRepository<CandidatureAcceptanceE
     ): Int
 
     fun findAllByCandidatureId(candidatureId: Long): Set<CandidatureAcceptanceEntity>
-
-    fun existsByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(candidatureId: Long): Boolean
 }
 
 

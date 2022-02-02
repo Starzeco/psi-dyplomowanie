@@ -137,5 +137,7 @@
     "index_patter_error": "Indeks studenta powinien składać się tylko z cyfr!",
     "index_length_error": "Indeks studenta powinien składać się dokładnie z 6 znaków!",
     "subject_update": "Aktualizacja tematu",
-    "save_changes": "Zapisz zmiany"
+    "save_changes": "Zapisz zmiany",
+    "candidatures": "Kandydatury"
 }
+

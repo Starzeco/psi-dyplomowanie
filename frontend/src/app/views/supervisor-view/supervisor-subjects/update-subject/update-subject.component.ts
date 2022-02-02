@@ -26,6 +26,8 @@ export class UpdateSubjectComponent implements OnInit {
   showRealisers = false;
   showSidePanel = false;
 
+  statuses = Status;
+
   private toolbarUpdate: ToolbarConfig = {
     titleKey: 'supervisor_update_header',
     iconName: 'note',
@@ -161,7 +163,7 @@ export class UpdateSubjectComponent implements OnInit {
         }
       } else if(subject.status == Status.RESERVED) {
         this.showSidePanel = true;
-        this.showRealisers = true;
+        this.showRealisers = false;
         this.mainRealiserKey = 'realiser';
         const realisers = subject.realiser;
         if(realisers.length == 1) {

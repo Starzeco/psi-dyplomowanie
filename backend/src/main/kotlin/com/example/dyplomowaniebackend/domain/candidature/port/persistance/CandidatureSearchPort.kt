@@ -24,5 +24,5 @@ interface CandidatureSearchPort {
         status: CandidatureStatus?
     ): Set<Candidature>
     fun getCandidatureById(candidatureId: Long): Candidature
-
+    fun getCandidaturesBySubjectId(subjectId: Long): Set<Candidature>
 }
