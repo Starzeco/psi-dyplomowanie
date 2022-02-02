@@ -127,5 +127,6 @@
     "update": "Update",
     "to_verification": "Send to verification",
     "reject": "Reject",
-    "operation_cannot_be_undone": "The operation can not be undone!"
+    "operation_cannot_be_undone": "The operation can not be undone!",
+    "candidatures": "Candidatures"
 }

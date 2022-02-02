@@ -21,6 +21,7 @@ import { CreateSubjectComponent } from './supervisor-subjects/create-subject/cre
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { UpdateSubjectComponent } from './supervisor-subjects/update-subject/update-subject.component';
 import { DraftSubjectComponent } from './supervisor-subjects/draft-subject/draft-subject.component';
+import { CandidatureTableComponent } from './supervisor-subjects/update-subject/candidature-table/candidature-table.component';
 
 
 const MAT_MODULES = [
@@ -45,7 +46,8 @@ const MAT_MODULES = [
     SubjectTableComponent,
     CreateSubjectComponent,
     UpdateSubjectComponent,
-    DraftSubjectComponent
+    DraftSubjectComponent,
+    CandidatureTableComponent
   ],
   imports: [
     CommonModule,

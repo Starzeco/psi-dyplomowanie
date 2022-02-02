@@ -160,4 +160,8 @@ class CandidatureServiceAdapter(
 
     override fun getCandidatureById(candidatureId: Long): Candidature = candidatureSearchPort.getCandidatureById(candidatureId)
 
+    override fun getCandidaturesBySubjectId(subjectId: Long): Set<Candidature> =
+        candidatureSearchPort.getCandidaturesBySubjectId(subjectId)
+            .filter { it.candidatureAcceptances.all { a -> a.accepted != null && a.accepted } }
+            .filter { it.accepted == null }.toSet()
 }

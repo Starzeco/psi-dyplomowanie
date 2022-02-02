@@ -21,4 +21,5 @@ interface CandidatureServicePort {
         status: CandidatureStatus?
     ): Set<Pair<Candidature, Set<CandidatureAcceptance>>>
     fun getCandidatureById(candidatureId: Long): Candidature
+    fun getCandidaturesBySubjectId(subjectId: Long): Set<Candidature>
 }
