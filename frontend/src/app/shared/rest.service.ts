@@ -176,4 +176,16 @@ export class RestService {
   sendToVerification(subjectId: number) {
     return this.http.put(`${environment.apiUrl}/subject/status/send-verification/${subjectId}`, null);
   }
+
+  getAllCandidaturesBySubjectId(subjectId: number) {
+    return this.http.get<Candidature[]>(`${environment.apiUrl}/candidature`, {
+      params: {
+        subject_id: subjectId
+      }
+    });
+  }
+
+  decideAboutCandidature(candidatureId: number, decision: boolean) {
+    return this.http.put(`${environment.apiUrl}/subject/candidature/${candidatureId}`, decision);
+  }
 }

@@ -124,6 +124,7 @@
     "realiser": "Realizator",
     "to_verification": "Wyślij do weryfikacji",
     "reject": "Odrzuć",
-    "operation_cannot_be_undone": "Operacja nie będzię mogła zostać cofnięta!"
+    "operation_cannot_be_undone": "Operacja nie będzię mogła zostać cofnięta!",
+    "candidatures": "Kandydatury"
 }
 
