@@ -4,7 +4,7 @@ import { MainRealizer, Realizer } from 'src/app/components/details/co-realisers/
 import { Content, topicContent, objectvieContent } from 'src/app/components/details/topic-objective/topic-objective.component';
 import { ToolbarConfig } from 'src/app/components/toolbar/toolbar.component';
 import { ToolbarService } from 'src/app/components/toolbar/toolbar.service';
-import { Subject, Status, PropositionAcceptance, Candidature } from 'src/app/shared/model';
+import { Subject, Status, PropositionAcceptance, Candidature, Verification } from 'src/app/shared/model';
 import { RestService } from 'src/app/shared/rest.service';
 import { getSubjectStatusTranslation } from 'src/app/views/student-view/subject/subject.common';
 
@@ -26,6 +26,7 @@ export class ProcessedSubjectDetailsComponent implements OnInit {
 
   subject!: Subject;
   candidatures: Candidature[] = []
+  verifications: Verification[] = []
   statuses = Status;
 
   private toolbarUpdate: ToolbarConfig = {
@@ -66,6 +67,7 @@ export class ProcessedSubjectDetailsComponent implements OnInit {
           switch (result.status) {
             case Status.IN_CORRECTION:
               this.toolbarService.updateToolbarConfig(this.toolbarUpdate);
+              this.fetchAllRejectedVerificationBySubjectId(result.subjectId)
               break;
             case Status.VERIFIED:
               this.toolbarService.updateToolbarConfig(toolbarEmpty_);
@@ -86,6 +88,22 @@ export class ProcessedSubjectDetailsComponent implements OnInit {
         }
       });
     }
+  }
+
+  private fetchAllRejectedVerificationBySubjectId(subjectId: number) {
+    this.loading = true;
+    this.error = false;
+    this.restService.fetchAllRejectedVerificationBySubjectId(subjectId).subscribe({
+      next: result => {
+        this.loading = false;
+        this.error = false;
+        this.verifications = result
+      },
+      error: () => {
+        this.loading = false;
+        this.error = true;
+      }
+    });
   }
 
   private fetchAllCandidatures(subjectId: number) {

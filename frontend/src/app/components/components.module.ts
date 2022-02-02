@@ -32,6 +32,7 @@ import { StatusComponent } from './details/status/status.component';
 import { SupervisorComponent } from './details/supervisor/supervisor.component';
 import { CoRealisersComponent } from './details/co-realisers/co-realisers.component';
 import { RealizersNumberComponent } from './details/realizers-number/realizers-number.component';
+import { VerificationsComponent } from './details/verifications/verifications.component';
 
 const MAT_MODULES = [
   MatSidenavModule,
@@ -64,6 +65,7 @@ const MAT_MODULES = [
     SupervisorComponent,
     CoRealisersComponent,
     RealizersNumberComponent,
+    VerificationsComponent,
   ],
   exports: [
     SidenavComponent,
@@ -82,6 +84,7 @@ const MAT_MODULES = [
     SupervisorComponent,
     CoRealisersComponent,
     RealizersNumberComponent,
+    VerificationsComponent,
   ],
   imports: [
     CommonModule,

@@ -188,4 +188,9 @@ export class RestService {
   decideAboutCandidature(candidatureId: number, decision: boolean) {
     return this.http.put(`${environment.apiUrl}/subject/candidature/${candidatureId}`, decision);
   }
+
+  fetchAllRejectedVerificationBySubjectId(subjectId: number) {
+    return this.http.get<Verification[]>(`${environment.apiUrl}/subject/${subjectId}/verifications/rejected`);
+
+  }
 }

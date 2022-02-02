@@ -17,6 +17,9 @@
         <app-realizers-number [realizersNumber]="this.subject.realiseresNumber"></app-realizers-number>
       </ng-container>
     </div>
+
+    <app-verifications *ngFor="let verification of verifications" [verification]="verification">
+    </app-verifications>
   </div>
 
   <div class="column">
