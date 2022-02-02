@@ -78,7 +78,7 @@ export class RestService {
     });
   }
 
-  getSubjectById(subjectId: number) {
+  fetchSubjectById(subjectId: number) {
     return this.http.get<Subject>(`${environment.apiUrl}/subject/${subjectId}`);
   }
 

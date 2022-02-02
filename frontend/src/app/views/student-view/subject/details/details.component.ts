@@ -97,7 +97,7 @@ export class DetailsComponent implements OnInit {
       });
     } else {
       this.toolbarService.updateToolbarConfig(this.toolbarCandidate);
-      this.restService.getSubjectById(+subjectId).subscribe(sub => {
+      this.restService.fetchSubjectById(+subjectId).subscribe(sub => {
         this.subject = sub;
         console.log(this.subject);
         this.fillAndDisableForm();

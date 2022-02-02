@@ -1,0 +1,22 @@
+app-subject-details {
+    .details-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .column {
+        display: grid;
+        gap: 1rem;
+        grid-auto-rows: minmax(min-content, max-content);
+    }
+
+    .details-field {
+        margin-bottom: 2rem;
+    }
+
+    .paragraph-with-icon {
+        display: inline-flex;
+        gap: 0.5rem;
+    }
+}

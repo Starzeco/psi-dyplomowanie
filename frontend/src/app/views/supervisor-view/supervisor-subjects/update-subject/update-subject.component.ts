@@ -104,7 +104,7 @@ export class UpdateSubjectComponent implements OnInit {
     if (subjectId == null) {
       this.error = true;
     } else {
-      this.restService.getSubjectById(+subjectId).subscribe(sub => {
+      this.restService.fetchSubjectById(+subjectId).subscribe(sub => {
         this.subject = sub;
         this.fillAndDisableForm();
         if(this.subject.status == Status.IN_CORRECTION) {

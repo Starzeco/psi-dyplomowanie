@@ -135,7 +135,7 @@ export class DraftSubjectComponent implements OnInit {
     if (subjectId == null) {
       this.error = true;
     } else {
-      this.restService.getSubjectById(+subjectId).subscribe(sub => {
+      this.restService.fetchSubjectById(+subjectId).subscribe(sub => {
         this.subject = sub;
         this.fillForm();
         this.chooseToolbar();
