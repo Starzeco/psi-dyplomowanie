@@ -127,14 +127,12 @@ export class SubjectComponent {
   getSubjects(searchPhrase: string | null, subjectType: string | null, subjectStatus: string | null, availableSubjects: boolean | null) {
     this.restService.getSubjectsForStudent(1, searchPhrase, subjectType, availableSubjects, subjectStatus).subscribe(subs => {
       this.subjects = subs;
-      console.log(this.subjects);
     });
   }
 
   getCandidatures(phrase: string | null, type: string | null, status: string | null) {
     this.restService.getCandidaturesForStudent(1, 1, phrase, type, status).subscribe(cands => {
       this.candidatures = cands;
-      console.log(this.candidatures);
     });
   }
 

@@ -1,4 +1,4 @@
-<app-state [loading]="loading" [error]="false" [empty]="false">
+<app-state [loading]="loading" [error]="error" [empty]="false">
 
   <form id="subject-form" [formGroup]="this.subjectForm" autocomplete="off">
     <div class="main-details-container">
@@ -43,53 +43,55 @@
       </mat-card>
 
       <div class="side-details-container">
-        <mat-card class="first-container">
+        <mat-card *ngIf="this.showInitiatorPanel; else noInitiator">
           <mat-card-content>
-            <mat-form-field appearance="outline" *ngIf="this.supervisorPresentation">
-              <mat-label>{{'supervisors_label' | translate}}</mat-label>
-              <input matInput placeholder="{{'supervisors_label' | translate}}" type="text" formControlName="supervisorPresentation">
-            </mat-form-field>
+            <div >
+              <mat-form-field appearance="outline">
+                <mat-label >{{ 'applicant' | translate}}</mat-label>
+                <input matInput placeholder="{{ 'applicant' | translate}}" type="text" formControlName="mainRealiser">
+              </mat-form-field>
+            </div>
 
-            <mat-form-field appearance="outline" *ngIf="!this.supervisorPresentation">
-              <mat-label>{{'supervisors_label' | translate}}</mat-label>
-              <mat-select formControlName="supervisor">
-                <mat-option *ngFor="let supervisor of this.supervisors" [value]="supervisor">
-                  {{ supervisor.fullName }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card *ngIf="this.showRealisersForm">
-          <mat-card-content>
-            <div class="group-container">
-              <mat-label *ngIf="this.showIsGroup">{{'type' | translate}}</mat-label>
-              <br *ngIf="this.showIsGroup">
-              <mat-checkbox formControlName="isGroup" (change)="groupChange($event)" class="group-text" *ngIf="this.showIsGroup">
-                {{'group_type_label' | translate}}
-              </mat-checkbox>
-              <br *ngIf="this.showIsGroup">
+            <div class="group-container" *ngIf="this.showRealisersForm1 || this.showRealisersForm2 || this.showRealisersForm3">
               <span>{{'co-realisers-label' | translate}}</span>
 
-              <mat-form-field appearance="outline">
-                <input matInput placeholder="{{'co-realisers-first' | translate}}" type="text" formControlName="firstCoRealiser">
-                <mat-error *ngIf="this.subjectForm.controls.firstCoRealiser.hasError('required')">{{'co-realisers-required' | translate}}</mat-error>
+              <mat-form-field appearance="outline" *ngIf="this.showRealisersForm1">
+                <input matInput placeholder="{{'realiser' | translate}}" type="text" formControlName="firstCoRealiser">
               </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <input matInput placeholder="{{'co-realisers-second' | translate}}" type="text" formControlName="secondCoRealiser">
-                <mat-error *ngIf="this.subjectForm.controls.secondCoRealiser.hasError('required')">{{'co-realisers-required' | translate}}</mat-error>
+              <mat-form-field appearance="outline" *ngIf="this.showRealisersForm2">
+                <input matInput placeholder="{{'realiser' | translate}}" type="text" formControlName="secondCoRealiser">
               </mat-form-field>
 
-              <mat-form-field appearance="outline">
-                <input matInput placeholder="{{'co-realisers-third' | translate}}" type="text" formControlName="thirdCoRealiser">
-                <mat-error *ngIf="this.subjectForm.controls.thirdCoRealiser.hasError('required')">{{'co-realisers-required' | translate}}</mat-error>
+              <mat-form-field appearance="outline" *ngIf="this.showRealisersForm3">
+                <input matInput placeholder="{{'realiser' | translate}}" type="text" formControlName="thirdCoRealiser">
               </mat-form-field>
 
             </div>
           </mat-card-content>
         </mat-card>
+
+        <ng-template #noInitiator>
+          <mat-card>
+            <mat-card-content>
+              <div class="group-container">
+
+                <mat-label >{{'type' | translate}}</mat-label>
+                <br >
+                <mat-checkbox formControlName="isGroup" (change)="groupChange($event)" class="group-text">
+                  {{'group_type_label' | translate}}
+                </mat-checkbox>
+                <br>
+                <span>{{'co-realisers-label' | translate}}</span>
+
+                <mat-form-field appearance="outline">
+                  <input matInput placeholder="{{'number_of_co_realisers' | translate}}" type="text" formControlName="coRealisersNumber">
+                  <mat-error *ngIf="this.subjectForm.controls.coRealisersNumber.hasError('required')">{{'co-realisers-required' | translate}}</mat-error>
+                </mat-form-field>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </ng-template>
       </div>
     </div>
   </form>

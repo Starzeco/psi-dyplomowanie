@@ -47,5 +47,46 @@ class SubjectSearchAdapter(private val subjectSearchPort: SubjectSearchPort,
         )
     }
 
+    override fun getSubjectsForSupervisor(
+        supervisorId: Long,
+        searchPhrase: String?,
+        subjectType: SubjectType?,
+        processingSubjects: Boolean,
+        subjectStatus: SubjectStatus?
+    ): Set<Subject> {
+        val statuses = getCorrectStatusesToSearch(processingSubjects)
+        val subjects = subjectSearchPort.getSubjectsInStatus(statuses).map {
+                sub -> sub.copy(propositionAcceptances = propositionAcceptanceSearchPort.getAllBySubjectId(sub.subjectId!!))
+        }
+        val phrase = searchPhrase.orEmpty()
+        val filteredSubjects = subjects
+            .asSequence()
+            .filter { it.topic.contains(phrase, ignoreCase = true) || it.supervisor.name.contains(phrase, ignoreCase = true) }
+            .filter { subjectType == null || (subjectType == SubjectType.GROUP && it.realiseresNumber > 1) || (subjectType == SubjectType.INDIVIDUAL && it.realiseresNumber <= 1) }
+            .filter { it.supervisor.staffMemberId == supervisorId }
+            .filter { subjectStatus == null || subjectStatus == it.status }
+            .toSet()
+        return if(processingSubjects) filteredSubjects
+        else filteredSubjects.filter { it.initiator == null
+                || (it.propositionAcceptances.isEmpty() && it.realiseresNumber == 1)
+                || it.propositionAcceptances.all { a -> a.accepted != null && a.accepted }
+        }.toSet()
+    }
+
+    private fun getCorrectStatusesToSearch(processingSubjects: Boolean): List<SubjectStatus> {
+        return if(processingSubjects) listOf(
+            SubjectStatus.IN_VERIFICATION,
+            SubjectStatus.IN_CORRECTION,
+            SubjectStatus.VERIFIED,
+            SubjectStatus.RESERVED
+        )
+        else listOf(
+            SubjectStatus.DRAFT,
+            SubjectStatus.ACCEPTED_BY_SUPERVISOR,
+            SubjectStatus.ACCEPTED_BY_INITIATOR,
+            SubjectStatus.REJECTED
+        )
+    }
+
     override fun getSubjectById(subjectId: Long): Subject = subjectSearchPort.getById(subjectId, true).copy(propositionAcceptances = propositionAcceptanceSearchPort.getAllBySubjectId(subjectId))
 }

@@ -9,7 +9,7 @@ export class StateComponent {
 
   @Input() loading!: boolean;
   @Input() error!: boolean;
-  @Input() empty!: boolean;
+  @Input() empty?: boolean;
 
   @Output() tryAgain = new EventEmitter<void>()
   @Output() refetch = new EventEmitter<void>()

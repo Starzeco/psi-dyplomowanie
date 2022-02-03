@@ -1,0 +1,15 @@
+<mat-card>
+    <mat-card-content>
+
+        <div class="details-field">
+            <p class="mat-caption"> {{'decision' | translate}} </p>
+            <p class="mat-body"> {{this.getDecisionTranslationKey() | translate}} </p>
+        </div>
+
+        <div class="details-field">
+            <p class="mat-caption"> {{'justification' | translate}} </p>
+            <p class="mat-body"> {{this.verification.justification}} </p>
+        </div>
+
+    </mat-card-content>
+</mat-card>

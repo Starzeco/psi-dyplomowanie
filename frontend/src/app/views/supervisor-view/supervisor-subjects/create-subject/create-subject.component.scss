@@ -1,0 +1,32 @@
+app-create-subject {
+
+  .details-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .column {
+    display: grid;
+    gap: 1rem;
+    grid-auto-rows: minmax(min-content, max-content);
+  }
+
+  .details-field {
+    margin-bottom: 2rem;
+  }
+
+  .forms-container {
+    display: flex;
+    flex-flow: column;
+    margin-top: 10px;
+  }
+
+  .group-checkbox {
+    display: flex;
+    flex-flow: column;
+    gap: 0.2rem;
+    padding-bottom: 1rem;
+  }
+
+}

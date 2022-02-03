@@ -2,17 +2,17 @@ package com.example.dyplomowaniebackend.api.controller
 
 import com.example.dyplomowaniebackend.api.dto.CandidaturePartialInfoResponse
 import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureServicePort
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectSearchPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SupervisorSearchPort
-import com.example.dyplomowaniebackend.domain.model.CandidatureStatus
-import com.example.dyplomowaniebackend.domain.model.CandidatureType
-import com.example.dyplomowaniebackend.domain.model.StaffMember
+import com.example.dyplomowaniebackend.domain.model.*
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/supervisor")
 class SupervisorController(
     private val candidatureServicePort: CandidatureServicePort,
-    private val supervisorSearchPort: SupervisorSearchPort
+    private val supervisorSearchPort: SupervisorSearchPort,
+    private val subjectSearchPort: SubjectSearchPort
 ) {
 
     @GetMapping
@@ -36,4 +36,13 @@ class SupervisorController(
     ).map { CandidaturePartialInfoResponse.fromDomain(it.first, it.second) }
         .toSet()
 
+
+    @GetMapping("subject/{supervisor_id}")
+    fun getSubjectsForSupervisor(@PathVariable(name = "supervisor_id") supervisorId: Long,
+                              @RequestParam(required = false)  searchPhrase: String?,
+                              @RequestParam(required = false)  subjectType: SubjectType?,
+                              @RequestParam(required = false)  subjectStatus: SubjectStatus?,
+                              @RequestParam processingSubjects: Boolean
+    ): Set<Subject> =
+        subjectSearchPort.getSubjectsForSupervisor(supervisorId, searchPhrase, subjectType, processingSubjects, subjectStatus)
 }

@@ -11,7 +11,6 @@ class VerificationEntity(
 
     val verified: Boolean? = null,
 
-    @Lob
     val justification: String? = null,
 
     val updateDate: Instant? = null,

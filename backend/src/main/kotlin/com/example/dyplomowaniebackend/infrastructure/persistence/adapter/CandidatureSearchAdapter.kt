@@ -6,6 +6,7 @@ import com.example.dyplomowaniebackend.domain.model.CandidatureAcceptance
 import com.example.dyplomowaniebackend.domain.model.CandidatureStatus
 import com.example.dyplomowaniebackend.domain.model.CandidatureType
 import com.example.dyplomowaniebackend.domain.model.exception.EntityNotFoundException
+import com.example.dyplomowaniebackend.infrastructure.persistence.entity.CandidatureAcceptanceEntity
 import com.example.dyplomowaniebackend.infrastructure.persistence.mapper.mapToDomain
 import com.example.dyplomowaniebackend.infrastructure.persistence.repository.CandidatureAcceptanceRepository
 import com.example.dyplomowaniebackend.infrastructure.persistence.repository.CandidatureRepository
@@ -16,8 +17,11 @@ class CandidatureSearchAdapter(
     private val candidatureRepository: CandidatureRepository,
     private val candidatureAcceptanceRepository: CandidatureAcceptanceRepository
 ) : CandidatureSearchPort {
-    override fun existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(candidatureId: Long): Boolean =
-        candidatureAcceptanceRepository.existsByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(candidatureId)
+    override fun existsCandidatureAcceptancesByCandidatureIdAndAcceptedIsFalseOrAcceptedIsNull(candidatureId: Long): Boolean {
+        val s = candidatureAcceptanceRepository.findAllByCandidatureId(candidatureId)
+        if(s.isEmpty()) return false
+        return s.all { it.accepted == null || it.accepted == false }
+    }
 
     override fun getCandidatureAcceptanceById(candidatureAcceptanceId: Long): CandidatureAcceptance =
         candidatureAcceptanceRepository.findById(candidatureAcceptanceId)
@@ -66,4 +70,8 @@ class CandidatureSearchAdapter(
             .map { it.mapToDomain(getProposition = true) }
             .orElseThrow { throw EntityNotFoundException(Candidature::class, candidatureId) }
 
+    override fun getCandidaturesBySubjectId(subjectId: Long): Set<Candidature> =
+        candidatureRepository.findAllBySubjectSubjectId(subjectId)
+            .map { it.mapToDomain(getProposition = true) }
+            .toSet()
 }

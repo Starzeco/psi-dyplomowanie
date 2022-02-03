@@ -7,7 +7,7 @@ import { UserService } from 'src/app/shared/user.service';
 const user_: User = {
   userId: 2,
   type: "verifier",
-  userFullName: "Jakub Garstka",
+  userFullName: "Krzysztof Kasprowicz",
 }
 
 const linksConfig_: LinkConfig[] = [
@@ -18,7 +18,7 @@ const linksConfig_: LinkConfig[] = [
   },
   {
     textKey: 'verifications',
-    href: '',
+    href: '/verifier/1/graduation_process/1/verifications',
     iconName: 'check'
   }
 ]

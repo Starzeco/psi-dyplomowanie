@@ -13,12 +13,12 @@ const user_: User = {
 const linksConfig_: LinkConfig[] = [
   {
     textKey: 'graduation_processes',
-    href: '',
+    href: '/student',
     iconName: 'view_module'
   },
   {
     textKey: 'subjects',
-    href: '',
+    href: '/student/graduation_process/1/subject',
     iconName: 'note'
   }
 ]

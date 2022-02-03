@@ -36,6 +36,27 @@ export class RestService {
     });
   }
 
+  getSubjectsForSupervisor(supervisorId: number,
+                           searchPhrase: string | null,
+                           subjectType: string | null,
+                           processingSubjects: boolean,
+                           subjectStatus: string | null) {
+    let params = new HttpParams();
+    if (searchPhrase != null) {
+      params = params.set('searchPhrase', searchPhrase);
+    }
+    if (subjectType != null) {
+      params = params.set('subjectType', subjectType);
+    }
+    if (subjectStatus != null) {
+      params = params.set('subjectStatus', subjectStatus);
+    }
+    params = params.set('processingSubjects', processingSubjects);
+    return this.http.get<Subject[]>(`${environment.apiUrl}/supervisor/subject/${supervisorId}`, {
+      params: params
+    });
+  }
+
   getCandidaturesForStudent(studentId: number,
     graduationProcessId: number,
     phrase: string | null,
@@ -57,15 +78,15 @@ export class RestService {
     });
   }
 
-  getSubjectById(subjectId: number) {
+  fetchSubjectById(subjectId: number) {
     return this.http.get<Subject>(`${environment.apiUrl}/subject/${subjectId}`);
   }
 
-  getCandidatureById(candidatureId: number) {
+  fetchCandidatureById(candidatureId: number) {
     return this.http.get<Candidature>(`${environment.apiUrl}/candidature/${candidatureId}`);
   }
 
-  getSupervisorsByGraduationProcessId(graduationProcessId: number) {
+  fetchSupervisorsByGraduationProcessId(graduationProcessId: number) {
     return this.http.get<StaffMember[]>(`${environment.apiUrl}/supervisor`, {
       params: {
         graduation_process_id: graduationProcessId
@@ -113,7 +134,11 @@ export class RestService {
     return this.http.put(`${environment.apiUrl}/subject/status/accept-initiator/${subjectId}`, null);
   }
 
-  reject(subjectId: number) {
+  acceptAsSupervisor(subjectId: number) {
+    return this.http.put(`${environment.apiUrl}/subject/status/accept-supervisor/${subjectId}`, null);
+  }
+
+  rejectAsSupervisor(subjectId: number) {
     return this.http.put(`${environment.apiUrl}/subject/status/reject/${subjectId}`, null);
   }
 
@@ -142,5 +167,30 @@ export class RestService {
 
   fetchVerificationAsVerifier(verifierId: number, verificationId: number) {
     return this.http.get<Verification>(`${environment.apiUrl}/verifier/${verifierId}/verifications/${verificationId}`);
+  }
+
+  updateSubject(subject: Dictionary<any>) {
+    return this.http.put(`${environment.apiUrl}/subject/`, subject);
+  }
+
+  sendToVerification(subjectId: number) {
+    return this.http.put(`${environment.apiUrl}/subject/status/send-verification/${subjectId}`, null);
+  }
+
+  fetchAllCandidaturesBySubjectId(subjectId: number) {
+    return this.http.get<Candidature[]>(`${environment.apiUrl}/candidature`, {
+      params: {
+        subject_id: subjectId
+      }
+    });
+  }
+
+  decideAboutCandidature(candidatureId: number, decision: boolean) {
+    return this.http.put(`${environment.apiUrl}/subject/candidature/${candidatureId}`, decision);
+  }
+
+  fetchAllRejectedVerificationBySubjectId(subjectId: number) {
+    return this.http.get<Verification[]>(`${environment.apiUrl}/subject/${subjectId}/verifications/rejected`);
+
   }
 }

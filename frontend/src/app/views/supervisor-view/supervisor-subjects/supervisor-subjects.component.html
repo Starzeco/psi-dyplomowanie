@@ -1,1 +1,16 @@
-<p>supervisor-subjects works!</p>
+<mat-card>
+  <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab label="{{'table_supervisor_first_label' | translate}}">
+      <div class="tab-content content-margin">
+        <app-filters [filtersConfig]="firstTabFilterConfig" (filtersChange)="this.onFilterChange($event, true)"></app-filters>
+        <app-subject-table [subjects]="this.subjects"></app-subject-table>
+      </div>
+    </mat-tab>
+    <mat-tab label="{{'table_supervisor_second_label' | translate}}">
+      <div class="tab-content content-margin">
+        <app-filters [filtersConfig]="secondTabFilterConfig" (filtersChange)="this.onFilterChange($event, false)"></app-filters>
+        <app-subject-table [subjects]="this.subjects"></app-subject-table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>

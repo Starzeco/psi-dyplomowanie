@@ -16,10 +16,8 @@ class SubjectEntity(
 
     val topicInEnglish: String,
 
-    @Lob
     val objective: String,
 
-    @Lob
     val objectiveInEnglish: String,
 
     val realizationLanguage: RealizationLanguage,

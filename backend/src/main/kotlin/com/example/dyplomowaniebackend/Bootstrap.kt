@@ -33,16 +33,16 @@ class Bootstrap(
     private fun populateDB() {
 
         val faculty = FacultyEntity(
-            name = "Wydział infy i zarządznia",
-            shortName = "WIZ"
+            name = "Wydział Informatyki i Telekomunikacji",
+            shortName = "W4N"
         )
 
         val facultySaved = facultyRepository.save(faculty)
 
         val supervisor = StaffMemberEntity(
-            email = "super.prowadzacy@pwr.edu.pl",
-            name = "Super",
-            surname = "Prowadzacy",
+            email = "marcin.nowak@pwr.edu.pl",
+            name = "Marcin",
+            surname = "Nowak",
             title = Title.DOCTOR,
             currentWorkload = 24,
             absoluteWorkload = 180,
@@ -51,7 +51,7 @@ class Bootstrap(
         staffMemberRepository.save(supervisor)
 
         val degreeCourse = DegreeCourseEntity(
-            name = "Infa",
+            name = "Computer Science",
             facultyId = facultySaved.facultyId,
         )
 
@@ -64,6 +64,7 @@ class Bootstrap(
             surname = "Krakowiak",
             graduationProcesses = setOf(),
         )
+
         val student1 = StudentEntity(
             index = "242421",
             email = "242421@student.pwr.edu.pl",
@@ -78,27 +79,48 @@ class Bootstrap(
             surname = "Kolorowy",
             graduationProcesses = setOf(),
         )
+        val student3 = StudentEntity(
+            index = "242423",
+            email = "242423@student.pwr.edu.pl",
+            name = "Grzegorz",
+            surname = "Konfucjusz",
+            graduationProcesses = setOf(),
+        )
+        val student4 = StudentEntity(
+            index = "242424",
+            email = "242424@student.pwr.edu.pl",
+            name = "Katarzyna",
+            surname = "Osa",
+            graduationProcesses = setOf(),
+        )
+        val student5 = StudentEntity(
+            index = "242425",
+            email = "242425@student.pwr.edu.pl",
+            name = "Joanna",
+            surname = "Kaplica",
+            graduationProcesses = setOf(),
+        )
 
         val graduationProcess = GraduationProcessEntity(
             cSDeadline = Instant.now(),
             vFDeadline = Instant.now(),
             cADeadline = Instant.now(),
             sPDeadline = Instant.now(),
-            initialSemester = "Jakiś semssetrs 5",
-            finalSemester = "Jakis semestr 6",
+            initialSemester = "Z21/22",
+            finalSemester = "L21/22",
             degree = Degree.BATCHELOR,
             hCPerSubject = 10,
-            students = setOf(student0, student1, student2),
+            students = setOf(student0, student1, student2, student3, student4, student5),
             degreeCourseId = savedDegreeCourse.degreeCourseId!!,
         )
 
         graduationProcessRepository.save(graduationProcess)
-        studentRepository.saveAll(setOf(student0, student1, student2))
+        studentRepository.saveAll(setOf(student0, student1, student2, student3, student4, student5))
 
         val verificationStaffMember0 = StaffMemberEntity(
-            email = "super.weryfikator@pwr.edu.pl",
-            name = "Super",
-            surname = "Weryfikator",
+            email = "krzysztof.kasprowicz@pwr.edu.pl",
+            name = "Krzysztof",
+            surname = "Kasprowicz",
             title = Title.DOCTOR,
             currentWorkload = 24,
             absoluteWorkload = 180,
@@ -106,9 +128,9 @@ class Bootstrap(
         )
 
         val verificationStaffMember1 = StaffMemberEntity(
-            email = "super.weryfikator1@pwr.edu.pl",
-            name = "Super1",
-            surname = "Weryfikator",
+            email = "zuzanna.agrestowa@pwr.edu.pl",
+            name = "Zuzanna",
+            surname = "Agrestowa",
             title = Title.DOCTOR,
             currentWorkload = 24,
             absoluteWorkload = 180,
@@ -116,9 +138,9 @@ class Bootstrap(
         )
 
         val verificationStaffMember2 = StaffMemberEntity(
-            email = "super.weryfikator2@pwr.edu.pl",
-            name = "Super2",
-            surname = "Weryfikator",
+            email = "barbara.tukiel@pwr.edu.pl",
+            name = "Barbara",
+            surname = "Tukiel",
             title = Title.DOCTOR,
             currentWorkload = 24,
             absoluteWorkload = 180,
@@ -149,173 +171,209 @@ class Bootstrap(
 
         verifierRepository.saveAll(listOf(verifier0, verifier1, verifier2))
 
-        val verifiedSubject = SubjectEntity(
-            topic = "temat1",
-            topicInEnglish = "tematAngielski",
-            objective = "cel",
-            objectiveInEnglish = "celPoAngielsku",
-            realizationLanguage = RealizationLanguage.POLISH,
-            realiseresNumber = 1,
-            status = SubjectStatus.VERIFIED,
-            staffMemberId = 1,
-            graduationProcessId = 1,
-            studentId = null,
-            realiser = setOf()
-        )
-        val verifiedSubject2 = SubjectEntity(
-            topic = "temat2",
-            topicInEnglish = "tematAngielski2",
-            objective = "cel2",
-            objectiveInEnglish = "celPoAngielsku2",
+        // TUTAJ ZACZYNA SIĘ TWORZENIE OBIEKTÓW POD POKAZ
+
+        // JAKO student chce pokazac
+        // ze moge odrzucic propozycje akceptacji tematu
+        // ze moge zaakceptowac propozycje akceptacji tematu (i wtedy trafia do akceptacji przez promotora)
+        // ze moge stworzyc temat grupowy i temat indywidualny ---
+        // jak stworze temat grupowy to oczekuje na akceptacje innych studentow --- zakceptowac po kolei z API (jeden niech odrzuci)
+        // powtorzyc to co wyzej tylko teraz niech wszyscy zaakceptują
+        // pokazac ze student moze akceptowac lub odrzucac kandydatury stworzone przez innych studentow
+
+        val subjectToDeclineProposition = SubjectEntity(
+            topic = "Temat do odrzucenia",
+            topicInEnglish = "Subject to decline",
+            objective = "Przykładowy cel",
+            objectiveInEnglish = "Example objective",
             realizationLanguage = RealizationLanguage.POLISH,
             realiseresNumber = 3,
+            status = SubjectStatus.DRAFT,
+            staffMemberId = 1,
+            graduationProcessId = 1,
+            studentId = 2,
+            realiser = setOf()
+        )
+        subjectRepository.save(subjectToDeclineProposition)
+
+        val proposition1 = PropositionAcceptanceEntity(
+            accepted = null,
+            studentId = 1,
+            subjectId = subjectToDeclineProposition.subjectId!!,
+        )
+
+        val proposition2 = PropositionAcceptanceEntity(
+            accepted = null,
+            studentId = 3,
+            subjectId = subjectToDeclineProposition.subjectId,
+        )
+
+        propositionAcceptanceRepository.saveAll(listOf(proposition1, proposition2))
+
+        val subjectToAcceptProposition = SubjectEntity(
+            topic = "Temat do akceptacji",
+            topicInEnglish = "Subject to accept",
+            objective = "Przykładowy cel",
+            objectiveInEnglish = "Example objective",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 3,
+            status = SubjectStatus.DRAFT,
+            staffMemberId = 1,
+            graduationProcessId = 1,
+            studentId = 2,
+            realiser = setOf()
+        )
+        subjectRepository.save(subjectToAcceptProposition)
+
+        val proposition3 = PropositionAcceptanceEntity(
+            accepted = null,
+            studentId = 1,
+            subjectId = subjectToAcceptProposition.subjectId!!,
+        )
+
+        val proposition4 = PropositionAcceptanceEntity(
+            accepted = null,
+            studentId = 3,
+            subjectId = subjectToAcceptProposition.subjectId,
+        )
+
+        propositionAcceptanceRepository.saveAll(listOf(proposition3, proposition4))
+
+
+        // AVAILABLE SUBJECTS
+
+        val supervisor2Subject = SubjectEntity(
+            topic = "Temat do akceptacji kandydatury",
+            topicInEnglish = "Subject to accept candidature",
+            objective = "Przykładowy cel",
+            objectiveInEnglish = "Example objective",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 2,
             status = SubjectStatus.VERIFIED,
             staffMemberId = 2,
             graduationProcessId = 1,
             studentId = null,
             realiser = setOf()
         )
-        val verifiedSubject3 = SubjectEntity(
-            topic = "temat3",
-            topicInEnglish = "tematAngielsk3",
-            objective = "cel3",
-            objectiveInEnglish = "celPoAngielsku3",
+        subjectRepository.save(supervisor2Subject)
+
+        val candidature0 = CandidatureEntity(
+            studentId = 2,
+            subjectId = supervisor2Subject.subjectId!!,
+            candidatureAcceptances = setOf()
+        )
+        candidatureRepository.save(candidature0)
+
+        val candidatureAcceptance0 = CandidatureAcceptanceEntity(
+            accepted = null,
+            studentId = 1,
+            candidatureId = candidature0.candidatureId!!
+        )
+        candidatureAcceptanceRepository.save(candidatureAcceptance0)
+
+        val supervisor3Subject = SubjectEntity(
+            topic = "Temat do odrzucenia kandydatury",
+            topicInEnglish = "Subject to decline candidature",
+            objective = "Przykładowy cel",
+            objectiveInEnglish = "Example objective",
             realizationLanguage = RealizationLanguage.POLISH,
-            realiseresNumber = 3,
+            realiseresNumber = 2,
             status = SubjectStatus.VERIFIED,
             staffMemberId = 3,
             graduationProcessId = 1,
             studentId = null,
             realiser = setOf()
         )
-        subjectRepository.saveAll(listOf(verifiedSubject, verifiedSubject2, verifiedSubject3))
+        subjectRepository.save(supervisor3Subject)
 
-        val subject = SubjectEntity(
-            topic = "temat1Weryfikacja",
-            topicInEnglish = "tematAngielskiWeryfikacja",
-            objective = "celWeryfikacja",
-            objectiveInEnglish = "celPoAngielskuWeryfikacja",
+        val candidature1 = CandidatureEntity(
+            studentId = 3,
+            subjectId = supervisor3Subject.subjectId!!,
+            candidatureAcceptances = setOf()
+        )
+        candidatureRepository.save(candidature1)
+
+        val candidatureAcceptance1 = CandidatureAcceptanceEntity(
+            accepted = null,
+            studentId = 1,
+            candidatureId = candidature1.candidatureId!!
+        )
+        candidatureAcceptanceRepository.save(candidatureAcceptance1)
+
+        val dostepnySubject1 = SubjectEntity(
+            topic = "Temat dostepny grupowy",
+            topicInEnglish = "Group subject available",
+            objective = "Przykładowy cel",
+            objectiveInEnglish = "Example objective",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 3,
+            status = SubjectStatus.VERIFIED,
+            staffMemberId = 1,
+            graduationProcessId = 1,
+            studentId = null,
+            realiser = setOf()
+        )
+
+        val dostepnySubject2 = SubjectEntity(
+            topic = "Temat dostepny indywidualny",
+            topicInEnglish = "Individual subject available",
+            objective = "Przykładowy cel",
+            objectiveInEnglish = "Example objective",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 1,
+            status = SubjectStatus.VERIFIED,
+            staffMemberId = 1,
+            graduationProcessId = 1,
+            studentId = null,
+            realiser = setOf()
+        )
+        subjectRepository.saveAll(listOf(dostepnySubject1, dostepnySubject2))
+
+        val acceptedSubject = SubjectEntity(
+            topic = "Temat zakceptowany w weryfikacji",
+            topicInEnglish = "Subject accepted in verification",
+            objective = "Przykładowy cel",
+            objectiveInEnglish = "Example objective",
             realizationLanguage = RealizationLanguage.POLISH,
             realiseresNumber = 1,
             status = SubjectStatus.IN_VERIFICATION,
-            staffMemberId = 1,
-            graduationProcessId = 1,
-            studentId = student0.studentId,
-            realiser = setOf()
-        )
-
-        subjectRepository.save(verifiedSubject)
-        subjectRepository.save(subject)
-
-        val candidature = CandidatureEntity(
-            studentId = 1,
-            subjectId = verifiedSubject.subjectId!!,
-            candidatureAcceptances = setOf()
-        )
-
-        val candidature2 = CandidatureEntity(
-            studentId = 2,
-            subjectId = verifiedSubject3.subjectId!!,
-            candidatureAcceptances = setOf()
-        )
-
-        candidatureRepository.saveAll(listOf(candidature, candidature2))
-
-
-        val candidatureAcceptance0 = CandidatureAcceptanceEntity(
-            accepted = null,
-            studentId = 1,
-            candidatureId = candidature2.candidatureId!!
-        )
-        val candidatureAcceptance1 = CandidatureAcceptanceEntity(
-            accepted = null,
-            studentId = 3,
-            candidatureId = candidature2.candidatureId
-        )
-
-        candidatureAcceptanceRepository.saveAll(listOf(candidatureAcceptance0, candidatureAcceptance1))
-
-        val subjectToAccept1 = SubjectEntity(
-            topic = "temat2",
-            topicInEnglish = "tematAngielski2",
-            objective = "cel2",
-            objectiveInEnglish = "celPoAngielsku2",
-            realizationLanguage = RealizationLanguage.POLISH,
-            realiseresNumber = 3,
-            status = SubjectStatus.DRAFT,
             staffMemberId = 2,
             graduationProcessId = 1,
-            studentId = 2,
+            studentId = null,
             realiser = setOf()
         )
-
-        val subjectToAccept2 = SubjectEntity(
-            topic = "temat2",
-            topicInEnglish = "tematAngielski2",
-            objective = "cel2",
-            objectiveInEnglish = "celPoAngielsku2",
-            realizationLanguage = RealizationLanguage.POLISH,
-            realiseresNumber = 3,
-            status = SubjectStatus.DRAFT,
-            staffMemberId = 2,
-            graduationProcessId = 1,
-            studentId = 3,
-            realiser = setOf()
-        )
-
-        subjectRepository.saveAll(listOf(subjectToAccept1, subjectToAccept2))
-
-        val proposition1 = PropositionAcceptanceEntity(
-            accepted = null,
-            studentId = 1,
-            subjectId = subjectToAccept1.subjectId!!,
-        )
-
-        val proposition2 = PropositionAcceptanceEntity(
-            accepted = true,
-            studentId = 3,
-            subjectId = subjectToAccept1.subjectId,
-        )
-
-        val proposition3 = PropositionAcceptanceEntity(
-            accepted = null,
-            studentId = 1,
-            subjectId = subjectToAccept2.subjectId!!,
-        )
-
-        val proposition4 = PropositionAcceptanceEntity(
-            accepted = false,
-            studentId = 2,
-            subjectId = subjectToAccept2.subjectId,
-        )
-
-        propositionAcceptanceRepository.saveAll(listOf(proposition1, proposition2, proposition3, proposition4))
-
-        candidatureRepository.save(candidature)
-        candidatureRepository.save(candidature)
-
-        val verificationEntity = VerificationEntity(
-            subjectId = subject.subjectId!!,
-            verifierId = verifier0.verifierId!!
-        )
+        subjectRepository.save(acceptedSubject)
 
         val acceptedVerificationEntity = VerificationEntity(
-            subjectId = subject.subjectId!!,
+            subjectId = acceptedSubject.subjectId!!,
             verifierId = verifier0.verifierId!!,
             verified = true,
-            justification = "zaakceptowana bo tak",
+            justification = "Wszystko sie zgadza",
             updateDate = Instant.now(),
         )
+
+        val inCorrectionSubject = SubjectEntity(
+            topic = "Temat zakceptowany w weryfikacji",
+            topicInEnglish = "Subject accepted in verification",
+            objective = "Przykładowy cel",
+            objectiveInEnglish = "Example objective",
+            realizationLanguage = RealizationLanguage.POLISH,
+            realiseresNumber = 1,
+            status = SubjectStatus.IN_CORRECTION,
+            staffMemberId = 2,
+            graduationProcessId = 1,
+            studentId = null,
+            realiser = setOf()
+        )
+        subjectRepository.save(inCorrectionSubject)
 
         val rejectedVerificationEntity = VerificationEntity(
-            subjectId = subject.subjectId!!,
-            verifierId = verifier0.verifierId!!,
+            subjectId = inCorrectionSubject.subjectId!!,
+            verifierId = verifier0.verifierId,
             verified = false,
-            justification = "odrzucaona bo tak",
+            justification = "Prosze poprawic tytul w wersji angielskiej",
             updateDate = Instant.now(),
         )
-
-        verificationRepository.save(verificationEntity)
         verificationRepository.save(acceptedVerificationEntity)
         verificationRepository.save(rejectedVerificationEntity)
     }

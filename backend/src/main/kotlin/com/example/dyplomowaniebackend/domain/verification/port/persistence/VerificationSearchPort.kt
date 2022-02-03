@@ -5,6 +5,8 @@ import com.example.dyplomowaniebackend.domain.model.Verification
 import com.example.dyplomowaniebackend.domain.model.Verifier
 
 interface VerificationSearchPort {
+    fun findAllRejectedVerificationBySubjectId(subjectId: Long): List<Verification>
+
     fun findAllVerificationAsVerifier(verifierId: Long, verificationId: Long): Verification
 
     fun findAllVerifiersOfStaffMember(staffMemberId: Long): List<Verifier>
