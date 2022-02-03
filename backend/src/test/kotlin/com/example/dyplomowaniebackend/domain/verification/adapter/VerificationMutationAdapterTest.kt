@@ -1,5 +1,6 @@
 package com.example.dyplomowaniebackend.domain.verification.adapter
 
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.mail.MailSenderPort
 import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.domain.verification.port.persistence.SubjectMutationPort
 import com.example.dyplomowaniebackend.domain.verification.port.persistence.VerificationMutationPort
@@ -19,11 +20,13 @@ internal class VerificationMutationAdapterTest {
     private val verificationMutationPort: VerificationMutationPort = mockk()
     private val verificationSearchPort: VerificationSearchPort = mockk()
     private val subjectMutationPort: SubjectMutationPort = mockk()
+    private val mailSenderPort: MailSenderPort = mockk(relaxed = true)
 
     private val verificationMutationAdapter = VerificationMutationAdapter(
         verificationMutationPort,
         verificationSearchPort,
-        subjectMutationPort
+        subjectMutationPort,
+        mailSenderPort,
     )
 
     private lateinit var verifications: List<Verification>

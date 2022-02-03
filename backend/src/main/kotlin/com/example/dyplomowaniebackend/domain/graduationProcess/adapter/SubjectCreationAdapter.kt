@@ -1,6 +1,7 @@
 package com.example.dyplomowaniebackend.domain.graduationProcess.adapter
 
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.mail.MailSenderPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.*
 import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.domain.model.exception.SubjectConstraintViolationException
@@ -25,6 +26,7 @@ class SubjectCreationAdapter(
     private val clock: Clock,
     private val verifierSearchPort: VerifierSearchPort,
     private val verificationMutationPort: VerificationMutationPort,
+    private val mailSenderPort: MailSenderPort,
 ) : SubjectCreationPort {
     override fun createSubject(subjectCreation: SubjectCreation): Subject {
         if (subjectCreation.initiatorId == null && subjectCreation.proposedRealiserIds.isNotEmpty())
@@ -51,6 +53,8 @@ class SubjectCreationAdapter(
         )
         val insertedSubject: Subject = subjectMutationPort.insert(subject)
         createPropositionAcceptances(insertedSubject, subjectCreation.proposedRealiserIds)
+        if(initiator != null)
+            mailSenderPort.sendMail("242422@student.pwr.edu.pl", "Twój temat został stworzony.")
         return insertedSubject
     }
 
@@ -70,7 +74,11 @@ class SubjectCreationAdapter(
 
     override fun rejectSubject(subjectId: Long): SubjectStatusUpdate {
         val subject: Subject = subjectSearchPort.getById(subjectId, false)
-        return if (canSubjectBeRejected(subject)) updateStatus(SubjectStatusUpdate(subjectId, SubjectStatus.REJECTED))
+        return if (canSubjectBeRejected(subject)) {
+            if(subject.initiator != null)
+                mailSenderPort.sendMail("242422@student.pwr.edu.pl", "Twój temat został odrzucony.")
+            updateStatus(SubjectStatusUpdate(subjectId, SubjectStatus.REJECTED))
+        }
         else throw SubjectStatusChangeException("Subject with id $subjectId can not be rejected")
     }
 
@@ -80,12 +88,15 @@ class SubjectCreationAdapter(
 
     override fun acceptSubjectPreparedBySupervisor(subjectId: Long): SubjectStatusUpdate {
         val subject: Subject = subjectSearchPort.getById(subjectId, false)
-        return if (canSubjectBeAcceptedBySupervisor(subject)) updateStatus(
-            SubjectStatusUpdate(
-                subjectId,
-                SubjectStatus.ACCEPTED_BY_SUPERVISOR
+        return if (canSubjectBeAcceptedBySupervisor(subject)) {
+            mailSenderPort.sendMail("242422@student.pwr.edu.pl", "Twój temat został zaakceptowany przez promotora.")
+            updateStatus(
+                SubjectStatusUpdate(
+                    subjectId,
+                    SubjectStatus.ACCEPTED_BY_SUPERVISOR
+                )
             )
-        )
+        }
         else throw SubjectStatusChangeException("Subject with id $subjectId can not be accepted by supervisor")
     }
 

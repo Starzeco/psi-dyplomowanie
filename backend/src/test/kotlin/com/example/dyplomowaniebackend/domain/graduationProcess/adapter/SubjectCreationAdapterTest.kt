@@ -1,5 +1,6 @@
 package com.example.dyplomowaniebackend.domain.graduationProcess.adapter
 
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.mail.MailSenderPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.persistence.*
 import com.example.dyplomowaniebackend.domain.model.*
 import com.example.dyplomowaniebackend.domain.model.exception.SubjectConstraintViolationException
@@ -28,6 +29,7 @@ internal class SubjectCreationAdapterTest {
     private val clock: Clock = mockk()
     private val verifierSearchPort: VerifierSearchPort = mockk()
     private val verificationMutationPort: VerificationMutationPort = mockk()
+    private val mailSenderPort: MailSenderPort = mockk(relaxed = true)
 
     private val subjectCreationAdapter = SubjectCreationAdapter(
         studentSearchPort,
@@ -41,6 +43,7 @@ internal class SubjectCreationAdapterTest {
         clock,
         verifierSearchPort,
         verificationMutationPort,
+        mailSenderPort,
     )
 
     private lateinit var initiator: Student
