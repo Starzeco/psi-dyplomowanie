@@ -3,12 +3,11 @@ import {CandidaturePartialInfo} from "../../../../shared/model";
 import {TranslateService} from "@ngx-translate/core";
 import {Language} from "../../../../core/language";
 import {
-  CANDIDATURE_STATUS,
-  CANDIDATURE_STATUS_POLISH,
   SUBJECT_TYPE,
   SUBJECT_TYPE_POLISH
 } from "../../../../shared/dictionary";
 import { Router } from "@angular/router";
+import { getCandidaturePartialInfoStatusTranslation } from '../subject.common';
 
 @Component({
   selector: 'app-candidature-table',
@@ -39,11 +38,11 @@ export class CandidatureTableComponent {
   }
 
   getStatus(candidature: CandidaturePartialInfo): string {
-    if(this.translateService.currentLang == Language.EN) return CANDIDATURE_STATUS[candidature.status];
-    else return CANDIDATURE_STATUS_POLISH[candidature.status];
+    return getCandidaturePartialInfoStatusTranslation(candidature);
   }
 
   toDetails(candidature: CandidaturePartialInfo) {
     void this.router.navigate(['student', 'graduation_process', '1', 'subject', 'candidature', candidature.candidatureId]);
   }
+  
 }

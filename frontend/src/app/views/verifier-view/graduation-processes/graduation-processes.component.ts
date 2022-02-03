@@ -78,7 +78,7 @@ export class GraduationProcessesComponent implements OnInit {
     return ({
       graduationProcessId: partialInfo.graduationProcessId,
       initialSemesterName: partialInfo.initialSemester,
-      finalSemesterName: partialInfo.initialSemester,
+      finalSemesterName: partialInfo.finalSemester,
       facultyShortName: partialInfo.facultyShortName,
       degreeCourseNameKey: partialInfo.degreeCourseName,
       degreeNameKey: partialInfo.degree,

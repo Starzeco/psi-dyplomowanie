@@ -8,7 +8,7 @@ export type Subject = {
   realiseresNumber: number,
   accepted: boolean,
   initiator: Student | null,
-  status: string,
+  status: Status,
   creationDate: Date,
   supervisor: StaffMember,
   propositionAcceptances: PropositionAcceptance[],

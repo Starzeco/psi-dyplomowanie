@@ -1,0 +1,142 @@
+<app-state [loading]="loading" [error]="false" [empty]="false">
+  <form id="subject-form" [formGroup]="this.subjectForm" autocomplete="off">
+    <div class="details-container column">
+      <div class="column">
+
+        <mat-card>
+          <mat-card-content class="forms-container">
+            <mat-form-field appearance="outline">
+              <mat-label>{{'topic_native_lang_label' | translate}}</mat-label>
+              <input matInput placeholder="{{'topic_native_lang_label' | translate}}" type="text"
+                formControlName="topic">
+              <mat-error *ngIf="this.subjectForm.controls.topic.hasError('required')">{{'topic_native_lang_req' |
+                translate}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{'topic_english_lang_label' | translate}}</mat-label>
+              <input matInput placeholder="{{'topic_english_lang_label' | translate}}" type="text"
+                formControlName="topicInEnglish">
+              <mat-error *ngIf="this.subjectForm.controls.topicInEnglish.hasError('required')">
+                {{'topic_english_lang_req'
+                | translate}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{'objective_native_lang_label' | translate}}</mat-label>
+              <textarea matInput rows="10" maxlength="500" placeholder="{{'objective_native_lang_label' | translate}}"
+                formControlName="objective"></textarea>
+              <mat-error *ngIf="this.subjectForm.controls.objective.hasError('required')">{{'objective_native_lang_req'
+                |
+                translate}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{'objective_english_lang_label' | translate}}</mat-label>
+              <textarea matInput rows="10" maxlength="500" placeholder="{{'objective_english_lang_label' | translate}}"
+                formControlName="objectiveInEnglish"></textarea>
+              <mat-error *ngIf="this.subjectForm.controls.objectiveInEnglish.hasError('required')">
+                {{'objective_english_lang_req' | translate}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{'realization_lang_label' | translate}}</mat-label>
+              <mat-select formControlName="realizationLanguage">
+                <mat-option [value]="'ENGLISH'">
+                  {{ 'en' | translate}}
+                </mat-option>
+                <mat-option [value]="'POLISH'">
+                  {{ 'pl' | translate}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="column">
+        <mat-card>
+          <mat-card-content class="forms-container">
+            <mat-form-field appearance="outline" *ngIf="this.supervisorPresentation">
+              <mat-label>{{'supervisors_label' | translate}}</mat-label>
+              <input matInput placeholder="{{'supervisors_label' | translate}}" type="text"
+                formControlName="supervisorPresentation">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" *ngIf="!this.supervisorPresentation">
+              <mat-label>{{'supervisors_label' | translate}}</mat-label>
+              <mat-select formControlName="supervisor">
+                <mat-option *ngFor="let supervisor of this.supervisors" [value]="supervisor">
+                  {{ getSupervisorFullName(supervisor) }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="this.showRealisersForm">
+          <mat-card-content class="forms-container">
+            
+            <mat-label *ngIf="this.showIsGroup">{{'type' | translate}}</mat-label>
+            <br *ngIf="this.showIsGroup">
+            <mat-checkbox formControlName="isGroup" (change)="groupChange($event)" class="group-text"
+              *ngIf="this.showIsGroup">
+              {{'group_type_label' | translate}}
+            </mat-checkbox>
+            <br *ngIf="this.showIsGroup">
+
+            <span>{{'co-realisers-label' | translate}}</span>
+            <br>
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="{{'co-realisers-first' | translate}}" type="text"
+                formControlName="firstCoRealiser">
+              <mat-error>
+                <ng-container [ngTemplateOutlet]="test"
+                  [ngTemplateOutletContext]="{control: this.subjectForm.controls.firstCoRealiser}">
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="{{'co-realisers-second' | translate}}" type="text"
+                formControlName="secondCoRealiser">
+              <mat-error>
+                <ng-container [ngTemplateOutlet]="test"
+                  [ngTemplateOutletContext]="{control: this.subjectForm.controls.secondCoRealiser}">
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <input matInput placeholder="{{'co-realisers-third' | translate}}" type="text"
+                formControlName="thirdCoRealiser">
+              <mat-error>
+                <ng-container [ngTemplateOutlet]="test"
+                  [ngTemplateOutletContext]="{control: this.subjectForm.controls.thirdCoRealiser}">
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </form>
+</app-state>
+
+
+<ng-template #test let-control='control'>
+
+  <span *ngIf="control.hasError('pattern'); else minLength">{{'index_patter_error' | translate}}
+  </span>
+
+  <ng-template #minLength>
+    <span *ngIf="control.hasError('minlength'); else maxLength">{{'index_length_error' | translate}}
+    </span>
+  </ng-template>
+
+  <ng-template #maxLength>
+    <span *ngIf="control.hasError('maxlength')">{{'index_length_error' | translate}}</span>
+  </ng-template>
+
+</ng-template>

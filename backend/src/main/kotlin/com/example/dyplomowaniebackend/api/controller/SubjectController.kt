@@ -4,6 +4,7 @@ import com.example.dyplomowaniebackend.domain.candidature.port.api.CandidatureSe
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectCreationPort
 import com.example.dyplomowaniebackend.domain.graduationProcess.port.api.SubjectSearchPort
 import com.example.dyplomowaniebackend.domain.model.*
+import com.example.dyplomowaniebackend.domain.verification.port.api.VerificationSearchPort
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -11,12 +12,17 @@ import org.springframework.web.bind.annotation.*
 class SubjectController(
     private val subjectCreationPort: SubjectCreationPort,
     private val subjectSearchPort: SubjectSearchPort,
-    private val candidatureServicePort: CandidatureServicePort
+    private val candidatureServicePort: CandidatureServicePort,
+    private val verificationSearchPort: VerificationSearchPort
 ) {
 
     @GetMapping("{subject_id}")
     fun getSubjectById(@PathVariable(name = "subject_id") subjectId: Long): Subject =
         subjectSearchPort.getSubjectById(subjectId)
+
+    @GetMapping("{subject_id}/verifications/rejected")
+    fun findAllRejectedVerificationBySubjectId(@PathVariable(name = "subject_id") subjectId: Long): List<Verification> =
+        verificationSearchPort.findAllRejectedVerificationBySubjectId(subjectId)
 
     @GetMapping("student/{student_id}")
     fun getSubjectsForStudent(@PathVariable(name = "student_id") studentId: Long,

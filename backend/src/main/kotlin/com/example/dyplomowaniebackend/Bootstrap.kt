@@ -33,8 +33,8 @@ class Bootstrap(
     private fun populateDB() {
 
         val faculty = FacultyEntity(
-            name = "Wydział Informatyki i Zarządznia",
-            shortName = "WIZ"
+            name = "Wydział Informatyki i Telekomunikacji",
+            shortName = "W4N"
         )
 
         val facultySaved = facultyRepository.save(faculty)
@@ -51,7 +51,7 @@ class Bootstrap(
         staffMemberRepository.save(supervisor)
 
         val degreeCourse = DegreeCourseEntity(
-            name = "Informatyka",
+            name = "Computer Science",
             facultyId = facultySaved.facultyId,
         )
 
@@ -106,8 +106,8 @@ class Bootstrap(
             vFDeadline = Instant.now(),
             cADeadline = Instant.now(),
             sPDeadline = Instant.now(),
-            initialSemester = "Semestr 6",
-            finalSemester = "Semestr 7",
+            initialSemester = "Z21/22",
+            finalSemester = "L21/22",
             degree = Degree.BATCHELOR,
             hCPerSubject = 10,
             students = setOf(student0, student1, student2, student3, student4, student5),

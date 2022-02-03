@@ -1,0 +1,31 @@
+<app-state [loading]="loading" [error]="error" [empty]="false">
+
+  <div class="details-container column" *ngIf="this.subject">
+    <div class="column">
+      <app-topic-objective [topic]="this.prepareTopic()" [objective]="this.prepareObjective()"
+        [realizationLanguage]="this.subject.realizationLanguage"></app-topic-objective>
+    </div>
+
+    <div class="column">
+      <app-status [statusKey]="this.getStatus()"></app-status>
+      <ng-container *ngIf="this.subject.initiator || this.subject.realiser.length > 0">
+        <app-co-realisers [mainRealizer]="this.prepareMainRealizer()" [coRealizers]="this.prepareCoorealizers()">
+        </app-co-realisers>
+      </ng-container>
+
+      <ng-container *ngIf="this.subject.initiator === null">
+        <app-realizers-number [realizersNumber]="this.subject.realiseresNumber"></app-realizers-number>
+      </ng-container>
+    </div>
+
+    <app-verifications *ngFor="let verification of verifications" [verification]="verification">
+    </app-verifications>
+  </div>
+
+  <div class="column">
+    <div *ngIf="this.subject?.status === statuses.VERIFIED && this.candidatures.length > 0 ">
+      <app-candidatures-table [candidatures]="this.candidatures" (accept)="this.accept($event)"
+        (decline)="this.decline($event)"></app-candidatures-table>
+    </div>
+  </div>
+</app-state>

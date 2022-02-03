@@ -1,5 +1,6 @@
 package com.example.dyplomowaniebackend.domain.verification.adapter
 
+import com.example.dyplomowaniebackend.domain.graduationProcess.port.mail.MailSenderPort
 import com.example.dyplomowaniebackend.domain.model.Subject
 import com.example.dyplomowaniebackend.domain.model.SubjectStatus
 import com.example.dyplomowaniebackend.domain.model.SubjectStatusUpdate
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service
 class VerificationMutationAdapter(val verificationMutationPort: VerificationMutationPort,
                                   val verificationSearchPort: VerificationSearchPort,
                                   val subjectMutationPort: SubjectMutationPort,
+                                  val mailSenderPort: MailSenderPort,
 ) : com.example.dyplomowaniebackend.domain.verification.port.api.VerificationMutationPort {
     override fun verifyVerification(verificationId: Long, decision: Boolean, justification: String): Verification {
         val verificationUpdated: Verification = verificationMutationPort.verifyVerification(verificationId, decision, justification)
@@ -29,8 +31,10 @@ class VerificationMutationAdapter(val verificationMutationPort: VerificationMuta
     private fun updateSubjectIfNeeded(subject: Subject): SubjectStatusUpdate? {
         val subjectVerifications: List<Verification> = verificationSearchPort.findSubjectVerifications(subject.subjectId!!)
         return if(subjectVerifications.all { it.verified != null && it.verified }) {
-            if(subject.initiator != null)
+            if(subject.initiator != null) {
+                mailSenderPort.sendMail("242422@student.pwr.edu.pl", "Twój temat został zarezerwowany.")
                 updateStatus(SubjectStatusUpdate(subject.subjectId, SubjectStatus.RESERVED))
+            }
             else
                 updateStatus(SubjectStatusUpdate(subject.subjectId, SubjectStatus.VERIFIED))
         }

@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface VerificationRepository : JpaRepository<VerificationEntity, Long> {
+    fun findAllByVerifiedFalseAndAndSubjectId(subjectId: Long): List<VerificationEntity>
+
     fun findByVerifierIdAndVerifiedAndSubjectTopicLike(
         verifierId: Long,
         verified: Boolean?,

@@ -1,0 +1,99 @@
+<app-state [loading]="loading" [error]="error" [empty]="false">
+
+  <form id="subject-form" [formGroup]="this.subjectForm" autocomplete="off">
+    <div class="main-details-container">
+      <mat-card>
+        <mat-card-content>
+          <mat-form-field appearance="outline">
+            <mat-label>{{'topic_native_lang_label' | translate}}</mat-label>
+            <input matInput placeholder="{{'topic_native_lang_label' | translate}}" type="text" formControlName="topic">
+            <mat-error *ngIf="this.subjectForm.controls.topic.hasError('required')">{{'topic_native_lang_req' | translate}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{'topic_english_lang_label' | translate}}</mat-label>
+            <input matInput placeholder="{{'topic_english_lang_label' | translate}}" type="text" formControlName="topicInEnglish">
+            <mat-error *ngIf="this.subjectForm.controls.topicInEnglish.hasError('required')">{{'topic_english_lang_req' | translate}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{'objective_native_lang_label' | translate}}</mat-label>
+            <input matInput placeholder="{{'objective_native_lang_label' | translate}}" type="text" formControlName="objective">
+            <mat-error *ngIf="this.subjectForm.controls.objective.hasError('required')">{{'objective_native_lang_req' | translate}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{'objective_english_lang_label' | translate}}</mat-label>
+            <input matInput placeholder="{{'objective_english_lang_label' | translate}}" type="text" formControlName="objectiveInEnglish">
+            <mat-error *ngIf="this.subjectForm.controls.objectiveInEnglish.hasError('required')">{{'objective_english_lang_req' | translate}}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>{{'realization_lang_label' | translate}}</mat-label>
+            <mat-select formControlName="realizationLanguage">
+              <mat-option [value]="'ENGLISH'">
+                {{ 'en' | translate}}
+              </mat-option>
+              <mat-option [value]="'POLISH'">
+                {{ 'pl' | translate}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="side-details-container">
+        <mat-card *ngIf="this.showInitiatorPanel; else noInitiator">
+          <mat-card-content>
+            <div >
+              <mat-form-field appearance="outline">
+                <mat-label >{{ 'applicant' | translate}}</mat-label>
+                <input matInput placeholder="{{ 'applicant' | translate}}" type="text" formControlName="mainRealiser">
+              </mat-form-field>
+            </div>
+
+            <div class="group-container" *ngIf="this.showRealisersForm1 || this.showRealisersForm2 || this.showRealisersForm3">
+              <span>{{'co-realisers-label' | translate}}</span>
+
+              <mat-form-field appearance="outline" *ngIf="this.showRealisersForm1">
+                <input matInput placeholder="{{'realiser' | translate}}" type="text" formControlName="firstCoRealiser">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" *ngIf="this.showRealisersForm2">
+                <input matInput placeholder="{{'realiser' | translate}}" type="text" formControlName="secondCoRealiser">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" *ngIf="this.showRealisersForm3">
+                <input matInput placeholder="{{'realiser' | translate}}" type="text" formControlName="thirdCoRealiser">
+              </mat-form-field>
+
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <ng-template #noInitiator>
+          <mat-card>
+            <mat-card-content>
+              <div class="group-container">
+
+                <mat-label >{{'type' | translate}}</mat-label>
+                <br >
+                <mat-checkbox formControlName="isGroup" (change)="groupChange($event)" class="group-text">
+                  {{'group_type_label' | translate}}
+                </mat-checkbox>
+                <br>
+                <span>{{'co-realisers-label' | translate}}</span>
+
+                <mat-form-field appearance="outline">
+                  <input matInput placeholder="{{'number_of_co_realisers' | translate}}" type="text" formControlName="coRealisersNumber">
+                  <mat-error *ngIf="this.subjectForm.controls.coRealisersNumber.hasError('required')">{{'co-realisers-required' | translate}}</mat-error>
+                </mat-form-field>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </ng-template>
+      </div>
+    </div>
+  </form>
+
+</app-state>

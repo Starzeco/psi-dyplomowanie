@@ -1,10 +1,12 @@
 ### STAGE 1: Build ###
-FROM node:16.13.2 AS build
+FROM node:16.13.2-alpine AS build
 
 WORKDIR /usr/src/app
+RUN npm -v
+COPY package.json package-lock.json ./
+RUN npm install
 COPY . .
-RUN npm install & npm install -g @angular/cli & npm uninstall @angular-devkit/build-angular & npm install --save-dev @angular-devkit/build-angular
-RUN ng build --configuration production
+RUN npm run build -- --prod
 
 ### STAGE 2: Run ###
 FROM nginx:1.17.1-alpine

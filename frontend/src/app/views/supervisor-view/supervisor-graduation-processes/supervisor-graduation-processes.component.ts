@@ -12,40 +12,8 @@ const graduationProcesses_: GraduationProcess[] = [
     finalSemesterName: "L21/22",
     facultyShortName: "W4N",
     degreeCourseNameKey: "applied_computer_science",
-    degreeNameKey: "master"
-  },
-  {
-    graduationProcessId: 1,
-    initialSemesterName: "Z21/22",
-    finalSemesterName: "L21/22",
-    facultyShortName: "W4N",
-    degreeCourseNameKey: "applied_computer_science",
-    degreeNameKey: "master"
-  },
-  {
-    graduationProcessId: 1,
-    initialSemesterName: "Z21/22",
-    finalSemesterName: "L21/22",
-    facultyShortName: "W4N",
-    degreeCourseNameKey: "applied_computer_science",
-    degreeNameKey: "master"
-  },
-  {
-    graduationProcessId: 1,
-    initialSemesterName: "Z21/22",
-    finalSemesterName: "L21/22",
-    facultyShortName: "W4N",
-    degreeCourseNameKey: "applied_computer_science",
-    degreeNameKey: "master"
-  },
-  {
-    graduationProcessId: 1,
-    initialSemesterName: "Z21/22",
-    finalSemesterName: "L21/22",
-    facultyShortName: "W4N",
-    degreeCourseNameKey: "applied_computer_science",
-    degreeNameKey: "master"
-  },
+    degreeNameKey: "BATCHELOR"
+  }
 ]
 
 const toolbarConfig_: ToolbarConfig = {

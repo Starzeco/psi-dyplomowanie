@@ -1,1 +1,8 @@
 @import './supervisor-subjects/supervisor-subjects.component.scss';
+@import './supervisor-subjects/create-subject/create-subject.component.scss';
+@import './supervisor-subjects/subject-table/subject-table.component.scss';
+@import './supervisor-subjects/draft-subject/draft-subject-details/draft-subject-details.component.scss';
+@import './supervisor-subjects/draft-subject/draft-subject-update/draft-subject-update.component.scss';
+@import './supervisor-subjects/processed-subject/processed-subject-details/candidatures-table/candidatures-table.component.scss';
+@import './supervisor-subjects/processed-subject/processed-subject-details/processed-subject-details.component.scss';
+@import './supervisor-subjects/processed-subject/processed-subject-update/processed-subject-update.component.scss';

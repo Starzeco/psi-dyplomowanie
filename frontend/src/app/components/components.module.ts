@@ -27,6 +27,12 @@ import { GraduationProcessesGridComponent } from './graduation-processes-grid/gr
 import { GraduationProcessCardComponent } from './graduation-processes-grid/graduation-process-card/graduation-process-card.component';
 import { StateComponent } from './state/state.component';
 import { ToolbarService } from './toolbar/toolbar.service';
+import { TopicObjectiveComponent } from './details/topic-objective/topic-objective.component';
+import { StatusComponent } from './details/status/status.component';
+import { SupervisorComponent } from './details/supervisor/supervisor.component';
+import { CoRealisersComponent } from './details/co-realisers/co-realisers.component';
+import { RealizersNumberComponent } from './details/realizers-number/realizers-number.component';
+import { VerificationsComponent } from './details/verifications/verifications.component';
 
 const MAT_MODULES = [
   MatSidenavModule,
@@ -54,6 +60,12 @@ const MAT_MODULES = [
     GraduationProcessesGridComponent,
     GraduationProcessCardComponent,
     StateComponent,
+    TopicObjectiveComponent,
+    StatusComponent,
+    SupervisorComponent,
+    CoRealisersComponent,
+    RealizersNumberComponent,
+    VerificationsComponent,
   ],
   exports: [
     SidenavComponent,
@@ -67,6 +79,12 @@ const MAT_MODULES = [
     GraduationProcessesGridComponent,
     GraduationProcessCardComponent,
     StateComponent,
+    TopicObjectiveComponent,
+    StatusComponent,
+    SupervisorComponent,
+    CoRealisersComponent,
+    RealizersNumberComponent,
+    VerificationsComponent,
   ],
   imports: [
     CommonModule,

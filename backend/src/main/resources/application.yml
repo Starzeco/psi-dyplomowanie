@@ -12,3 +12,12 @@ spring:
 server:
   servlet:
     context-path: /api/v1
+
+mail:
+  mailjet:
+    apiKey: "bc910b4624a20dd8d617d2fc5dbe98c6"
+    apiSecret: "2b28ad5c16d1e677c095019c603a263a"
+    version: "v3.1"
+    senderMail: "marcel.k@onet.eu"
+    senderName: "Politechnika Wrocławska"
+    mailSubject: "Praca dyplomowa - powiadomienie"

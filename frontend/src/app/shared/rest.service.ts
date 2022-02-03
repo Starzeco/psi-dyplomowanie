@@ -78,15 +78,15 @@ export class RestService {
     });
   }
 
-  getSubjectById(subjectId: number) {
+  fetchSubjectById(subjectId: number) {
     return this.http.get<Subject>(`${environment.apiUrl}/subject/${subjectId}`);
   }
 
-  getCandidatureById(candidatureId: number) {
+  fetchCandidatureById(candidatureId: number) {
     return this.http.get<Candidature>(`${environment.apiUrl}/candidature/${candidatureId}`);
   }
 
-  getSupervisorsByGraduationProcessId(graduationProcessId: number) {
+  fetchSupervisorsByGraduationProcessId(graduationProcessId: number) {
     return this.http.get<StaffMember[]>(`${environment.apiUrl}/supervisor`, {
       params: {
         graduation_process_id: graduationProcessId
@@ -134,11 +134,11 @@ export class RestService {
     return this.http.put(`${environment.apiUrl}/subject/status/accept-initiator/${subjectId}`, null);
   }
 
-  acceptSupervisor(subjectId: number) {
+  acceptAsSupervisor(subjectId: number) {
     return this.http.put(`${environment.apiUrl}/subject/status/accept-supervisor/${subjectId}`, null);
   }
 
-  reject(subjectId: number) {
+  rejectAsSupervisor(subjectId: number) {
     return this.http.put(`${environment.apiUrl}/subject/status/reject/${subjectId}`, null);
   }
 
@@ -177,7 +177,7 @@ export class RestService {
     return this.http.put(`${environment.apiUrl}/subject/status/send-verification/${subjectId}`, null);
   }
 
-  getAllCandidaturesBySubjectId(subjectId: number) {
+  fetchAllCandidaturesBySubjectId(subjectId: number) {
     return this.http.get<Candidature[]>(`${environment.apiUrl}/candidature`, {
       params: {
         subject_id: subjectId
@@ -187,5 +187,10 @@ export class RestService {
 
   decideAboutCandidature(candidatureId: number, decision: boolean) {
     return this.http.put(`${environment.apiUrl}/subject/candidature/${candidatureId}`, decision);
+  }
+
+  fetchAllRejectedVerificationBySubjectId(subjectId: number) {
+    return this.http.get<Verification[]>(`${environment.apiUrl}/subject/${subjectId}/verifications/rejected`);
+
   }
 }

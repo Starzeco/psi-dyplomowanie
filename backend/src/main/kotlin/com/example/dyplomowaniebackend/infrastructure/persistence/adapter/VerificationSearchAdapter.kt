@@ -15,6 +15,10 @@ class VerificationSearchAdapter(
     private val verificationRepository: VerificationRepository,
     private val verifierRepository: VerifierRepository
 ) : VerificationSearchPort {
+    override fun findAllRejectedVerificationBySubjectId(subjectId: Long): List<Verification> =
+        verificationRepository.findAllByVerifiedFalseAndAndSubjectId(subjectId).map { it.mapToDomain(true) }
+
+
     override fun findAllVerificationAsVerifier(verifierId: Long, verificationId: Long): Verification {
         val verification = verificationRepository.findByVerificationIdAndVerifierId(verificationId, verifierId)
         if (verification == null)

@@ -1,85 +1,17 @@
-<app-state [loading]="loading" [error]="error" [empty]="false">
+<app-state [loading]="loading" [error]="error">
 
-  <form id="subject-form" [formGroup]="this.subjectForm" autocomplete="off">
-    <div class="main-details-container">
-      <mat-card>
-        <mat-card-content>
-          <mat-form-field appearance="outline">
-            <mat-label>{{'topic_native_lang_label' | translate}}</mat-label>
-            <input matInput placeholder="{{'topic_native_lang_label' | translate}}" type="text" formControlName="topic">
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>{{'topic_english_lang_label' | translate}}</mat-label>
-            <input matInput placeholder="{{'topic_english_lang_label' | translate}}" type="text" formControlName="topicInEnglish">
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>{{'objective_native_lang_label' | translate}}</mat-label>
-            <input matInput placeholder="{{'objective_native_lang_label' | translate}}" type="text" formControlName="objective">
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>{{'objective_english_lang_label' | translate}}</mat-label>
-            <input matInput placeholder="{{'objective_english_lang_label' | translate}}" type="text" formControlName="objectiveInEnglish">
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>{{'realization_lang_label' | translate}}</mat-label>
-            <mat-select formControlName="realizationLanguage">
-              <mat-option [value]="'ENGLISH'">
-                {{ 'en' | translate}}
-              </mat-option>
-              <mat-option [value]="'POLISH'">
-                {{ 'pl' | translate}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card>
-
-      <div class="side-details-container">
-        <mat-card class="first-container">
-          <mat-card-content>
-            <mat-form-field appearance="outline">
-              <mat-label>{{'supervisors_label' | translate}}</mat-label>
-              <input matInput placeholder="{{'supervisors_label' | translate}}" type="text" formControlName="supervisorPresentation">
-            </mat-form-field>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card >
-          <mat-card-content>
-            <div >
-              <mat-form-field appearance="outline">
-                <mat-label>{{'applicant' | translate}}</mat-label>
-                <input matInput placeholder="{{'applicant' | translate}}" type="text" formControlName="mainRealiser">
-              </mat-form-field>
-            </div>
-
-            <div class="group-container" *ngIf="this.showRealisersForm1 || this.showRealisersForm2 || this.showRealisersForm3">
-              <span>{{'co-realisers-label' | translate}}</span>
-
-              <mat-form-field appearance="outline" *ngIf="this.showRealisersForm1">
-                <input matInput placeholder="{{'co-realisers-first' | translate}}" type="text" formControlName="firstCoRealiser">
-                <mat-icon matSuffix>{{this.getIcon(0)}}</mat-icon>
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" *ngIf="this.showRealisersForm2">
-                <input matInput placeholder="{{'co-realisers-second' | translate}}" type="text" formControlName="secondCoRealiser">
-                <mat-icon matSuffix>{{this.getIcon(1)}}</mat-icon>
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" *ngIf="this.showRealisersForm3">
-                <input matInput placeholder="{{'co-realisers-third' | translate}}" type="text" formControlName="thirdCoRealiser">
-                <mat-icon matSuffix>{{this.getIcon(2)}}</mat-icon>
-              </mat-form-field>
-
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
+  <div class="details-container column" *ngIf="this.candidature?.subject">
+    <div class="column">
+      <app-topic-objective [topic]="this.prepareTopic()" [objective]="this.prepareObjective()"
+        [realizationLanguage]="this.candidature.subject.realizationLanguage"></app-topic-objective>
     </div>
-  </form>
 
+    <div class="column">
+      <app-status labelKey="candidature_status" [statusKey]="this.getStatus()"></app-status>
+      <app-status labelKey="subject_status" [statusKey]="this.getSubjectStatus()"></app-status>
+      <app-supervisor [supervisor]="this.candidature.subject.supervisor"></app-supervisor>
+      <app-co-realisers [mainRealizer]="this.prepareMainRealizer()" [coRealizers]="this.prepareCoorealizers()">
+      </app-co-realisers>
+    </div>
+  </div>
 </app-state>
